@@ -5,4 +5,6 @@ public abstract class GameObject {
     int y;
     int width;
     int height;
+    int centralX;
+    int centralY;
 }
