@@ -1,5 +1,8 @@
 package uet.oop.UA.entites;
 
+import java.awt.*;
+
+
 public abstract class GameObject {
     int x;
     int y;
@@ -7,4 +10,5 @@ public abstract class GameObject {
     int height;
     int centralX;
     int centralY;
+    Image image;
 }
