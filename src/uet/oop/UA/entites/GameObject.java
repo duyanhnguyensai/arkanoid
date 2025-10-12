@@ -12,47 +12,47 @@ public abstract class GameObject {
     private int centralY;
     private Image image;
 
-    public int GetX() {
+    public int getX() {
         return this.x;
     }
 
-    public void SetX(int x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public int GetY() {
+    public int getY() {
         return this.y;
     }
 
-    public void SetY(int y) {
+    public void setY(int y) {
         this.y = y;
     }
 
-    public Image GetImage() {
+    public Image getImage() {
         return this.image;
     }
 
-    public void SetImage(Image image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 
-    public int GetWidth() {
+    public int getWidth() {
         return this.image.getWidth(null);
     }
 
-    public int GetHeight() {
+    public int getHeight() {
         return this.image.getHeight(null);
     }
 
-    public int GetCentralX() {
+    public int getCentralX() {
         return this.x + this.width / 2;
     }
 
-    public int GetCentralY() {
+    public int getCentralY() {
         return this.y + this.height / 2;
     }
 
-    public void UpdateCentral() {
+    public void updateCentral() {
         this.centralX = this.x + this.width / 2;
         this.centralY = this.y + this.height / 2;
     }
