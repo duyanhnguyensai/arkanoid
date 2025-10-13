@@ -46,7 +46,7 @@ public class WindowFrame_Main extends JFrame
 
     public static void main(String[] args)
     {
-        WindowFrame_Main run = new WindowFrame_Main();
+        new WindowFrame_Main();
     }
 }
 
