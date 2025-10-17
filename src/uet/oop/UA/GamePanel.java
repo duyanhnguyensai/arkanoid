@@ -7,6 +7,12 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon; // load ảnh
 import java.io.File; // tạo file
 
+
+/**
+ * Lớp GamePanel để vẽ game
+ * - bao gồm các thuộc tính như vị trí paddle, ảnh paddle, di chuyển paddle
+ * - thiết kế màn chơi (hiển thị brick, paddle, score, lives, level, game over)
+ */
 class GamePanel extends JPanel implements KeyListener {
     // Thông số cơ bản
     private final int GAME_WIDTH = 800;
