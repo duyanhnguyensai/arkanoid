@@ -103,6 +103,9 @@ public abstract class GameObject {
         this.centralX = this.x + this.width / 2;
         this.centralY = this.y + this.height / 2;
     }
+    public Image getImage() {
+        return this.image;
+    }
     public Image set_File_image (String filename){
         Image fileImage = new ImageIcon(filename).getImage();
         if (fileImage == null){
