@@ -3,9 +3,18 @@ package uet.oop.UA.entites;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+/**
+ * class GameObject để tạo các đối tượng trong game
+ * bao gồm các thuộc tính như vị trí, kích thước, hình ảnh, màu sắc
+ * và các phương thức để thiết lập và lấy các thuộc tính đó
+ * các phương thức để vẽ hình ảnh của đối tượng (hình chữ nhật, hình tròn, hình ảnh từ file)
+ * tên phương thức vẽ là set_Drawed_Paddle_image() và set_Drawed_Ball_image()
+ * tên phương thức tải hình ảnh từ file là set_File_image() (tham số là đường dẫn file viết dưới dạng String)
+ * các phương thức để lấy vị trí trung tâm của đối tượng: getCentralX() và getCentralY()
+ * phương thức đặt màu sắc từ tên màu dưới dạng String: setColor(String colorname) (ví dụ: "red", "blue", "green" (viết thường tiếng anh));
 
-
-class GameObject {
+ */
+public abstract class GameObject {
     private int x;
     private int y;
     private int width;
@@ -30,7 +39,7 @@ class GameObject {
     }
 
     public void setX(int x) {
-        this.centralX = x + this.width / 2;
+        updateCentral();
         this.x = x;
     }
 
@@ -39,15 +48,15 @@ class GameObject {
     }
 
     public void setY(int y) {
-        this.centralY = y + this.height / 2;
+        updateCentral();
         this.y = y;
     }
     public void setWidth(int width) {
-        this.centralX = this.x + width / 2;
+        updateCentral();
         this.width = width;
     }
     public void setHeight(int height) {
-        this.centralY = this.y + height / 2;
+        updateCentral();
         this.height = height;
     }
     public int getWidth() {
@@ -84,44 +93,42 @@ class GameObject {
     }
 
     public int getCentralX() {
-        return this.x + this.width / 2;
+        return centralX;
     }
 
     public int getCentralY() {
-        return this.y + this.height / 2;
+        return centralY;
     }
     public void updateCentral() {
         this.centralX = this.x + this.width / 2;
         this.centralY = this.y + this.height / 2;
     }
     public Image set_File_image (String filename){
-        this.image = new ImageIcon(filename).getImage();
+        Image fileImage = new ImageIcon(filename).getImage();
+        if (fileImage == null){
+            System.out.println("Image is null");
+            return null;
+        }
+        fileImage.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
+        this.image = fileImage;
         return this.image;
     }
     public Image set_Drawed_Paddle_image() {
-        this.image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
-        if(this.image instanceof BufferedImage B_image){
-            Graphics2D g = B_image.createGraphics();
-            g.setColor(this.getColor());
-            g.fillRect(this.x, this.y, this.getWidth(), this.getHeight());
-            g.dispose();
-        }
-        else{
-            System.out.println("Image is not a BufferedImage");
-        }
+        BufferedImage paddleImage = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
+        this.image = paddleImage;
+        Graphics2D g = paddleImage.createGraphics();
+        g.setColor(this.getColor());
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        g.dispose();
         return image;
     }
     public Image set_Drawed_Ball_image() {
-        this.image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
-        if(this.image instanceof BufferedImage B_image){
-            Graphics2D g = B_image.createGraphics();
-            g.setColor(this.getColor());
-            g.fillOval(this.x, this.y, this.getWidth(), this.getHeight());
-            g.dispose();
-        }
-        else{
-            System.out.println("Image is not a BufferedImage");
-        }
+        BufferedImage ballimage = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
+        this.image = ballimage;
+        Graphics2D g = ballimage.createGraphics();
+        g.setColor(this.getColor());
+        g.fillOval(0, 0, this.getWidth(), this.getHeight());
+        g.dispose();
         return this.image;
     }
 }
