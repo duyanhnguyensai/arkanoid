@@ -1,9 +1,19 @@
 package uet.oop.UA.entites;
 
+import static java.lang.Math.sqrt;
+
 public class MovableObject extends GameObject {
-    public double dx;
-    public double dy;
-    double speed;
+    protected double dx;
+    protected double dy;
+    protected double speed = 5 * sqrt(2);
+
+    public double getSpeed() {
+        return this.speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
 
     public double getDx() {
         return this.dx;
