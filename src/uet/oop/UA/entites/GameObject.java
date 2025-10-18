@@ -3,6 +3,9 @@ package uet.oop.UA.entites;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import static java.lang.Math.sqrt;
+
 /**
  * class GameObject để tạo các đối tượng trong game
  * bao gồm các thuộc tính như vị trí, kích thước, hình ảnh, màu sắc
@@ -133,5 +136,13 @@ public abstract class GameObject {
         g.fillOval(0, 0, this.getWidth(), this.getHeight());
         g.dispose();
         return this.image;
+    }
+
+    public double distant2CentralObj(GameObject obj) {
+        updateCentral();
+        obj.updateCentral();
+        double ObjThisX = this.centralX - obj.centralX;
+        double ObjThisY = this.centralY - obj.centralY;
+        return sqrt(ObjThisX * ObjThisX + ObjThisY * ObjThisY);
     }
 }
