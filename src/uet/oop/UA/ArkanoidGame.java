@@ -1,6 +1,9 @@
 package uet.oop.UA;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+import uet.oop.UA.entites.GameObject;
 
 public class ArkanoidGame extends JFrame {
     
@@ -12,7 +15,8 @@ public class ArkanoidGame extends JFrame {
         setResizable(false);
         
         // Tạo game panel
-        GamePanel gamePanel = new GamePanel();
+        List<GameObject> gameObjects = new ArrayList<>();
+        GamePanel gamePanel = new GamePanel(gameObjects);
         add(gamePanel);
         
         // Set focusable để nhận phím

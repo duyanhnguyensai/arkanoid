@@ -21,7 +21,7 @@ public abstract class GameObject {
     private int height;
     private int centralX;
     private int centralY;
-    private Image image;
+    protected Image image;
     private Color color;
     //constructor
     public GameObject() {
@@ -112,6 +112,7 @@ public abstract class GameObject {
             System.out.println("Image is null");
             return null;
         }
+        System.out.println("Image loaded successfully ");
         fileImage.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
         this.image = fileImage;
         return this.image;

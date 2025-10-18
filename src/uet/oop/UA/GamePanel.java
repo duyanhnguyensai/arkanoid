@@ -1,15 +1,15 @@
 package uet.oop.UA;
 
 import uet.oop.UA.entites.GameObject;
+import uet.oop.UA.entites.Paddle;
 
+// load ảnh
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon; // load ảnh
 import java.io.File; // tạo file
 import java.util.List;
-
 
 /**
  * Lớp GamePanel để vẽ game
@@ -37,10 +37,10 @@ class GamePanel extends JPanel implements KeyListener {
                     g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);
                 }
             }
-            drawGameInfo(g);  // vẽ chữ
+            drawGameInfo(g);  //vẽ thông tin game
         }
         else {
-            drawGameOver(g); //vẽ màn gameover
+            drawGameOver(g); //vẽ gameover
         }
     }
     private void drawGameInfo(Graphics g) {
@@ -53,12 +53,12 @@ class GamePanel extends JPanel implements KeyListener {
 
     //Vẽ Game Over
     private void drawGameOver(Graphics g) {
-        g.setColor(new Color(0, 0, 0, 200)); //màu nền Game Over
+        g.setColor(new Color(0, 0, 0, 200)); 
         g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-        g.setColor(Color.WHITE); //màu text Game Over
+        g.setColor(Color.WHITE); 
         g.setFont(new Font("Arial", Font.BOLD, 40));
-        g.drawString("GAME OVER", GAME_WIDTH / 2 - 150, GAME_HEIGHT / 2 - 50); //text Game Over
+        g.drawString("GAME OVER", GAME_WIDTH / 2 - 150, GAME_HEIGHT / 2 - 50); 
 
     }
 
@@ -77,6 +77,8 @@ class GamePanel extends JPanel implements KeyListener {
     private int lives = 3;
     private int level = 1;
     private boolean gameRunning = true;
+    // Paddle position
+    private int paddleX = GAME_WIDTH / 2 - PADDLE_WIDTH / 2;
     /*
     // Khởi tạo và vẽ Bricks (hàng x cột)
     //private boolean[][] bricks;
@@ -86,29 +88,44 @@ class GamePanel extends JPanel implements KeyListener {
     //Khởi tạo Game
     public GamePanel(List<GameObject> objects) {
         this.objectList = objects;
-        setBackground(Color.BLACK); //màu nền
+        setBackground(Color.BLACK); 
         this.setLayout(new BorderLayout());
         //initializeBricks(); //vẽ Bricks
         //loadPaddleImage(); //load ảnh paddle
-        addKeyListener(this); //nhận phím
+        
+        // Thêm paddle vào danh sách vật thể
+        Paddle paddle = new Paddle(
+            GAME_WIDTH / 2 - PADDLE_WIDTH / 2, 
+            GAME_HEIGHT - PADDLE_HEIGHT - 25,
+            PADDLE_WIDTH,
+            PADDLE_HEIGHT
+        );
+        this.objectList.add(paddle);
+        
+        addKeyListener(this); 
     }
 
     //Vẽ thông tin game (score, lives, level)
     //Nhận phím
     @Override
     public void keyPressed(KeyEvent e) {
+        // Lấy đối tượng paddle
+        Paddle paddle = (Paddle)objectList.get(0);
+            
         // Di chuyển sang trái
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (paddleX > 0) {
                 paddleX -= 15;
-                repaint(); // Vẽ lại paddle sau khi di chuyển
+                paddle.setX(paddleX);
+                repaint();
             }
         }
         // Di chuyển sang phải
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             if (paddleX < GAME_WIDTH - PADDLE_WIDTH) {
                 paddleX += 15;
-                repaint(); // Vẽ lại paddle sau khi di chuyển
+                paddle.setX(paddleX);
+                repaint();
             }
         }
         // Restart game
