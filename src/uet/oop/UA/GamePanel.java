@@ -24,9 +24,9 @@ class GamePanel extends JPanel implements KeyListener {
     public void addGameObject(GameObject gameObject){
         this.objectList.add(gameObject);
     }
-    public void removeGameObject(GameObject gameObject){
+    public void removeGameObject(GameObject gameObject) {
         this.objectList.remove(gameObject);
-
+    }
     //hàm vẽ
     @Override
     protected void paintComponent(Graphics g) {
