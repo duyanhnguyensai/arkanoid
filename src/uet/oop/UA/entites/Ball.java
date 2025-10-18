@@ -4,11 +4,11 @@ import static java.lang.Math.*;
 
 
 public class Ball extends MovableObject {
-    double directionX;
-    double directionY;
-    double motionAngle;
-    double cosaAngle;
-    double sinAngle;
+    protected double directionX;
+    protected double directionY;
+    protected double motionAngle;
+    protected double cosaAngle;
+    protected double sinAngle;
 
     public void move(double angle) {
         this.motionAngle = angle;
