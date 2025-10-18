@@ -34,6 +34,16 @@ public abstract class GameObject {
         this.image = null;
         this.color = Color.WHITE;
     }
+    public GameObject(int x, int y, int width, int height, String colorname) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.centralX = x + width / 2;
+        this.centralY = y + height / 2;
+        setColor(colorname);
+        this.image = null;
+    }
     public int getX() {
         return this.x;
     }
