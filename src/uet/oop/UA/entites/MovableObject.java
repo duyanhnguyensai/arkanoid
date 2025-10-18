@@ -3,6 +3,7 @@ package uet.oop.UA.entites;
 public class MovableObject extends GameObject {
     public double dx;
     public double dy;
+    double speed;
 
     public double getDx() {
         return this.dx;
