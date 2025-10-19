@@ -82,7 +82,7 @@ public abstract class GameObject {
     }
     
     public void setColorByCode(int colorcode) {
-        switch (colorname.toLowerCase()) {
+        switch (colorcode) {
             case 1 -> this.color = Color.BLACK;
             case 2 -> this.color = Color.BLUE;
             case 3 -> this.color = Color.CYAN;
@@ -97,7 +97,7 @@ public abstract class GameObject {
             case 12 -> this.color = Color.WHITE;
             case 13 -> this.color = Color.YELLOW;
             default -> {
-                System.out.println("Unknown color: " + colorname + ". Defaulting to WHITE.");
+                System.out.println("Unknown color: " + ". Defaulting to WHITE.");
                 this.color = Color.WHITE;
             }
         }
