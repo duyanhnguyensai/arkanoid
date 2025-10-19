@@ -37,14 +37,14 @@ public abstract class GameObject {
         this.image = null;
         this.color = Color.WHITE;
     }
-    public GameObject(int x, int y, int width, int height, String colorname) {
+    public GameObject(int x, int y, int width, int height, int colorcode) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.centralX = x + width / 2;
         this.centralY = y + height / 2;
-        setColor(colorname);
+        setColorByCode(colorcode);
         this.image = null;
     }
     public int getX() {
@@ -83,26 +83,30 @@ public abstract class GameObject {
     public Color getColor() {
         return this.color;
     }
-    public void setColor(String colorname) {
-        switch (colorname.toLowerCase()) {
-            case "black" -> this.color = Color.BLACK;
-            case "blue" -> this.color = Color.BLUE;
-            case "cyan" -> this.color = Color.CYAN;
-            case "dark_gray", "darkgray" -> this.color = Color.DARK_GRAY;
-            case "gray" -> this.color = Color.GRAY;
-            case "green" -> this.color = Color.GREEN;
-            case "light_gray", "lightgray" -> this.color = Color.LIGHT_GRAY;
-            case "magenta" -> this.color = Color.MAGENTA;
-            case "orange" -> this.color = Color.ORANGE;
-            case "pink" -> this.color = Color.PINK;
-            case "red" -> this.color = Color.RED;
-            case "white" -> this.color = Color.WHITE;
-            case "yellow" -> this.color = Color.YELLOW;
+    
+    public void setColorByCode(int colorcode) {
+        switch (colorcode) {
+            case 1 -> this.color = Color.BLACK;
+            case 2 -> this.color = Color.BLUE;
+            case 3 -> this.color = Color.CYAN;
+            case 4 -> this.color = Color.DARK_GRAY;
+            case 5 -> this.color = Color.GRAY;
+            case 6 -> this.color = Color.GREEN;
+            case 7 -> this.color = Color.LIGHT_GRAY;
+            case 8 -> this.color = Color.MAGENTA;
+            case 9 -> this.color = Color.ORANGE;
+            case 10 -> this.color = Color.PINK;
+            case 11 -> this.color = Color.RED;
+            case 12 -> this.color = Color.WHITE;
+            case 13 -> this.color = Color.YELLOW;
             default -> {
-                System.out.println("Unknown color: " + colorname + ". Defaulting to WHITE.");
+                System.out.println("Unknown color: " + ". Defaulting to WHITE.");
                 this.color = Color.WHITE;
             }
         }
+    }
+    public void setColor (Color color) {
+        this.color = color;
     }
 
     public int getCentralX() {
