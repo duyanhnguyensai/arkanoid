@@ -65,8 +65,8 @@ class GamePanel extends JPanel implements KeyListener {
 
     //drawgameInfo và drawgameOver được tôi tích hợp vào paintComponent mới của tôi
     //bên trên là phần tôi bổ sung . Bn dưới là phần cũ của ông, tôi đã xóa 1 phần ve obj
-    private final int GAME_WIDTH = 800;
-    private final int GAME_HEIGHT = 600;
+    private final int GAME_WIDTH = 915;
+    private final int GAME_HEIGHT = 830;
     private final int PADDLE_WIDTH = 150;
     private final int PADDLE_HEIGHT = 40;
     private final int BRICK_WIDTH = 90;
@@ -77,14 +77,6 @@ class GamePanel extends JPanel implements KeyListener {
     private int lives = 3;
     private int level = 1;
     private boolean gameRunning = true;
-    // Paddle position
-    private int paddleX = GAME_WIDTH / 2 - PADDLE_WIDTH / 2;
-    /*
-    // Khởi tạo và vẽ Bricks (hàng x cột)
-    //private boolean[][] bricks;
-    private final int BRICK_ROWS = 4;
-    private final int BRICK_COLS = 8;
-    */
     //Khởi tạo Game
     public GamePanel(List<GameObject> objects) {
         this.objectList = objects;
@@ -114,17 +106,15 @@ class GamePanel extends JPanel implements KeyListener {
             
         // Di chuyển sang trái
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if (paddleX > 0) {
-                paddleX -= 15;
-                paddle.setX(paddleX);
+            if (paddle.getX() > 0) {
+                paddle.setX(paddle.getX() - 15);
                 repaint();
             }
         }
         // Di chuyển sang phải
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if (paddleX < GAME_WIDTH - PADDLE_WIDTH) {
-                paddleX += 15;
-                paddle.setX(paddleX);
+            if (paddle.getX() < GAME_WIDTH - PADDLE_WIDTH) {
+                paddle.setX(paddle.getX() + 15);
                 repaint();
             }
         }
@@ -142,7 +132,8 @@ class GamePanel extends JPanel implements KeyListener {
 
     //Khởi tạo lại Game sau khi Game Over
     private void restartGame() {
-        paddleX = GAME_WIDTH / 2 - PADDLE_WIDTH / 2;
+        Paddle paddle = (Paddle)objectList.get(0);
+        paddle.setX(GAME_WIDTH / 2 - PADDLE_WIDTH / 2);
         score = 0;
         lives = 3;
         level = 1;
