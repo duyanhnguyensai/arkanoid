@@ -160,4 +160,8 @@ public abstract class GameObject {
         double ObjThisY = this.centralY - obj.centralY;
         return sqrt(ObjThisX * ObjThisX + ObjThisY * ObjThisY);
     }
+    
+    public void setImage(Image image) {
+        this.image = image;
+    }
 }
