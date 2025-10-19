@@ -76,6 +76,7 @@ class GamePanel extends JPanel implements KeyListener {
     private int lives = 3;
     private int level = 1;
     private boolean gameRunning = true;
+   
     //Khởi tạo Game
     public GamePanel(List<GameObject> objects) {
         this.objectList = objects;
@@ -131,8 +132,7 @@ class GamePanel extends JPanel implements KeyListener {
 
     //Khởi tạo lại Game sau khi Game Over
     private void restartGame() {
-        Paddle paddle = (Paddle)objectList.get(0);
-        paddle.setX(GAME_WIDTH / 2 - PADDLE_WIDTH / 2);
+        //paddleX = GAME_WIDTH / 2 - PADDLE_WIDTH / 2;
         score = 0;
         lives = 3;
         level = 1;
