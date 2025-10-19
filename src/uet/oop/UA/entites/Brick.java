@@ -1,8 +1,10 @@
 package uet.oop.UA.entites;
 
+import java.util.List;
+
 public class Brick extends GameObject {
     private static final int BRICK_WIDTH = 100;
-    private static final int BRICK_HEIGHT = 50
+    private static final int BRICK_HEIGHT = 50;
     private int hitPoints;
     public Brick(int x, int y, int colorcode) {
         super(x , y, BRICK_WIDTH, BRICK_HEIGHT, colorcode);
