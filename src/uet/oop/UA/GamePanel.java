@@ -65,12 +65,11 @@ class GamePanel extends JPanel implements KeyListener {
 
     //drawgameInfo và drawgameOver được tôi tích hợp vào paintComponent mới của tôi
     //bên trên là phần tôi bổ sung . Bn dưới là phần cũ của ông, tôi đã xóa 1 phần ve obj
-    private final int GAME_WIDTH = 800;
-    private final int GAME_HEIGHT = 600;
+    private final int GAME_WIDTH = 1000;
+    private final int GAME_HEIGHT = 800;
     private final int PADDLE_WIDTH = 150;
     private final int PADDLE_HEIGHT = 40;
-    private final int BRICK_WIDTH = 90;
-    private final int BRICK_HEIGHT = 30;
+;
 
     // Game state
     private int score = 0;
@@ -79,13 +78,7 @@ class GamePanel extends JPanel implements KeyListener {
     private boolean gameRunning = true;
     // Paddle position
     private int paddleX = GAME_WIDTH / 2 - PADDLE_WIDTH / 2;
-    /*
-    // Khởi tạo và vẽ Bricks (hàng x cột)
-    //private boolean[][] bricks;
-    private final int BRICK_ROWS = 4;
-    private final int BRICK_COLS = 8;
-    */
-    //Khởi tạo Game
+
     public GamePanel(List<GameObject> objects) {
         this.objectList = objects;
         setBackground(Color.BLACK); 

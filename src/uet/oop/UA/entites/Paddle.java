@@ -10,7 +10,7 @@ public class Paddle extends GameObject {
         this.setY(y);
         this.setWidth(width);
         this.setHeight(height);
-        this.setColor("white");
+        this.setColor(Color.WHITE);
         this.set_File_image("res/paddleImage/paddle.png"); // Đường dẫn tới ảnh paddle
     }
 
@@ -24,3 +24,4 @@ public class Paddle extends GameObject {
         this.image = image;
     }
 }
+
