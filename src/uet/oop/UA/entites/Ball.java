@@ -45,4 +45,23 @@ public class Ball extends MovableObject {
         }
     }
 
+    public boolean isPossibleToCollision(GameObject obj) { // chỉ kiểm tra va chạm của bóng với vật hình chữ nhật
+        return this.distant2CentralObj(obj)
+                <= (double) this.getWidth() / 2 + sqrt((obj.getWidth() * obj.getWidth())
+                + (obj.getHeight() * obj.getHeight())) / 2;
+    }
+
+    public int isLeftCollision(GameObject obj) {
+        if (this.getCentralY() >= obj.getY() && this.getCentralY() <= obj.getY() + obj.getHeight()) {
+
+            if (abs(obj.getX() - this.getCentralX()) <= abs(obj.getX() + obj.getWidth() - this.getCentralX())) {
+                return 1;
+
+            } else if (abs(obj.getX() - this.getCentralX()) > abs(obj.getX() + obj.getWidth() - this.getCentralX())) {
+                return 0;
+            }
+        }
+        return -1;
+    }
+
 }
