@@ -65,12 +65,11 @@ class GamePanel extends JPanel implements KeyListener {
 
     //drawgameInfo và drawgameOver được tôi tích hợp vào paintComponent mới của tôi
     //bên trên là phần tôi bổ sung . Bn dưới là phần cũ của ông, tôi đã xóa 1 phần ve obj
-    private final int GAME_WIDTH = 915;
-    private final int GAME_HEIGHT = 830;
+    private final int GAME_WIDTH = 1000;
+    private final int GAME_HEIGHT = 800;
     private final int PADDLE_WIDTH = 150;
     private final int PADDLE_HEIGHT = 40;
-    private final int BRICK_WIDTH = 90;
-    private final int BRICK_HEIGHT = 30;
+;
 
     // Game state
     private int score = 0;

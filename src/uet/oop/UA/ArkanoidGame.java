@@ -9,7 +9,7 @@ public class ArkanoidGame extends JFrame {
     
     public ArkanoidGame() {
         setTitle("Arkanoid Game");
-        setSize(915, 830);
+        setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
