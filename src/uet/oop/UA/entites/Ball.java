@@ -39,9 +39,8 @@ public class Ball extends MovableObject {
         if (this.getY() <= 0) {
             this.sinAngle *= -1;
             this.setY(0);
-        } else if (this.getY() >= GAME_HEIGHT - this.getHeight()) {
-            this.sinAngle *= -1;
-            this.setY(GAME_HEIGHT - this.getHeight());
+        } else if (this.getY() >= GAME_HEIGHT - this.getHeight()) { // -1 tim
+            System.out.println("game over");
         }
     }
 
@@ -58,6 +57,17 @@ public class Ball extends MovableObject {
                 return 1;
 
             } else if (abs(obj.getX() - this.getCentralX()) > abs(obj.getX() + obj.getWidth() - this.getCentralX())) {
+                return 0;
+            }
+        }
+        return -1;
+    }
+
+    public int isUpCollision(GameObject obj) {
+        if (this.getCentralX() >= obj.getX() && this.getCentralX() <= obj.getX() + obj.getWidth()) {
+            if (abs(obj.getY() - this.getCentralY()) <= abs(obj.getY() + obj.getHeight() - this.getCentralY())) {
+                return 1;
+            } else if (abs(obj.getY() - this.getCentralY()) > abs(obj.getY() + obj.getHeight() - this.getCentralY())) {
                 return 0;
             }
         }
