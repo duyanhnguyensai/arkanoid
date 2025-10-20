@@ -12,6 +12,18 @@ public class Ball extends MovableObject {
     public static final int GAME_WIDTH = 900;
     public static final int GAME_HEIGHT = 800;
 
+    public Ball(int x, int y, int width, int height) {
+        this.setX(x);
+        this.setY(y);
+        this.setWidth(width);
+        this.setHeight(height);
+        this.setColor(Color.WHITE);
+        this.set_Drawed_Ball_image();
+        this.set_File_image("res/ballImage/ball30.png");
+         // Đường dẫn tới ảnh
+
+    }
+
     public void move(double angle) {
         this.motionAngle = angle;
         this.cosaAngle = cos(this.motionAngle);
