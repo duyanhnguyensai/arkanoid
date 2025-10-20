@@ -23,6 +23,8 @@ public class ArkanoidGame extends JFrame {
         Ball ball = new Ball();
 
         GamePanel gamePanel = new GamePanel(gameObjects);
+        Ball ball = new Ball(gameObjects.get(0).getX()+gameObjects.get(0).getWidth()/2-15,0, 30 , 30);
+
         //gamePanel phải được nhận gameObjects rỗng trước
         //Lí do: muốn thêm object phải dùng method của gamePanel (addObject)
         Brick.createBrickGrid(gameObjects);
