@@ -81,6 +81,7 @@ public class Gameloop implements Runnable {
             //Và cũng có thể nó sẽ nhỏ hơn 1, nghĩa là một vòng lặp ngoài không thực hiện update nào cả
             //Vậy nên ta sẽ dùng vòng while để kiểm tra và thực hiện update
             while(update_per_loop >= 1) {
+
                 game.update();
                 real_UPS ++; //(mỗi một update là lại cộng một ups)
                 update_per_loop --; //giảm số update cần thực hiện đi một, vì đã thực hiện xong một update
@@ -105,7 +106,7 @@ public class Gameloop implements Runnable {
 
             //giờ thì tạm dừng một chút để tránh việc vòng lặp chạy quá nhanh, gây tốn tài nguyên máy
             try {
-                Thread.sleep(1);
+                Thread.sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
