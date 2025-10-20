@@ -4,12 +4,19 @@ import uet.oop.UA.entites.*;
 
 
 public class GameManager {
-    Paddle paddle;
-    Ball ball;
-    List<Brick> bricks;
-    List<PowerUp> powerUps;
-    int score;
-    int lives;
-    String gameState;
+    private List<GameObject> objectList;
+    private GamePanel gamePanel;
 
+    public GameManager(List<GameObject> objects, GamePanel panel) {
+        this.objectList = objects;
+        this.gamePanel = panel;
+    }
+    public void update() {
+        System.out.println("Updating game logic...");
+        //Cập nhật vị trí các đối tượng di chuyển
+    }
+    public void draw() {
+        gamePanel.repaint();
+    }
+    //các phương thức xử lí va chạm, điểm số, cấp độ, v.v.
 }

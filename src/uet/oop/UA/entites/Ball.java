@@ -1,5 +1,7 @@
 package uet.oop.UA.entites;
 
+import java.awt.*;
+
 import static java.lang.Math.*;
 
 
@@ -18,10 +20,9 @@ public class Ball extends MovableObject {
         this.setWidth(width);
         this.setHeight(height);
         this.setColor(Color.WHITE);
-        this.set_Drawed_Ball_image();
+        //this.set_Drawed_Ball_image();
         this.set_File_image("res/ballImage/ball30.png");
          // Đường dẫn tới ảnh
-
     }
 
     public void move(double angle) {

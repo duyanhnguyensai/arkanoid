@@ -31,17 +31,12 @@ class GamePanel extends JPanel implements KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(gameRunning) {
-            for (GameObject obj : objectList) {  //vẽ gameObject trong list
-                if (obj != null && obj.getImage() != null) {
-                    g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);
-                }
+        for (GameObject obj : objectList) {  //vẽ gameObject trong list
+            if (obj != null && obj.getImage() != null) {
+                g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);
             }
-            drawGameInfo(g);  //vẽ thông tin game
         }
-        else {
-            drawGameOver(g); //vẽ gameover
-        }
+        drawGameInfo(g);  //vẽ thông tin game
     }
     private void drawGameInfo(Graphics g) {
         g.setColor(Color.WHITE);
@@ -75,7 +70,6 @@ class GamePanel extends JPanel implements KeyListener {
     private int score = 0;
     private int lives = 3;
     private int level = 1;
-    private boolean gameRunning = true;
    
     //Khởi tạo Game
     public GamePanel(List<GameObject> objects) {
@@ -118,10 +112,12 @@ class GamePanel extends JPanel implements KeyListener {
                 repaint();
             }
         }
+        /*
         // Restart game
         if (e.getKeyCode() == KeyEvent.VK_R && !gameRunning) {
             restartGame();
         }
+        */
     }
 
     @Override
@@ -131,6 +127,7 @@ class GamePanel extends JPanel implements KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     //Khởi tạo lại Game sau khi Game Over
+    /*
     private void restartGame() {
         //paddleX = GAME_WIDTH / 2 - PADDLE_WIDTH / 2;
         score = 0;
@@ -139,4 +136,5 @@ class GamePanel extends JPanel implements KeyListener {
         gameRunning = true;
         repaint();
     }
+    */
 }

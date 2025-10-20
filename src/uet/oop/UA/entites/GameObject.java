@@ -124,8 +124,9 @@ public abstract class GameObject {
         return this.image;
     }
     public Image set_File_image (String filename){
-        Image fileImage = new ImageIcon(filename).getImage();
-        if (fileImage == null){
+        ImageIcon imglink = new ImageIcon(filename);
+        Image fileImage = imglink.getImage();
+        if (imglink.getIconWidth()  < 0) {
             System.out.println("Image is null");
             return null;
         }
