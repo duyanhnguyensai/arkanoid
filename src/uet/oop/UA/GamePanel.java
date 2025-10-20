@@ -31,6 +31,8 @@ class GamePanel extends JPanel implements KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.setColor(Color.green);
+        g.drawRect(0, 0, 1000, 800);
         for (GameObject obj : objectList) {  //vẽ gameObject trong list
             if (obj != null && obj.getImage() != null) {
                 g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);

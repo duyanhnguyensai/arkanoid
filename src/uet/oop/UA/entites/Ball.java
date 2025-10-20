@@ -8,10 +8,10 @@ import static java.lang.Math.*;
 public class Ball extends MovableObject {
     protected double directionX;
     protected double directionY;
-    protected double motionAngle;
+    protected double motionAngle = (270+45)*PI/180;
     protected double cosaAngle;
     protected double sinAngle;
-    public static final int GAME_WIDTH = 900;
+    public static final int GAME_WIDTH = 1000;
     public static final int GAME_HEIGHT = 800;
 
     public Ball(int x, int y, int width, int height) {
@@ -23,6 +23,10 @@ public class Ball extends MovableObject {
         //this.set_Drawed_Ball_image();
         this.set_File_image("res/ballImage/ball30.png");
          // Đường dẫn tới ảnh
+    }
+
+    public double getMotionAngle() {
+        return this.motionAngle;
     }
 
     public void move(double angle) {
@@ -42,18 +46,42 @@ public class Ball extends MovableObject {
     public void handleWallCollision() {
         // tường 2 bên
         if (this.getX() <= 0) { //kiểm tra tọa độ x của bóng có vượt qua biên trái không
-            this.cosaAngle *= -1;
+            if (this.motionAngle >=90*PI/180 && this.motionAngle <= 180*PI/180) {
+                this.motionAngle = (PI-(this.motionAngle));
+                System.out.println(this.motionAngle*180/PI + "j97");
+            } else if (this.motionAngle >= 180*PI/180 && this.motionAngle <= 270*PI/180) {
+                this.motionAngle =  (PI*2-(this.motionAngle-180*PI/180));
+                System.out.println(this.motionAngle*180/PI + "j79");
+            }
             this.setX(0);
         } else if (this.getX() >= GAME_WIDTH - this.getWidth()) {
-            this.cosaAngle *= -1;
+            if (this.motionAngle >=0*PI/180 && this.motionAngle <= 90*PI/180) {
+                this.motionAngle =  (PI-this.motionAngle);
+                System.out.println(this.motionAngle*180/PI + "j97");
+            } else if (this.motionAngle >= 270*PI/180 && this.motionAngle <= 360*PI/180) {
+                this.motionAngle = (PI+(2*PI-this.motionAngle));
+                System.out.println(this.motionAngle*180/PI + "j79");
+            }
             this.setX(GAME_WIDTH - this.getWidth());
         }
         // tường trên, dưới
         if (this.getY() <= 0) {
-            this.sinAngle *= -1;
+            if (this.motionAngle >=180*PI/180 && this.motionAngle <= 270*PI/180) {
+                this.motionAngle = (2*PI-(this.motionAngle));
+                System.out.println(this.motionAngle*180/PI + "j97");
+            } else if (this.motionAngle >= 270*PI/180 && this.motionAngle <= 320*PI/180) {
+                this.motionAngle =  (2*PI-(this.motionAngle));
+                System.out.println(this.motionAngle*180/PI + "j79");
+            }
             this.setY(0);
         } else if (this.getY() >= GAME_HEIGHT - this.getHeight()) { // -1 tim
-            System.out.println("game over");
+            if (this.motionAngle >=0*PI/180 && this.motionAngle <= 90*PI/180) {
+                this.motionAngle = (2*PI-(this.motionAngle));
+                System.out.println(this.motionAngle*180/PI + "j97");
+            } else if (this.motionAngle >= 90*PI/180 && this.motionAngle <= 180*PI/180) {
+                this.motionAngle = (2*PI-(this.motionAngle));
+                System.out.println(this.motionAngle*180/PI + "j79");
+            }
         }
     }
 

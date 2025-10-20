@@ -16,7 +16,8 @@ public class GameManager {
         //Cập nhật vị trí các đối tượng di chuyển
         for (GameObject object : objectList) {
             if(object instanceof Ball) {
-                ((Ball) object).move((270 + 45)*Math.PI/180);
+                ((Ball) object).move(((Ball) object).getMotionAngle());
+                ((Ball) object).handleWallCollision();
             }
         }
     }

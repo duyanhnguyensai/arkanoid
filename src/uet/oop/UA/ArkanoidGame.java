@@ -14,10 +14,10 @@ public class ArkanoidGame extends JFrame {
     
     public ArkanoidGame() {
         setTitle("Arkanoid Game");
-        setSize(1000, 800);
+        setSize(1015, 830);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(true);
         
         // Tạo game panel
         List<GameObject> gameObjects = new ArrayList<>();
