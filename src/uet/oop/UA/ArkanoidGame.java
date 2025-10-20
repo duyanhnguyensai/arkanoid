@@ -4,6 +4,9 @@ import java.awt.Image;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import uet.oop.UA.entites.Ball;
+import uet.oop.UA.entites.Brick;
 import uet.oop.UA.entites.GameObject;
 
 public class ArkanoidGame extends JFrame {
@@ -17,7 +20,13 @@ public class ArkanoidGame extends JFrame {
         
         // Tạo game panel
         List<GameObject> gameObjects = new ArrayList<>();
+        Ball ball = new Ball();
+
         GamePanel gamePanel = new GamePanel(gameObjects);
+        //gamePanel phải được nhận gameObjects rỗng trước
+        //Lí do: muốn thêm object phải dùng method của gamePanel (addObject)
+        Brick.createBrickGrid(gameObjects);
+        gamePanel.addGameObject(ball);
         add(gamePanel);
         
         // Set focusable để nhận phím

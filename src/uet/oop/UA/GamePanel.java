@@ -33,7 +33,7 @@ class GamePanel extends JPanel implements KeyListener {
         super.paintComponent(g);
         if(gameRunning) {
             for (GameObject obj : objectList) {  //vẽ gameObject trong list
-                if (obj.getImage() != null) {
+                if (obj != null && obj.getImage() != null) {
                     g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);
                 }
             }

@@ -3,8 +3,8 @@ package uet.oop.UA.entites;
 import java.util.List;
 
 public class Brick extends GameObject {
-    private static final int BRICK_WIDTH = 100;
-    private static final int BRICK_HEIGHT = 50;
+    private static final int BRICK_WIDTH = 80;
+    private static final int BRICK_HEIGHT = 40;
     private int hitPoints;
     public Brick(int x, int y, int colorcode) {
         super(x , y, BRICK_WIDTH, BRICK_HEIGHT, colorcode);
@@ -27,7 +27,7 @@ public class Brick extends GameObject {
                 }
                 //conditions for row and col can be used to create not-rectangular patterns of bricks
                 //for example, skip bricks at (1,1), (2,2), (3,3)
-                bricks[row][col] = new Brick(startX + col * BRICK_WIDTH, startY + row * BRICK_HEIGHT, colorcode);
+                bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH +20), startY + row * (BRICK_HEIGHT +10), colorcode);
             }
         }
         // Add bricks to the GamePanel's objectList

@@ -1,5 +1,7 @@
 package uet.oop.UA.entites;
 
+import java.awt.*;
+
 public class PowerUp extends MovableObject {
     private String type;
     private int duration;
@@ -77,6 +79,6 @@ public class PowerUp extends MovableObject {
     }
     
     public void setColor(String colorName) {
-        super.setColor(colorName);
+        super.setColor(Color.decode(colorName));
     }
 }

@@ -6,6 +6,7 @@
  *
  *skip đến dòng 79 để tìm hàm cập nhật vị trí vật thể, dòng 85 để tìm hàm vẽ
  */
+/*
 public class Gameloop implements Runnable {
     //biến gameRunning để check xem chương trình có đang chạy không để bật đểm time
     public boolean gameRunning;
@@ -65,7 +66,7 @@ public class Gameloop implements Runnable {
              * note: thật ra thời gian được tính là của loop ngay trước, vì loop hiện tại chưa kết thúc, nên ta sẽ dùng last_loop_time để tính
              * nhưng thời gian chạy của các loop kế nhau là rất nhỏ, nên ta có thể coi như nó là thời gian của loop hiện tại
              */
-
+/*
             update_per_loop += (current_loop_time - last_loop_time)/TIME_PER_UPDATE;
 
             //khoảnh khắc xác minh (current loop time) của vòng lặp này đã được dùng xong. Giờ thì biến nó thành last_loop_time để dùng cho vòng lặp tới
@@ -79,12 +80,13 @@ public class Gameloop implements Runnable {
                 game.update();
                 real_UPS ++; //(mỗi một update là lại cộng một ups)
                 update_per_loop --; //giảm số update cần thực hiện đi một, vì đã thực hiện xong một update
-            }
+            }*/
             /*
              * Sử dụng method render tại đây
-             */
-            game.render();
-            real_FPS ++; //(mỗi một loop là lại cộng một fps)
+             *
+             * game.render();
+             * */
+/*            real_FPS ++; //(mỗi một loop là lại cộng một fps)
 
 
             //giờ là lúc kiểm tra xem cứ mỗi giây thì chương trình chạy bao nhiêu frame/update
@@ -110,8 +112,7 @@ public class Gameloop implements Runnable {
     }
 
 }
-
-
+*/
 
 
 
