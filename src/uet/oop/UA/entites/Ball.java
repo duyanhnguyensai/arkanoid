@@ -20,13 +20,22 @@ public class Ball extends MovableObject {
         this.setWidth(width);
         this.setHeight(height);
         this.setColor(Color.WHITE);
-        //this.set_Drawed_Ball_image();
+        //this.set_Drawed_this_image();
         this.set_File_image("res/ballImage/ball30.png");
          // Đường dẫn tới ảnh
     }
 
     public double getMotionAngle() {
         return this.motionAngle;
+    }
+
+    public void setMotionAngle(double motionAngle) {
+        this.motionAngle = motionAngle;
+    }
+
+    public void MoveBeforeStart(GameObject obj) {
+        this.setX(obj.getX()+obj.getWidth()/2-this.getWidth()/2);
+        this.setY(obj.getY()-this.getHeight());
     }
 
     public void move(double angle) {
@@ -95,10 +104,15 @@ public class Ball extends MovableObject {
         if (this.getCentralY() >= obj.getY() && this.getCentralY() <= obj.getY() + obj.getHeight()) {
 
             if (abs(obj.getX() - this.getCentralX()) <= abs(obj.getX() + obj.getWidth() - this.getCentralX())) {
-                return 1;
-
+                if (abs(obj.getX() - this.getCentralX()) <= this.getWidth()/2) {
+                    return 1;
+                }
+                return -1;
             } else if (abs(obj.getX() - this.getCentralX()) > abs(obj.getX() + obj.getWidth() - this.getCentralX())) {
-                return 0;
+                if (abs(obj.getX() + obj.getWidth() - this.getCentralX()) <= this.getWidth()/2) {
+                    return 0;
+                }
+                return -1;
             }
         }
         return -1;
@@ -107,12 +121,49 @@ public class Ball extends MovableObject {
     public int isUpCollision(GameObject obj) {
         if (this.getCentralX() >= obj.getX() && this.getCentralX() <= obj.getX() + obj.getWidth()) {
             if (abs(obj.getY() - this.getCentralY()) <= abs(obj.getY() + obj.getHeight() - this.getCentralY())) {
-                return 1;
+                if (abs(obj.getY() - this.getCentralY()) <= this.getWidth()/2) {
+                    return 1;
+                }
+                return -1;
             } else if (abs(obj.getY() - this.getCentralY()) > abs(obj.getY() + obj.getHeight() - this.getCentralY())) {
-                return 0;
+                if (abs(obj.getY() + obj.getHeight() - this.getCentralY()) <= this.getWidth()/2) {
+                    return 0;
+                }
+                return -1;
             }
         }
         return -1;
     }
+
+    public void handlePadCollision(GameObject obj) {
+        if (this.isPossibleToCollision(obj)) {
+             // dieu kien cac gach sap va cham
+            int upcollision = this.isUpCollision(obj);
+            int leftcollision = this.isLeftCollision(obj);
+                if (upcollision != -1) {
+                    if (upcollision == 1) {
+                                this.setY(obj.getY() - this.getWidth());
+                                double cAngle = this.getCentralX() - obj.getCentralX();
+                                System.out.println(cAngle);
+                                this.motionAngle = (cAngle+90)*PI/(2*180) + (45+180)*PI/(180);
+                                System.out.println(this.motionAngle*180/PI + "j97");
+                    }
+                } else if (leftcollision != -1) {
+                    if (leftcollision == 1) {
+                        this.setX(this.getX() - this.getWidth());
+                        if (this.getMotionAngle() >=0*PI/180 && this.getMotionAngle() <= 90*PI/180) {
+                            this.setMotionAngle(PI-this.getMotionAngle());
+                        }
+                    } else if (leftcollision == 0) {
+                        this.setX(this.getX() + this.getWidth());
+                        if (this.getMotionAngle() >=90*PI/180 && this.getMotionAngle() <= 180*PI/180) {
+                            this.setMotionAngle(PI-(this.getMotionAngle()));
+                        }
+                    }
+                }
+
+        }
+    }
+
 
 }

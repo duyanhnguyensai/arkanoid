@@ -64,8 +64,8 @@ class GamePanel extends JPanel implements KeyListener {
     //bên trên là phần tôi bổ sung . Bn dưới là phần cũ của ông, tôi đã xóa 1 phần ve obj
     private final int GAME_WIDTH = 1000;
     private final int GAME_HEIGHT = 800;
-    private final int PADDLE_WIDTH = 150;
-    private final int PADDLE_HEIGHT = 40;
+    private final int PADDLE_WIDTH = 180;
+    private final int PADDLE_HEIGHT = 30;
 ;
 
     // Game state
@@ -84,7 +84,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Thêm paddle vào danh sách vật thể
         Paddle paddle = new Paddle(
             GAME_WIDTH / 2 - PADDLE_WIDTH / 2, 
-            GAME_HEIGHT - PADDLE_HEIGHT - 25,
+            GAME_HEIGHT - PADDLE_HEIGHT ,
             PADDLE_WIDTH,
             PADDLE_HEIGHT
         );
@@ -99,6 +99,10 @@ class GamePanel extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         // Lấy đối tượng paddle
         Paddle paddle = (Paddle)objectList.get(0);
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            GameManager.gameStarted = true;
+        }
             
         // Di chuyển sang trái
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
