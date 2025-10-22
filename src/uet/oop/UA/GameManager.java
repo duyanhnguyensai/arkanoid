@@ -28,6 +28,14 @@ public class GameManager {
                 if (object instanceof Ball) {
                     ((Ball) object).move(((Ball) object).getMotionAngle());
                     ((Ball) object).handleWallCollision();
+                    for (GameObject obj_ : objectList) {
+                        if (obj_ instanceof Brick) {
+                            if (((Ball) object).iscollision(((Brick) obj_))) {
+                                ((Ball) object).handleBrickCollision((Brick) obj_);
+                                break;
+                            }
+                        }
+                    }
                     ((Ball) object).handlePadCollision(objectList.get(0));
                 }
             }

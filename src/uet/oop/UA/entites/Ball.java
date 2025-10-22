@@ -165,5 +165,48 @@ public class Ball extends MovableObject {
         }
     }
 
+    public void handleBrickCollision(GameObject obj) {
+        if (this.isPossibleToCollision(obj)) {
+            int upcollisionb = this.isUpCollision(obj);
+            int leftcollisionb = this.isLeftCollision(obj);
+             if (leftcollisionb != -1) {
+                if (leftcollisionb == 1) {
+                    this.setX(this.getX() - this.getWidth());
+                    if (this.getMotionAngle() >=0*PI/180 && this.getMotionAngle() <= 90*PI/180) {
+                        this.setMotionAngle(PI-this.getMotionAngle());
+                    }
+                } else if (leftcollisionb == 0) {
+                    this.setX(this.getX() + this.getWidth());
+                    if (this.getMotionAngle() >=90*PI/180 && this.getMotionAngle() <= 180*PI/180) {
+                        this.setMotionAngle(PI-(this.getMotionAngle()));
+                    }
+                }
+            } else if (upcollisionb != -1) {
+                if (upcollisionb == 1) {
+                    this.setY(obj.getY() - this.getWidth());
+                    if (this.getMotionAngle() >=0*PI/180 && this.getMotionAngle() <= 90*PI/180) {
+                        this.setMotionAngle(2*PI-(this.getMotionAngle()));
+                    } else if (this.getMotionAngle() >= 90*PI/180 && this.getMotionAngle() <= 180*PI/180) {
+                        this.setMotionAngle(2*PI-(this.getMotionAngle()));
+                    }
+                } else if (upcollisionb == 0) {
+                    this.setY(obj.getY() + obj.getHeight());
+                    if (this.getMotionAngle() >=180*PI/180 && this.getMotionAngle() <= 270*PI/180) {
+                        this.setMotionAngle(2*PI-(this.getMotionAngle()));
+                    } else if (this.getMotionAngle() >= 270*PI/180 && this.getMotionAngle() <= 320*PI/180) {
+                        this.setMotionAngle(2*PI-(this.getMotionAngle()));
+                    }
+                }
+            }
+        }
+    }
 
+    public boolean iscollision(GameObject obj) {
+        if (this.isPossibleToCollision(obj)) {
+            if (this.isLeftCollision(obj) != -1 || this.isUpCollision(obj) != -1) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
