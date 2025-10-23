@@ -1,6 +1,7 @@
 package uet.oop.UA.graphics;
 
 import uet.oop.UA.GameManager;
+import uet.oop.UA.GamePanel;
 
 /**
  * Lớp Gameloop để quản lí vòng lặp game, cụ thể là
@@ -98,6 +99,7 @@ public class Gameloop implements Runnable {
             if(System.currentTimeMillis() - secondCountingTimer >=1000) { //thời gian thực được kiểm tra liên tục
 
                 secondCountingTimer += 1000;  //cứ mỗi giây thì cộng thêm 1000ms vào biến đếm thời gian. Mệnh đề if giảm về 0 và lại tiêp tục đếm đến 1000ms tiếp theo
+                GamePanel.score = GamePanel.score - 1;
                 System.out.println("FPS: " + real_FPS + " | UPS: " + real_UPS);
                 //reset lại số fps, ups để đếm cho giây tiếp theo
                 real_FPS = 0;

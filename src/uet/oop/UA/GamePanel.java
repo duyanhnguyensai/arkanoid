@@ -16,7 +16,7 @@ import java.util.List;
  * - bao gồm các thuộc tính như vị trí paddle, ảnh paddle, di chuyển paddle
  * - thiết kế màn chơi (hiển thị brick, paddle, score, lives, level, game over)
  */
-class GamePanel extends JPanel implements KeyListener {
+public class GamePanel extends JPanel implements KeyListener {
     //Danh sách các vật thể trong một panel
     private List<GameObject> objectList;
 
@@ -69,9 +69,12 @@ class GamePanel extends JPanel implements KeyListener {
 ;
 
     // Game state
-    private int score = 0;
-    private int lives = 3;
-    private int level = 1;
+    //vì gamestate không cần gắn vào class nào, không có method riêng, và cần thay đổi trong nhiểu trường hợp
+    //nên biến nó thành static và public
+    public static int score = 500;
+    public static int lives = 3;
+    public static int level = 1;
+
    
     //Khởi tạo Game
     public GamePanel(List<GameObject> objects) {

@@ -1,5 +1,8 @@
 package uet.oop.UA.entites;
 
+import uet.oop.UA.GameManager;
+import uet.oop.UA.GamePanel;
+
 import java.awt.*;
 
 import static java.lang.Math.*;
@@ -77,13 +80,14 @@ public class Ball extends MovableObject {
         if (this.getY() <= 0) {
             if (this.motionAngle >=180*PI/180 && this.motionAngle <= 270*PI/180) {
                 this.motionAngle = (2*PI-(this.motionAngle));
-                System.out.println(this.motionAngle*180/PI + "j97");
+                //System.out.println(this.motionAngle*180/PI + "j97");
             } else if (this.motionAngle >= 270*PI/180 && this.motionAngle <= 320*PI/180) {
                 this.motionAngle =  (2*PI-(this.motionAngle));
                 System.out.println(this.motionAngle*180/PI + "j79");
             }
             this.setY(0);
         } else if (this.getY() >= GAME_HEIGHT - this.getHeight()) { // -1 tim
+            /*
             if (this.motionAngle >=0*PI/180 && this.motionAngle <= 90*PI/180) {
                 this.motionAngle = (2*PI-(this.motionAngle));
                 System.out.println(this.motionAngle*180/PI + "j97");
@@ -91,6 +95,10 @@ public class Ball extends MovableObject {
                 this.motionAngle = (2*PI-(this.motionAngle));
                 System.out.println(this.motionAngle*180/PI + "j79");
             }
+            */
+            GameManager.gameStarted = false;
+            GamePanel.score = GamePanel.score - 100;
+            GamePanel.lives = GamePanel.lives -1;
         }
     }
 
