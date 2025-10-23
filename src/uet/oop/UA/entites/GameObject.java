@@ -108,6 +108,9 @@ public abstract class GameObject {
     public void setColor (Color color) {
         this.color = color;
     }
+    public void setNewColor(int x,int y, int z){
+        this.color = new Color(x,y,z);
+    }
 
     public int getCentralX() {
         return centralX;
