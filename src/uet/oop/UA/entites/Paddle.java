@@ -2,7 +2,7 @@ package uet.oop.UA.entites;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
+//import javax.swing.ImageIcon;
 
 public class Paddle extends GameObject {
     public Paddle(int x, int y, int width, int height) {
