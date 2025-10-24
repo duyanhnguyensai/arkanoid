@@ -32,7 +32,7 @@ public class ArkanoidGame extends JFrame {
         gamePanel.addGameObject(ball);
         add(gamePanel);
 
-        Gameloop loop = new Gameloop(manageGame); // Pass game vào loop
+        Gameloop loop = new Gameloop(manageGame, gamePanel); // Pass game vào loop
         Thread thread = new Thread(loop);
         thread.start();
         

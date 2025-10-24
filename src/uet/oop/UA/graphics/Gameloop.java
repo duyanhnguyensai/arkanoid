@@ -39,8 +39,10 @@ public class Gameloop implements Runnable {
     //tạo một tham chiếu đến game để gọi các hàm của nó
     private GameManager game;
 
+
+
     //constructor time:v khởi tạo giá trị thôi
-    public Gameloop (GameManager game){
+    public Gameloop (GameManager game, GamePanel panel_ref_in_loop) {
         //nhận đầu vào là biến tham chiếu class Game thôi
         this.game = game;
         //một khi đã gọi constructor gameLoop ra, thì tức là bắt đầu chạy được rồi
@@ -99,7 +101,9 @@ public class Gameloop implements Runnable {
             if(System.currentTimeMillis() - secondCountingTimer >=1000) { //thời gian thực được kiểm tra liên tục
 
                 secondCountingTimer += 1000;  //cứ mỗi giây thì cộng thêm 1000ms vào biến đếm thời gian. Mệnh đề if giảm về 0 và lại tiêp tục đếm đến 1000ms tiếp theo
-                GamePanel.score = GamePanel.score - 1;
+                if(!GamePanel.showMenu) {
+                    GamePanel.score = GamePanel.score - 1;
+                }
                 System.out.println("FPS: " + real_FPS + " | UPS: " + real_UPS);
                 //reset lại số fps, ups để đếm cho giây tiếp theo
                 real_FPS = 0;

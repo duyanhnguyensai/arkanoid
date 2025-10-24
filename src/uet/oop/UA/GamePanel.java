@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void removeGameObject(GameObject gameObject) {
         this.objectList.remove(gameObject);
     }
-    private boolean showMenu = true;
+    public static boolean showMenu = true;
     private Image menuImage;
     private Image backgroundImage;
 
@@ -134,23 +134,24 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void keyPressed(KeyEvent e) {
         // Lấy đối tượng paddle
         Paddle paddle = (Paddle)objectList.get(0);
-
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            GameManager.gameStarted = true;
-        }
-            
-        // Di chuyển sang trái
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if (paddle.getX() > 0) {
-                paddle.setX(paddle.getX() - 15);
-                repaint();
+        if(!showMenu) {
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                GameManager.gameStarted = true;
             }
-        }
-        // Di chuyển sang phải
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if (paddle.getX() < GAME_WIDTH - PADDLE_WIDTH) {
-                paddle.setX(paddle.getX() + 15);
-                repaint();
+
+            // Di chuyển sang trái
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                if (paddle.getX() > 0) {
+                    paddle.setX(paddle.getX() - 15);
+                    repaint();
+                }
+            }
+            // Di chuyển sang phải
+            if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                if (paddle.getX() < GAME_WIDTH - PADDLE_WIDTH) {
+                    paddle.setX(paddle.getX() + 15);
+                    repaint();
+                }
             }
         }
         /*
