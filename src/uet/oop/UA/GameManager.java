@@ -33,14 +33,15 @@ public class GameManager {
                     ((Ball) object).handleWallCollision();
                     for (GameObject obj_ : objectList) {
                         if (obj_ instanceof Brick) {
-                            if (((Ball) object).iscollision(((Brick) obj_))) {
-                                ((Ball) object).handleBrickCollision((Brick) obj_);
-                                ((Brick) obj_).setHitPoints( ((Brick) obj_).getHitPoints() - 1 );
-                                ((Brick) obj_).low_health_brick();
-                                if(((Brick) obj_).getHitPoints() == 0) {
-                                    removingObjects.add(obj_);
+                            if (((Ball) object).iscollision(obj_)) {
+                                if (((Ball) object).handleBrickCollision(obj_) == 1) {
+                                    ((Brick) obj_).setHitPoints( ((Brick) obj_).getHitPoints() - 1 );
+                                    ((Brick) obj_).low_health_brick();
+                                    if(((Brick) obj_).getHitPoints() == 0) {
+                                        removingObjects.add(obj_);
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }

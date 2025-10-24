@@ -26,7 +26,7 @@ public class Brick extends GameObject {
     }
     public static void createBrickGrid(List<GameObject> Brick_List) {
         Brick[][] bricks = new Brick[5][10];
-        int startX = 100;
+        int startX = 200;
         int startY = 100;
         int colorcode;
         for (int row = 0; row < 5; row++) {
