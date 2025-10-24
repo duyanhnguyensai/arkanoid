@@ -144,6 +144,8 @@ public abstract class GameObject {
         Graphics2D g = paddleImage.createGraphics();
         g.setColor(this.getColor());
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        g.setColor(Color.BLACK); // màu viền
+        g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1); // vẽ viền bricks
         g.dispose();
         return image;
     }
@@ -153,6 +155,8 @@ public abstract class GameObject {
         Graphics2D g = ballimage.createGraphics();
         g.setColor(this.getColor());
         g.fillOval(0, 0, this.getWidth(), this.getHeight());
+        g.setColor(Color.WHITE);
+        g.drawOval(0, 0, this.getWidth()-1, this.getHeight()-1);
         g.dispose();
         return this.image;
     }

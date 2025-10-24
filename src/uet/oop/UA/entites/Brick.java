@@ -25,13 +25,13 @@ public class Brick extends GameObject {
         this.set_Drawed_Paddle_image();
     }
     public static void createBrickGrid(List<GameObject> Brick_List) {
-        Brick[][] bricks = new Brick[4][8];
+        Brick[][] bricks = new Brick[5][10];
         int startX = 100;
         int startY = 100;
         int colorcode;
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 8; col++) {
-                switch (col % 4) {
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 10; col++) {
+                switch (row % 4) {
                     case 0 -> colorcode = 11; // red
                     case 1 -> colorcode = 2;  // blue
                     case 2 -> colorcode = 6;  // green
@@ -40,12 +40,12 @@ public class Brick extends GameObject {
                 }
                 //conditions for row and col can be used to create not-rectangular patterns of bricks
                 //for example, skip bricks at (1,1), (2,2), (3,3)
-                bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH +20), startY + row * (BRICK_HEIGHT +10), colorcode);
+                bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 1), startY + row * (BRICK_HEIGHT + 1), colorcode);
             }
         }
         // Add bricks to the GamePanel's objectList
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 10; col++) {
                 Brick_List.add(bricks[row][col]);
             }
         }
