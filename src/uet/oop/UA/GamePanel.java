@@ -7,8 +7,9 @@ import uet.oop.UA.entites.Paddle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.KeyEvent;
-import java.io.File; // tạo file
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  * - bao gồm các thuộc tính như vị trí paddle, ảnh paddle, di chuyển paddle
  * - thiết kế màn chơi (hiển thị brick, paddle, score, lives, level, game over)
  */
-public class GamePanel extends JPanel implements KeyListener {
+public class GamePanel extends JPanel implements KeyListener, MouseListener {
     //Danh sách các vật thể trong một panel
     private List<GameObject> objectList;
 
@@ -27,18 +28,47 @@ public class GamePanel extends JPanel implements KeyListener {
     public void removeGameObject(GameObject gameObject) {
         this.objectList.remove(gameObject);
     }
+    private boolean showMenu = true;
+    private Image menuImage;
+    private Image backgroundImage;
+
+    private Image Menu() { 
+        ImageIcon menuImage = new ImageIcon("res/menuImage/menu.png"); // đường dẫn tới ảnh menu
+        return menuImage.getImage();
+    }
+
+    private Image backgroundImage() {
+        ImageIcon backgroundImage = new ImageIcon("res/backgroundImage/background.png"); // đường dẫn tới ảnh background
+        return backgroundImage.getImage();
+    }
+
+    // vẽ menu
+    private void drawMenu(Graphics g) {
+        g.drawImage(menuImage, 0, 0, getWidth(), getHeight(), this);
+
+        // vẽ Start
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("START", getWidth()/2 - 80, getHeight()/2);
+    }
+
     //hàm vẽ
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.green);
-        g.drawRect(0, 0, 1000, 800);
-        for (GameObject obj : objectList) {  //vẽ gameObject trong list
-            if (obj != null && obj.getImage() != null) {
-                g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);
+        if (showMenu) {
+            drawMenu(g);
+        } else {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            g.setColor(Color.green);
+            g.drawRect(0, 0, 1000, 800);
+            for (GameObject obj : objectList) {  //vẽ gameObject trong list
+                if (obj != null && obj.getImage() != null) {
+                    g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);
+                }
             }
+            drawGameInfo(g);  //vẽ thông tin game
         }
-        drawGameInfo(g);  //vẽ thông tin game
     }
     private void drawGameInfo(Graphics g) {
         g.setColor(Color.WHITE);
@@ -66,7 +96,6 @@ public class GamePanel extends JPanel implements KeyListener {
     private final int GAME_HEIGHT = 800;
     private final int PADDLE_WIDTH = 180;
     private final int PADDLE_HEIGHT = 30;
-;
 
     // Game state
     //vì gamestate không cần gắn vào class nào, không có method riêng, và cần thay đổi trong nhiểu trường hợp
@@ -79,6 +108,8 @@ public class GamePanel extends JPanel implements KeyListener {
     //Khởi tạo Game
     public GamePanel(List<GameObject> objects) {
         this.objectList = objects;
+        this.backgroundImage = backgroundImage();
+        this.menuImage = Menu();
         setBackground(Color.BLACK); 
         this.setLayout(new BorderLayout());
         //initializeBricks(); //vẽ Bricks
@@ -94,6 +125,7 @@ public class GamePanel extends JPanel implements KeyListener {
         this.objectList.add(paddle);
         
         addKeyListener(this); 
+        addMouseListener(this);
     }
 
     //Vẽ thông tin game (score, lives, level)
@@ -128,12 +160,37 @@ public class GamePanel extends JPanel implements KeyListener {
         }
         */
     }
-
+    
     @Override
     public void keyReleased(KeyEvent e) {}
 
     @Override
     public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (showMenu) {
+            int x = e.getX();
+            int y = e.getY();
+            if (x > getWidth()/2 - 100 && x < getWidth()/2 + 100 &&
+                y > getHeight()/2 - 30 && y < getHeight()/2 + 30) {
+                showMenu = false;
+                repaint();
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
 
     //Khởi tạo lại Game sau khi Game Over
     /*
