@@ -1,7 +1,9 @@
 package uet.oop.UA;
 
+import uet.oop.UA.entites.Brick;
 import uet.oop.UA.entites.GameObject;
 import uet.oop.UA.entites.Paddle;
+import uet.oop.UA.entites.Ball;
 
 // load ảnh
 import javax.swing.*;
@@ -29,12 +31,19 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         this.objectList.remove(gameObject);
     }
     public static boolean showMenu = true;
+    private boolean isGameOver = false;
     private Image menuImage;
     private Image backgroundImage;
+    private Image gameoverImage;
 
     private Image Menu() { 
         ImageIcon menuImage = new ImageIcon("res/menuImage/menu.png"); // đường dẫn tới ảnh menu
         return menuImage.getImage();
+    }
+
+    private Image GameOver() {
+        ImageIcon gameoverImage = new ImageIcon("res/menuImage/gameover.png"); // đường dẫn tới ảnh game over
+        return gameoverImage.getImage();
     }
 
     private Image backgroundImage() {
@@ -58,7 +67,11 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         super.paintComponent(g);
         if (showMenu) {
             drawMenu(g);
-        } else {
+        } 
+        else if (isGameOver) {
+            g.drawImage(gameoverImage, 0, 0, getWidth(), getHeight(), this);
+        }
+        else {
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             g.setColor(Color.green);
             g.drawRect(0, 0, 1000, 800);
@@ -68,6 +81,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
                 }
             }
             drawGameInfo(g);  //vẽ thông tin game
+
+            //kiểm tra game over
+            if(lives <= 0) {
+                isGameOver = true;
+                repaint();
+            }
         }
     }
     private void drawGameInfo(Graphics g) {
@@ -110,7 +129,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         this.objectList = objects;
         this.backgroundImage = backgroundImage();
         this.menuImage = Menu();
-        setBackground(Color.BLACK); 
+        this.gameoverImage = GameOver();
+        setBackground(Color.BLACK);
         this.setLayout(new BorderLayout());
         //initializeBricks(); //vẽ Bricks
         //loadPaddleImage(); //load ảnh paddle
@@ -142,24 +162,23 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
             // Di chuyển sang trái
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 if (paddle.getX() > 0) {
-                    paddle.setX(paddle.getX() - 15);
+                    paddle.setX(paddle.getX() - 20);
                     repaint();
                 }
             }
             // Di chuyển sang phải
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 if (paddle.getX() < GAME_WIDTH - PADDLE_WIDTH) {
-                    paddle.setX(paddle.getX() + 15);
+                    paddle.setX(paddle.getX() + 20);
                     repaint();
                 }
             }
         }
-        /*
+        
         // Restart game
-        if (e.getKeyCode() == KeyEvent.VK_R && !gameRunning) {
+        if (e.getKeyCode() == KeyEvent.VK_R && isGameOver) {
             restartGame();
         }
-        */
     }
     
     @Override
@@ -194,14 +213,29 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void mouseExited(MouseEvent e) {}
 
     //Khởi tạo lại Game sau khi Game Over
-    /*
     private void restartGame() {
-        //paddleX = GAME_WIDTH / 2 - PADDLE_WIDTH / 2;
-        score = 0;
+        score = 500;
         lives = 3;
         level = 1;
-        gameRunning = true;
+        isGameOver = false;
+        GameManager.gameStarted = false;
+        objectList.clear(); // xóa hết objects khi restart game
+
+        // tạo lại paddle
+        Paddle paddle = new Paddle(
+            GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
+            GAME_HEIGHT - PADDLE_HEIGHT,
+            PADDLE_WIDTH,
+            PADDLE_HEIGHT
+        );
+        objectList.add(paddle);
+
+        Brick.createBrickGrid(objectList); // tạo lại bricks
+
+        // tạo lại ball
+        Ball ball = new Ball(objectList.get(0).getX()+objectList.get(0).getWidth()/2-15,
+                objectList.get(0).getY()-30, 30 , 30);
+        objectList.add(ball);
         repaint();
     }
-    */
 }
