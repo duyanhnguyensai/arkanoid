@@ -2,11 +2,14 @@ package uet.oop.UA.entites;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Scanner;
+import java.util.Random;
 
 public class Brick extends GameObject {
     private static final int BRICK_WIDTH = 80;
     private static final int BRICK_HEIGHT = 40;
     private int hitPoints;
+    private Random random = new Random();
     public int getHitPoints() {
         return hitPoints;
     }
@@ -67,5 +70,21 @@ public class Brick extends GameObject {
                 this.set_Drawed_Paddle_image();
             }
         }
+    }
+
+    // THÊM MỚI: Tạo power-up ngẫu nhiên khi brick bị phá hủy
+    public PowerUp createRandomPowerUp() {
+        if (random.nextDouble() < 0.3) { // 30% cơ hội tạo power-up
+            int powerUpType = random.nextInt(2);
+            switch (powerUpType) {
+                case 0:
+                    return new FastBallPowerUp(this.getCentralX() - 10, this.getCentralY());
+                case 1:
+                    return new ExpandPaddlePowerUp(this.getCentralX() - 10, this.getCentralY());
+                default:
+                    return null;
+            }
+        }
+        return null;
     }
 }

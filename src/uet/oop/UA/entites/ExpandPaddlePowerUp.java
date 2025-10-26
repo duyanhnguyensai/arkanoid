@@ -1,73 +1,45 @@
 package uet.oop.UA.entites;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.awt.*;
+import uet.oop.UA.GameManager;
 
 public class ExpandPaddlePowerUp extends PowerUp {
+    private static final int EXPAND_AMOUNT = 60;
     private int originalWidth;
-    private final int EXPAND_AMOUNT = 50; // Mở rộng thêm 50 pixels
-    
-    public ExpandPaddlePowerUp() {
-        super();
-        setType("EXPAND_PADDLE");
-        setDuration(8000); // 8 seconds
-        setColor("orange");
-        setWidth(30);
-        setHeight(15);
-        setDy(2); // Tốc độ rơi xuống
+
+    public ExpandPaddlePowerUp(int x, int y) {
+        super(x, y, 20, 20, Color.BLUE);
+        this.duration = 900; // 15 giây với 60 FPS
     }
-    
+
     @Override
-    protected void applyEffect(Paddle paddle, Ball ball) {
-        // Lưu lại kích thước gốc
-        originalWidth = paddle.getWidth();
-        
-        // Mở rộng paddle
-        paddle.setWidth(originalWidth + EXPAND_AMOUNT);
-        
-        // Đảm bảo paddle không vượt quá biên
-        if (paddle.getX() + paddle.getWidth() > 800) { // Giả sử GAME_WIDTH = 800
-            paddle.setX(800 - paddle.getWidth());
+    public void activateEffect(GameManager gameManager) {
+        // Tìm paddle và mở rộng nó
+        for (GameObject obj : gameManager.getObjectList()) {
+            if (obj instanceof Paddle) {
+                Paddle paddle = (Paddle) obj;
+                this.originalWidth = paddle.getWidth();
+                paddle.setWidth(paddle.getWidth() + EXPAND_AMOUNT);
+                paddle.setX(paddle.getX() - EXPAND_AMOUNT / 2); // Giữ paddle ở giữa
+                paddle.set_Drawed_Paddle_image(); // Cập nhật hình ảnh
+                break;
+            }
         }
-        
-        // Cập nhật hình ảnh paddle
-        if (paddle.getImage() == null) {
-            paddle.set_Drawed_Paddle_image();
-        }
+        System.out.println("Expand Paddle PowerUp Activated!");
     }
-    
+
     @Override
-    protected void removeEffect(Paddle paddle, Ball ball) {
-        // Khôi phục kích thước gốc
-        paddle.setWidth(originalWidth);
-        
-        // Cập nhật hình ảnh paddle
-        if (paddle.getImage() == null) {
-            paddle.set_Drawed_Paddle_image();
+    public void deactivateEffect(GameManager gameManager) {
+        // Khôi phục kích thước paddle về ban đầu
+        for (GameObject obj : gameManager.getObjectList()) {
+            if (obj instanceof Paddle) {
+                Paddle paddle = (Paddle) obj;
+                paddle.setWidth(this.originalWidth);
+                paddle.setX(paddle.getX() + EXPAND_AMOUNT / 2); // Điều chỉnh vị trí
+                paddle.set_Drawed_Paddle_image(); // Cập nhật hình ảnh
+                break;
+            }
         }
-    }
-    
-    @Override
-    public Image set_Drawed_Paddle_image() {
-        BufferedImage powerUpImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = powerUpImage.createGraphics();
-        
-        // Vẽ hình chữ nhật với viền
-        g.setColor(getColor());
-        g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(Color.WHITE);
-        g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-        
-        // Vẽ chữ "E" ở giữa
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 10));
-        g.drawString("E", getWidth() / 2 - 3, getHeight() / 2 + 3);
-        
-        g.dispose();
-        setImage(powerUpImage);
-        return powerUpImage;
+        System.out.println("Expand Paddle PowerUp Deactivated!");
     }
 }

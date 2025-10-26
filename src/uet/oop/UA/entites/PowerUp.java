@@ -1,84 +1,76 @@
 package uet.oop.UA.entites;
 
 import java.awt.*;
+import uet.oop.UA.GameManager;
 
-public class PowerUp extends MovableObject {
-    private String type;
-    private int duration;
-    private boolean active;
-    private long activationTime;
-    
-    public PowerUp() {
-        this.active = false;
-        this.duration = 10000; // 10 seconds default
+public abstract class PowerUp extends MovableObject {
+    protected boolean active;
+    protected int duration; // Thời gian hiệu lực (tính bằng frames)
+
+    public PowerUp(int x, int y, int width, int height, Color color) {
+        this.setX(x);
+        this.setY(y);
+        this.setWidth(width);
+        this.setHeight(height);
+        this.setColor(color);
+        this.active = true;
+        this.speed = 2; // Tốc độ rơi của power-up
+        this.set_Drawed_PowerUp_image();
     }
-    
-    public String getType() {
-        return type;
-    }
-    
-    public void setType(String type) {
-        this.type = type;
-    }
-    
-    public int getDuration() {
-        return duration;
-    }
-    
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-    
+
     public boolean isActive() {
         return active;
     }
-    
+
     public void setActive(boolean active) {
         this.active = active;
-        if (active) {
-            this.activationTime = System.currentTimeMillis();
-        }
     }
-    
-    public long getActivationTime() {
-        return activationTime;
+
+    public int getDuration() {
+        return duration;
     }
-    
-    public boolean isExpired() {
-        if (!active) return false;
-        return (System.currentTimeMillis() - activationTime) > duration;
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
-    
-    // Phương thức kích hoạt power-up
-    public void activate(Paddle paddle, Ball ball) {
-        setActive(true);
-        applyEffect(paddle, ball);
+
+    // Di chuyển power-up xuống dưới
+    public void move() {
+        this.setY(this.getY() + (int) this.speed);
     }
-    
-    // Phương thức hủy power-up
-    public void deactivate(Paddle paddle, Ball ball) {
-        setActive(false);
-        removeEffect(paddle, ball);
+
+    // Kiểm tra va chạm với paddle
+    public boolean isCollidingWithPaddle(GameObject paddle) {
+        return this.getX() < paddle.getX() + paddle.getWidth() &&
+                this.getX() + this.getWidth() > paddle.getX() &&
+                this.getY() < paddle.getY() + paddle.getHeight() &&
+                this.getY() + this.getHeight() > paddle.getY();
     }
-    
-    // Phương thức áp dụng hiệu ứng (cần override trong class con)
-    protected void applyEffect(Paddle paddle, Ball ball) {
-        // Override in subclasses
-    }
-    
-    // Phương thức gỡ bỏ hiệu ứng (cần override trong class con)
-    protected void removeEffect(Paddle paddle, Ball ball) {
-        // Override in subclasses
-    }
-    
-    // Cập nhật trạng thái power-up
-    public void update(Paddle paddle, Ball ball) {
-        if (active && isExpired()) {
-            deactivate(paddle, ball);
-        }
-    }
-    
-    public void setColor(String colorName) {
-        super.setColor(Color.decode(colorName));
+
+    // Phương thức trừu tượng để kích hoạt hiệu ứng
+    public abstract void activateEffect(GameManager gameManager);
+
+    // Phương thức trừu tượng để hủy hiệu ứng
+    public abstract void deactivateEffect(GameManager gameManager);
+
+    // Tạo hình ảnh cho power-up
+    public Image set_Drawed_PowerUp_image() {
+        java.awt.image.BufferedImage powerUpImage = new java.awt.image.BufferedImage(
+                this.getWidth(), this.getHeight(), java.awt.image.BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = powerUpImage.createGraphics();
+
+        // Vẽ hình viên kim cương
+        g.setColor(this.getColor());
+        int[] xPoints = {this.getWidth()/2, this.getWidth()-1, this.getWidth()/2, 0};
+        int[] yPoints = {0, this.getHeight()/2, this.getHeight()-1, this.getHeight()/2};
+        g.fillPolygon(xPoints, yPoints, 4);
+
+        // Viền đen
+        g.setColor(Color.BLACK);
+        g.drawPolygon(xPoints, yPoints, 4);
+
+        g.dispose();
+        this.setImage(powerUpImage);
+        return powerUpImage;
     }
 }

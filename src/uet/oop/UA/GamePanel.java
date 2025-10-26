@@ -95,6 +95,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         g.drawString("Score: " + score, 20, 30);
         g.drawString("Lives: " + lives, GAME_WIDTH / 2 - 40, 30);
         g.drawString("Level: " + level, GAME_WIDTH - 150, 30);
+
+        // THÊM MỚI: Hiển thị power-up active
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.BOLD, 12));
+        g.drawString("Power-ups:", 20, 50);
+        // Ở đây có thể thêm logic để hiển thị các power-up đang active
     }
 
     //Vẽ Game Over
