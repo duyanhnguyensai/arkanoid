@@ -5,7 +5,7 @@ import static java.lang.Math.sqrt;
 public class MovableObject extends GameObject {
     protected double dx;
     protected double dy;
-    protected double speed = 5 * sqrt(2);
+    protected double speed = 7.0; // TĂNG TỐC ĐỘ LÊN
 
     public double getSpeed() {
         return this.speed;

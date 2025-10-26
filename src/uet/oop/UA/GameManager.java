@@ -30,61 +30,105 @@ public class GameManager {
         this.gamePanel = panel;
     }
     public void update() {
-        //System.out.println("Updating game logic...");
-        //Cập nhật vị trí các đối tượng di chuyển
-
         if (gameStarted) {
             List<GameObject> removingObjects = new ArrayList<>();
             List<PowerUp> collectedPowerUps = new ArrayList<>();
-            List<GameObject> addingObjects = new ArrayList<>(); // THÊM MỚI: Danh sách object cần thêm
+            List<GameObject> addingObjects = new ArrayList<>();
 
-            for (GameObject object : objectList) {
+            // Đếm số bóng còn active
+            int activeBalls = 0;
+            List<Ball> ballsToRemove = new ArrayList<>();
+
+            List<GameObject> objectsToProcess = new ArrayList<>(objectList);
+
+            for (GameObject object : objectsToProcess) {
                 if (object instanceof Ball) {
-                    ((Ball) object).move(((Ball) object).getMotionAngle());
-                    ((Ball) object).handleWallCollision();
-                    for (GameObject obj_ : objectList) {
+                    Ball ball = (Ball) object;
+
+                    // Kiểm tra nếu bóng đã rơi xuống dưới
+                    if (ball.getY() >= Ball.GAME_HEIGHT - ball.getHeight()) {
+                        ballsToRemove.add(ball);
+                        continue; // Bỏ qua xử lý cho bóng đã rơi
+                    }
+
+                    // Chỉ xử lý bóng còn active
+                    ball.move(ball.getMotionAngle());
+                    ball.handleWallCollision();
+                    activeBalls++;
+
+                    for (GameObject obj_ : objectsToProcess) {
                         if (obj_ instanceof Brick) {
-                            if (((Ball) object).iscollision(obj_)) {
-                                if (((Ball) object).handleBrickCollision(obj_) == 1) {
-                                    ((Brick) obj_).setHitPoints( ((Brick) obj_).getHitPoints() - 1 );
+                            if (ball.iscollision(obj_)) {
+                                if (ball.handleBrickCollision(obj_) == 1) {
+                                    ((Brick) obj_).setHitPoints(((Brick) obj_).getHitPoints() - 1);
                                     ((Brick) obj_).low_health_brick();
-                                    if(((Brick) obj_).getHitPoints() == 0) {
-                                        // THÊM MỚI: Tạo power-up khi brick bị phá hủy
+                                    if (((Brick) obj_).getHitPoints() == 0) {
                                         PowerUp powerUp = ((Brick) obj_).createRandomPowerUp();
                                         if (powerUp != null) {
-                                            addingObjects.add(powerUp); // THÊM VÀO DANH SÁCH TẠM
+                                            addingObjects.add(powerUp);
                                         }
-                                        removingObjects.add(obj_);
+                                        if (!removingObjects.contains(obj_)) {
+                                            removingObjects.add(obj_);
+                                        }
                                     }
                                     break;
                                 }
                             }
                         }
                     }
-                    ((Ball) object).handlePadCollision(objectList.get(0));
+                    ball.handlePadCollision(objectList.get(0));
                 }
 
-                // THÊM MỚI: Xử lý power-up
+                // Xử lý power-up
                 if (object instanceof PowerUp) {
                     PowerUp powerUp = (PowerUp) object;
                     powerUp.move();
 
-                    // Kiểm tra nếu power-up ra khỏi màn hình
                     if (powerUp.getY() > 800) {
-                        removingObjects.add(powerUp);
+                        if (!removingObjects.contains(powerUp)) {
+                            removingObjects.add(powerUp);
+                        }
                     }
 
-                    // Kiểm tra va chạm với paddle
                     if (powerUp.isCollidingWithPaddle(objectList.get(0))) {
                         powerUp.activateEffect(this);
-                        activePowerUps.add(powerUp);
-                        powerUpTimers.put(powerUp, powerUp.getDuration());
-                        collectedPowerUps.add(powerUp);
+
+                        if (powerUp.getDuration() > 0) {
+                            activePowerUps.add(powerUp);
+                            powerUpTimers.put(powerUp, powerUp.getDuration());
+                        }
+
+                        if (!collectedPowerUps.contains(powerUp)) {
+                            collectedPowerUps.add(powerUp);
+                        }
                     }
                 }
             }
 
-            // THÊM MỚI: Xử lý timer của power-up
+            // XỬ LÝ MẤT MẠNG: chỉ khi KHÔNG CÒN BÓNG NÀO ACTIVE
+            if (activeBalls == 0 && !ballsToRemove.isEmpty()) {
+                GamePanel.lives = GamePanel.lives - 1;
+                GamePanel.score = GamePanel.score - 100;
+                System.out.println("All balls lost! Lives: " + GamePanel.lives);
+
+                // Tạo lại bóng mới
+                Paddle paddle = (Paddle) objectList.get(0);
+                Ball newBall = new Ball(
+                        paddle.getX() + paddle.getWidth() / 2 - 15,
+                        paddle.getY() - 30,
+                        30,
+                        30
+                );
+                addingObjects.add(newBall);
+
+                // Reset game state
+                gameStarted = false;
+            }
+
+            // Xóa các bóng đã rơi
+            objectList.removeAll(ballsToRemove);
+
+            // Xử lý timer của power-up
             Iterator<Map.Entry<PowerUp, Integer>> iterator = powerUpTimers.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<PowerUp, Integer> entry = iterator.next();
@@ -100,22 +144,19 @@ public class GameManager {
                 }
             }
 
-            // Xóa các object cần xóa
+            // Thực hiện tất cả thay đổi
             objectList.removeAll(removingObjects);
             objectList.removeAll(collectedPowerUps);
-
-            // THÊM MỚI: Thêm các object mới (SAU KHI DUYỆT XONG)
             objectList.addAll(addingObjects);
 
-        } else  {
+        } else {
+            // Di chuyển tất cả bóng theo paddle khi chưa bắt đầu
             for (GameObject object : objectList) {
                 if (object instanceof Ball) {
                     ((Ball) object).MoveBeforeStart((objectList.get(0)));
-                    //System.out.println(((Ball) object).getMotionAngle()*180/Math.PI);
                 }
             }
         }
-
     }
     public void draw() {
         gamePanel.repaint();
