@@ -45,19 +45,30 @@ public class Ball extends MovableObject {
         this.motionAngle = angle;
         this.cosaAngle = cos(this.motionAngle);
         this.sinAngle = sin(this.motionAngle);
-        this.directionX = this.speed
-                * (this.cosaAngle / sqrt(this.cosaAngle * this.cosaAngle
-                + this.sinAngle * this.sinAngle));
-        this.directionY = this.speed
-                * (this.sinAngle / sqrt(this.sinAngle * this.sinAngle
-                + this.cosaAngle * this.cosaAngle));
-        this.setX(this.getX()+ (int) this.directionX);
-        this.setY(this.getY()+ (int) this.directionY);
+
+        double magnitude = sqrt(this.cosaAngle * this.cosaAngle + this.sinAngle * this.sinAngle);
+
+        if (magnitude < 0.0001) {
+            this.cosaAngle = cos(PI/4);
+            this.sinAngle = sin(PI/4);
+            magnitude = sqrt(this.cosaAngle * this.cosaAngle + this.sinAngle * this.sinAngle);
+        }
+
+        this.directionX = this.speed * (this.cosaAngle / magnitude);
+        this.directionY = this.speed * (this.sinAngle / magnitude);
+
+        // DEBUG: In tốc độ để kiểm tra
+        if (Math.random() < 0.01) { // Chỉ in thỉnh thoảng để tránh spam
+            System.out.println("Ball speed: " + this.speed + ", directionX: " + this.directionX + ", directionY: " + this.directionY);
+        }
+
+        this.setX(this.getX() + (int) this.directionX);
+        this.setY(this.getY() + (int) this.directionY);
     }
 
     public void handleWallCollision() {
         // tường 2 bên
-        if (this.getX() <= 0) { //kiểm tra tọa độ x của bóng có vượt qua biên trái không
+        if (this.getX() <= 0) {
             if (this.motionAngle >=90*PI/180 && this.motionAngle <= 180*PI/180) {
                 this.motionAngle = (PI-(this.motionAngle));
                 System.out.println(this.motionAngle*180/PI + "j97");
@@ -76,30 +87,30 @@ public class Ball extends MovableObject {
             }
             this.setX(GAME_WIDTH - this.getWidth());
         }
-        // tường trên, dưới
+        // tường trên
         if (this.getY() <= 0) {
             if (this.motionAngle >=180*PI/180 && this.motionAngle <= 270*PI/180) {
                 this.motionAngle = (2*PI-(this.motionAngle));
-                //System.out.println(this.motionAngle*180/PI + "j97");
             } else if (this.motionAngle >= 270*PI/180 && this.motionAngle <= 320*PI/180) {
                 this.motionAngle =  (2*PI-(this.motionAngle));
                 System.out.println(this.motionAngle*180/PI + "j79");
             }
             this.setY(0);
-        } else if (this.getY() >= GAME_HEIGHT - this.getHeight()) { // -1 tim
-            /*
-            if (this.motionAngle >=0*PI/180 && this.motionAngle <= 90*PI/180) {
-                this.motionAngle = (2*PI-(this.motionAngle));
-                System.out.println(this.motionAngle*180/PI + "j97");
-            } else if (this.motionAngle >= 90*PI/180 && this.motionAngle <= 180*PI/180) {
-                this.motionAngle = (2*PI-(this.motionAngle));
-                System.out.println(this.motionAngle*180/PI + "j79");
-            }
-            */
-            GameManager.gameStarted = false;
-            GamePanel.score = GamePanel.score - 100;
-            GamePanel.lives = GamePanel.lives -1;
         }
+        // TƯỜNG DƯỚI - KHÔNG xử lý mất mạng ở đây nữa
+        // Chỉ đánh dấu bóng là đã rơi
+        else if (this.getY() >= GAME_HEIGHT - this.getHeight()) {
+            this.setActive(false); // Đánh dấu bóng không còn active
+        }
+    }
+
+    // Thêm phương thức để kiểm tra bóng có active không
+    public boolean isActive() {
+        return this.getY() < GAME_HEIGHT - this.getHeight();
+    }
+
+    public void setActive(boolean active) {
+        // Không cần set cụ thể, vì active phụ thuộc vào vị trí Y
     }
 
     public boolean isPossibleToCollision(GameObject obj) { // chỉ kiểm tra va chạm của bóng với vật hình chữ nhật

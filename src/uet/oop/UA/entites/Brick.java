@@ -74,13 +74,16 @@ public class Brick extends GameObject {
 
     // THÊM MỚI: Tạo power-up ngẫu nhiên khi brick bị phá hủy
     public PowerUp createRandomPowerUp() {
-        if (random.nextDouble() < 0.3) { // 30% cơ hội tạo power-up
-            int powerUpType = random.nextInt(2);
+        Random rand = new Random();
+        if (rand.nextDouble() < 0.3) { // 30% cơ hội tạo power-up
+            int powerUpType = rand.nextInt(3); // THAY ĐỔI: từ 2 thành 3
             switch (powerUpType) {
                 case 0:
                     return new FastBallPowerUp(this.getCentralX() - 10, this.getCentralY());
                 case 1:
                     return new ExpandPaddlePowerUp(this.getCentralX() - 10, this.getCentralY());
+                case 2: // THÊM MỚI: Triple Ball PowerUp
+                    return new TripleBallPowerUp(this.getCentralX() - 10, this.getCentralY());
                 default:
                     return null;
             }

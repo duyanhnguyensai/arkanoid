@@ -158,29 +158,33 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
     //Nhận phím
     @Override
     public void keyPressed(KeyEvent e) {
-        // Lấy đối tượng paddle
         Paddle paddle = (Paddle)objectList.get(0);
         if(!showMenu) {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 GameManager.gameStarted = true;
             }
 
-            // Di chuyển sang trái
+            // Di chuyển sang trái - THÊM KIỂM TRA CHẶT CHẼ
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                if (paddle.getX() > 0) {
-                    paddle.setX(paddle.getX() - 20);
-                    repaint();
+                int newX = paddle.getX() - 20;
+                if (newX < 0) {
+                    newX = 0; // KHÔNG CHO VƯỢT QUÁ BIÊN
                 }
+                paddle.setX(newX);
+                repaint();
             }
             // Di chuyển sang phải
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                if (paddle.getX() < GAME_WIDTH - PADDLE_WIDTH) {
-                    paddle.setX(paddle.getX() + 20);
-                    repaint();
+                int newX = paddle.getX() + 20;
+                int maxX = GAME_WIDTH - paddle.getWidth();
+                if (newX > maxX) {
+                    newX = maxX; // KHÔNG CHO VƯỢT QUÁ BIÊN
                 }
+                paddle.setX(newX);
+                repaint();
             }
         }
-        
+
         // Restart game
         if (e.getKeyCode() == KeyEvent.VK_R && isGameOver) {
             restartGame();
