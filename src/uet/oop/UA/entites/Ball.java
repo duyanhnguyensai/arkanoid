@@ -229,7 +229,7 @@ public class Ball extends MovableObject {
 
     public boolean iscollision(GameObject obj) {
         if (this.isPossibleToCollision(obj)) {
-            return this.isLeftCollision(obj) != -1 || this.isUpCollision(obj) != -1;
+            return this.isLeftCollision(obj) != -1 || this.isUpCollision(obj) != -1 || this.isCornerCollision(obj) != -1;
         }
         return false;
     }
