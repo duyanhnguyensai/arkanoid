@@ -65,9 +65,13 @@ public class Ball extends MovableObject {
         this.setY(this.getY() + (int) this.directionY);
     }
 
-    public void handleWallCollision() {
+    // THAY ĐỔI: Trả về boolean để biết có va chạm tường không
+    public boolean handleWallCollision() {
+        boolean hitWall = false;
+
         // tường 2 bên
         if (this.getX() <= 0) {
+            hitWall = true;
             if (this.motionAngle >=90*PI/180 && this.motionAngle <= 180*PI/180) {
                 this.motionAngle = (PI-(this.motionAngle));
                 System.out.println(this.motionAngle*180/PI + "j97");
@@ -77,6 +81,7 @@ public class Ball extends MovableObject {
             }
             this.setX(0);
         } else if (this.getX() >= GAME_WIDTH - this.getWidth()) {
+            hitWall = true;
             if (this.motionAngle >=0*PI/180 && this.motionAngle <= 90*PI/180) {
                 this.motionAngle =  (PI-this.motionAngle);
                 System.out.println(this.motionAngle*180/PI + "j97");
@@ -88,6 +93,7 @@ public class Ball extends MovableObject {
         }
         // tường trên
         if (this.getY() <= 0) {
+            hitWall = true;
             if (this.motionAngle >=180*PI/180 && this.motionAngle <= 270*PI/180) {
                 this.motionAngle = (2*PI-(this.motionAngle));
             } else if (this.motionAngle >= 270*PI/180 && this.motionAngle <= 320*PI/180) {
@@ -101,6 +107,8 @@ public class Ball extends MovableObject {
         else if (this.getY() >= GAME_HEIGHT - this.getHeight()) {
             this.setActive(false); // Đánh dấu bóng không còn active
         }
+
+        return hitWall;
     }
 
     // Thêm phương thức để kiểm tra bóng có active không
@@ -161,33 +169,37 @@ public class Ball extends MovableObject {
         return -1;
     }
 
-    public void handlePadCollision(GameObject obj) {
+    // THAY ĐỔI: Trả về boolean để biết có va chạm paddle không
+    public boolean handlePadCollision(GameObject obj) {
+        boolean hitPaddle = false;
         if (this.isPossibleToCollision(obj)) {
-             // dieu kien cac gach sap va cham
+            hitPaddle = true;
+            // dieu kien cac gach sap va cham
             int upcollision = this.isUpCollision(obj);
             int leftcollision = this.isLeftCollision(obj);
-                if (upcollision != -1) {
-                    if (upcollision == 1) {
-                                this.setY(obj.getY() - this.getWidth());
-                                double cAngle = this.getCentralX() - obj.getCentralX();
-                                System.out.println(cAngle);
-                                this.motionAngle = (cAngle+90)*PI/(2*180) + (45+180)*PI/(180);
-                                System.out.println(this.motionAngle*180/PI + "j97");
+            if (upcollision != -1) {
+                if (upcollision == 1) {
+                    this.setY(obj.getY() - this.getWidth());
+                    double cAngle = this.getCentralX() - obj.getCentralX();
+                    System.out.println(cAngle);
+                    this.motionAngle = (cAngle+90)*PI/(2*180) + (45+180)*PI/(180);
+                    System.out.println(this.motionAngle*180/PI + "j97");
+                }
+            } else if (leftcollision != -1) {
+                if (leftcollision == 1) {
+                    this.setX(this.getX() - this.getWidth());
+                    if (this.getMotionAngle() >=0*PI/180 && this.getMotionAngle() <= 90*PI/180) {
+                        this.setMotionAngle(PI-this.getMotionAngle());
                     }
-                } else if (leftcollision != -1) {
-                    if (leftcollision == 1) {
-                        this.setX(this.getX() - this.getWidth());
-                        if (this.getMotionAngle() >=0*PI/180 && this.getMotionAngle() <= 90*PI/180) {
-                            this.setMotionAngle(PI-this.getMotionAngle());
-                        }
-                    } else if (leftcollision == 0) {
-                        this.setX(this.getX() + this.getWidth());
-                        if (this.getMotionAngle() >=90*PI/180 && this.getMotionAngle() <= 180*PI/180) {
-                            this.setMotionAngle(PI-(this.getMotionAngle()));
-                        }
+                } else if (leftcollision == 0) {
+                    this.setX(this.getX() + this.getWidth());
+                    if (this.getMotionAngle() >=90*PI/180 && this.getMotionAngle() <= 180*PI/180) {
+                        this.setMotionAngle(PI-(this.getMotionAngle()));
                     }
                 }
+            }
         }
+        return hitPaddle;
     }
 
     public int handleBrickCollision(GameObject obj) {

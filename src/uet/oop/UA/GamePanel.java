@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     private Image backgroundImage;
     private Image gameoverImage;
 
-    private Image Menu() { 
+    private Image Menu() {
         ImageIcon menuImage = new ImageIcon("res/menuImage/menu.png"); // đường dẫn tới ảnh menu
         return menuImage.getImage();
     }
@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         super.paintComponent(g);
         if (showMenu) {
             drawMenu(g);
-        } 
+        }
         else if (isGameOver) {
             g.drawImage(gameoverImage, 0, 0, getWidth(), getHeight(), this);
         }
@@ -111,12 +111,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
     //Vẽ Game Over
     private void drawGameOver(Graphics g) {
-        g.setColor(new Color(0, 0, 0, 200)); 
+        g.setColor(new Color(0, 0, 0, 200));
         g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-        g.setColor(Color.WHITE); 
+        g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 40));
-        g.drawString("GAME OVER", GAME_WIDTH / 2 - 150, GAME_HEIGHT / 2 - 50); 
+        g.drawString("GAME OVER", GAME_WIDTH / 2 - 150, GAME_HEIGHT / 2 - 50);
 
     }
 
@@ -135,7 +135,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     public static int lives = 3;
     public static int level = 1;
 
-   
+
     //Khởi tạo Game
     public GamePanel(List<GameObject> objects) {
         this.objectList = objects;
@@ -146,19 +146,19 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         this.setLayout(new BorderLayout());
         //initializeBricks(); //vẽ Bricks
         //loadPaddleImage(); //load ảnh paddle
-        
+
         // Thêm paddle vào danh sách vật thể
         Paddle paddle = new Paddle(
-            GAME_WIDTH / 2 - PADDLE_WIDTH / 2, 
-            GAME_HEIGHT - PADDLE_HEIGHT ,
-            PADDLE_WIDTH,
-            PADDLE_HEIGHT
+                GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
+                GAME_HEIGHT - PADDLE_HEIGHT ,
+                PADDLE_WIDTH,
+                PADDLE_HEIGHT
         );
         this.objectList.add(paddle);
 
 
         //thêm các method xử lí chuột và bàn phím
-        addKeyListener(this); 
+        addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
     }
@@ -196,10 +196,22 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
         // Restart game
         if (e.getKeyCode() == KeyEvent.VK_R && isGameOver) {
+            // THÊM SOUND EFFECT CHO RESTART GAME
+            SoundManager.getInstance().stopAllSounds();
+            SoundManager.getInstance().playSound("game_start");
             restartGame();
         }
+
+        // THÊM ĐIỀU KHIỂN ÂM LƯỢNG
+        if (e.getKeyCode() == KeyEvent.VK_PLUS || e.getKeyCode() == KeyEvent.VK_EQUALS) {
+            SoundManager.getInstance().setVolume(SoundManager.getInstance().getVolume() + 0.1f);
+        } else if (e.getKeyCode() == KeyEvent.VK_MINUS) {
+            SoundManager.getInstance().setVolume(SoundManager.getInstance().getVolume() - 0.1f);
+        } else if (e.getKeyCode() == KeyEvent.VK_M) {
+            SoundManager.getInstance().stopAllSounds();
+        }
     }
-    
+
     @Override
     public void keyReleased(KeyEvent e) {}
 
@@ -212,7 +224,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             int x = e.getX();
             int y = e.getY();
             if (x > getWidth()/2 - 100 && x < getWidth()/2 + 100 &&
-                y > getHeight()/2 - 30 && y < getHeight()/2 + 30) {
+                    y > getHeight()/2 - 30 && y < getHeight()/2 + 30) {
+                // THÊM SOUND EFFECT CHO BẮT ĐẦU GAME
+                SoundManager.getInstance().playSound("game_start");
+                SoundManager.getInstance().playSound("background", true);
                 showMenu = false;
                 repaint();
             }
@@ -259,10 +274,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
         // tạo lại paddle
         Paddle paddle = new Paddle(
-            GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
-            GAME_HEIGHT - PADDLE_HEIGHT,
-            PADDLE_WIDTH,
-            PADDLE_HEIGHT
+                GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
+                GAME_HEIGHT - PADDLE_HEIGHT,
+                PADDLE_WIDTH,
+                PADDLE_HEIGHT
         );
         objectList.add(paddle);
 
