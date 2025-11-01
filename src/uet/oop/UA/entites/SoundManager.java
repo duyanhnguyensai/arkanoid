@@ -1,4 +1,4 @@
-package uet.oop.UA;
+package uet.oop.UA.entites;
 
 import javax.sound.sampled.*;
 import java.io.File;

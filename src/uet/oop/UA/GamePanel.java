@@ -4,7 +4,7 @@ import uet.oop.UA.entites.Brick;
 import uet.oop.UA.entites.GameObject;
 import uet.oop.UA.entites.Paddle;
 import uet.oop.UA.entites.Ball;
-
+import uet.oop.UA.entites.SoundManager;
 // load ảnh
 import javax.swing.*;
 import java.awt.*;
@@ -32,11 +32,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         this.objectList.remove(gameObject);
     }
     public static boolean showMenu = true;
-    public static boolean inPlayButton = false;
-    public static boolean inHighScoreButton =  false;
-    public static boolean inHighScoreExitButton = false;
-    public static boolean inHighScore = false;
-    private boolean isGameOver = false;
+    private boolean inPlayButton = false;
+    private boolean inHighScoreButton =  false;
+    private boolean inHighScoreExitButton = false;
+    private boolean inHighScore = false;
+    public boolean isGameOver = false;
+    //private boolean gameStartFlag = true;
     private Image menuImage;
     private Image backgroundImage;
     private Image gameoverImage;
@@ -253,8 +254,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             // THÊM SOUND EFFECT CHO RESTART GAME
             SoundManager.getInstance().stopAllSounds();
             SoundManager.getInstance().playSound("game_start");
-            saveScore(score);
-            System.out.println(Arrays.toString(takeScore()));
+            //saveScore(score);
+            //System.out.println(Arrays.toString(takeScore()));
             restartGame();
         }
 
@@ -282,8 +283,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             if (x > getWidth()/2 - 80 -150 && x < getWidth()/2 - 80 + 20
                     && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
                 // THÊM SOUND EFFECT CHO BẮT ĐẦU GAME
-                uet.oop.UA.SoundManager.getInstance().playSound("game_start");
-                uet.oop.UA.SoundManager.getInstance().playSound("background", true);
+                SoundManager.getInstance().playSound("game_start");
+                SoundManager.getInstance().playSound("background", true);
                 showMenu = false;
                 repaint();
             }
@@ -412,6 +413,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         isGameOver = false;
         GameManager.gameStarted = false;
         objectList.clear(); // xóa hết objects khi restart game
+
 
         // tạo lại paddle
         Paddle paddle = new Paddle(

@@ -6,7 +6,14 @@ public class GameManager {
     private List<GameObject> objectList;
     private GamePanel gamePanel;
     static public boolean gameStarted = false;
-
+    /**
+     flag dùng để đảm bảo saveScore trong GamePanel chỉ chạy đúng 1 lần ngay sau khi game kết thúc.
+     Cơ chế: saveScore chạy khi gameStarted = false && flag = true.
+     Khi gameStarted = true, flag = true --> saveScore không chạy.
+     Khi gameStarted = false, flag = true, cho saveScore chạy 1 lần, sau đó flag = false.
+     Khi đó gameStarted = false và flag = false --> saveScore không chạy.
+     */
+    public static boolean flag = true;
     // THÊM MỚI: Danh sách các power-up đang active
     private List<PowerUp> activePowerUps = new ArrayList<>();
     private Map<PowerUp, Integer> powerUpTimers = new HashMap<>();
@@ -38,7 +45,7 @@ public class GameManager {
             List<GameObject> removingObjects = new ArrayList<>();
             List<PowerUp> collectedPowerUps = new ArrayList<>();
             List<GameObject> addingObjects = new ArrayList<>();
-
+            flag = true;
             // Đếm số bóng còn active
             int activeBalls = 0;
             List<Ball> ballsToRemove = new ArrayList<>();
@@ -155,6 +162,10 @@ public class GameManager {
             // THÊM: Kiểm tra game over và phát sound
             if (GamePanel.lives <= 0) {
                 soundManager.playSound("game_over");
+                if(flag) {
+                    GamePanel.saveScore(GamePanel.score);
+                    flag = false;
+                }
             }
 
             // Xóa các bóng đã rơi
