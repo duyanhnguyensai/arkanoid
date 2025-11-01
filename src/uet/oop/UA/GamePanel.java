@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +32,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         this.objectList.remove(gameObject);
     }
     public static boolean showMenu = true;
-    public static boolean inMenuButton = false;
+    public static boolean inPlayButton = false;
+    public static boolean inHighScoreButton =  false;
+    public static boolean inHighScore = false;
     private boolean isGameOver = false;
     private Image menuImage;
     private Image backgroundImage;
@@ -53,20 +56,48 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     }
 
     // vẽ menu
+
     private void drawMenu(Graphics g) {
         g.drawImage(menuImage, 0, 0, getWidth(), getHeight(), this);
 
         // vẽ Start
-        if (inMenuButton) {
+        if (inPlayButton) {
             g.setColor(Color.YELLOW);
         }
         else {
             g.setColor(Color.CYAN);
         }
-        g.fillRect(getWidth()/2 - 80, getHeight()/2 - 40, 170, 45);
+        g.fillRect(getWidth()/2 - 80 - 150, getHeight()/2 - 40, 170, 45);
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 50));
-        g.drawString("START", getWidth()/2 - 80, getHeight()/2);
+        g.drawString("START", getWidth()/2 - 80 - 150, getHeight()/2);
+
+        //vẽ highscore
+        if (inHighScoreButton) {
+            g.setColor(Color.ORANGE);
+        }
+        else {
+            g.setColor(Color.CYAN);
+        }
+        g.fillRect(getWidth()/2 - 80 + 150, getHeight()/2 - 40, 200, 45);
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("H.score", getWidth()/2 - 80 +150, getHeight()/2);
+    }
+
+
+    public void drawHighScores(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,getWidth(),getHeight());
+        g.setFont(new Font("Arial", Font.BOLD, 80));
+        g.drawString("High Scores", getWidth()/2 - 80, getHeight()/2);
+        int[] highScores = takeScore();
+        for (int i=1; i<=5 ;i++) {
+            g.setColor(Color.RED);
+            g.drawString(Integer.toString(i),getWidth()/2 - 180, getHeight()/2 - i*100);
+            g.setColor(Color.GREEN);
+            g.drawString(Integer.toString(highScores[i-1]), getWidth()/2 - 20, getHeight()/2 - i*100);
+        }
     }
 
     //hàm vẽ
@@ -203,6 +234,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             // THÊM SOUND EFFECT CHO RESTART GAME
             SoundManager.getInstance().stopAllSounds();
             SoundManager.getInstance().playSound("game_start");
+            saveScore(score);
+            System.out.println(Arrays.toString(takeScore()));
             restartGame();
         }
 
@@ -227,8 +260,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         if (showMenu) {
             int x = e.getX();
             int y = e.getY();
-            if (x > getWidth()/2 - 100 && x < getWidth()/2 + 100 &&
-                    y > getHeight()/2 - 30 && y < getHeight()/2 + 30) {
+            if (x > getWidth()/2 - 80 -150 && x < getWidth()/2 - 80 + 20
+                    && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
                 // THÊM SOUND EFFECT CHO BẮT ĐẦU GAME
                 SoundManager.getInstance().playSound("game_start");
                 SoundManager.getInstance().playSound("background", true);
@@ -252,12 +285,19 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         if (showMenu) {
             int x = e.getX();
             int y = e.getY();
-            if(x > getWidth()/2 - 80 && x < getWidth()/2 - 80 + 170
+            if(x > getWidth()/2 - 80 -150 && x < getWidth()/2 - 80 + 20
                     && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
-                inMenuButton = true;
+                inPlayButton = true;
             }
             else {
-                inMenuButton = false;
+                inPlayButton = false;
+            }
+            if(x > getWidth()/2 - 80 +150 && x < getWidth()/2 - 80 + 170 +150
+                    && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
+                inHighScoreButton = true;
+            }
+            else {
+                inHighScoreButton = false;
             }
         }
     }
