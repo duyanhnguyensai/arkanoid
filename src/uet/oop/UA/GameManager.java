@@ -192,6 +192,42 @@ public class GameManager {
             objectList.removeAll(collectedPowerUps);
             objectList.addAll(addingObjects);
 
+            // Kiểm tra còn gạch
+            boolean anyBricksLeft = false;
+            for (GameObject object : objectList) {
+                if (object instanceof Brick) {
+                    anyBricksLeft = true;
+                    break;
+                }
+            }
+
+            // Sau khi phá hết gạch, tăng level
+            if(!anyBricksLeft) {
+                GamePanel.level++;
+                objectList.clear();
+                activePowerUps.clear();
+                powerUpTimers.clear();
+                gameStarted = false;
+
+                // Tạo lại paddle
+                Paddle paddle = new Paddle(
+                GamePanel.GAME_WIDTH / 2 - GamePanel.PADDLE_WIDTH / 2,
+                GamePanel.GAME_HEIGHT - GamePanel.PADDLE_HEIGHT,
+                GamePanel.PADDLE_WIDTH,
+                GamePanel.PADDLE_HEIGHT
+            );
+            objectList.add(paddle);
+
+                // Tạo lại bricks
+                Brick.createBrickGrid(objectList);
+
+                // Tạo lại ball
+                Ball ball = new Ball(objectList.get(0).getX()+objectList.get(0).getWidth()/2-15,
+                objectList.get(0).getY()-30, 30 , 30);
+                objectList.add(ball);
+
+            }
+
         } else {
             // Di chuyển tất cả bóng theo paddle khi chưa bắt đầu
             for (GameObject object : objectList) {

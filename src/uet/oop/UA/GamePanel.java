@@ -178,8 +178,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     //bên trên là phần tôi bổ sung . Bn dưới là phần cũ của ông, tôi đã xóa 1 phần ve obj
     public static final int GAME_WIDTH = 1000;
     public static final int GAME_HEIGHT = 800;
-    private final int PADDLE_WIDTH = 180;
-    private final int PADDLE_HEIGHT = 30;
+    public static final int PADDLE_WIDTH = 180;
+    public static final int PADDLE_HEIGHT = 30;
 
     // Game state
     //vì gamestate không cần gắn vào class nào, không có method riêng, và cần thay đổi trong nhiểu trường hợp

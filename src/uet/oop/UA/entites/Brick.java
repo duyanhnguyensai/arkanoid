@@ -26,12 +26,12 @@ public class Brick extends GameObject {
      * method tạo lưới gạch 5*10 viên
      * */
     public static void createBrickGrid(List<GameObject> Brick_List) {
-        Brick[][] bricks = new Brick[5][10];
+        Brick[][] bricks = new Brick[1][1];
         int startX = 100;
         int startY = 100;
         Color brickColor;
-        for (int row = 0; row < 5; row++) {
-            for (int col = 0; col < 10; col++) {
+        for (int row = 0; row < 1; row++) {
+            for (int col = 0; col < 1; col++) {
                 switch (row % 4) {
                     case 0 -> brickColor = Color.RED; // red
                     case 1 -> brickColor = Color.BLUE;  // blue
@@ -45,8 +45,8 @@ public class Brick extends GameObject {
             }
         }
         // Add bricks to the GamePanel's objectList
-        for (int row = 0; row < 5; row++) {
-            for (int col = 0; col < 10; col++) {
+        for (int row = 0; row < 1; row++) {
+            for (int col = 0; col < 1; col++) {
                 Brick_List.add(bricks[row][col]);
             }
         }
