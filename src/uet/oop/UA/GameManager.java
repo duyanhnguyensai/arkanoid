@@ -61,6 +61,7 @@ public class GameManager {
                     // THÊM SOUND EFFECT CHO VA CHẠM TƯỜNG
                     boolean wallHit = ball.handleWallCollision();
                     if (wallHit) {
+                        System.out.println("Wall collision detected - playing sound");
                         soundManager.playSound("wall_hit");
                     }
 
@@ -71,7 +72,8 @@ public class GameManager {
                             if (ball.isCollision(obj_)) {
                                 if (ball.handleBrickCollision(obj_) == 1) {
                                     // THÊM SOUND EFFECT CHO VA CHẠM GẠCH
-                                    soundManager.playSound("brick_break");
+                                    soundManager.playSound("wall_hit");
+                                    System.out.println("Brick collision - playing sound");
 
                                     ((Brick) obj_).setHitPoints(((Brick) obj_).getHitPoints() - 1);
                                     ((Brick) obj_).lowHealthBrick();
@@ -93,6 +95,7 @@ public class GameManager {
                     // THÊM SOUND EFFECT CHO VA CHẠM PADDLE
                     boolean paddleHit = ball.handlePadCollision(objectList.get(0));
                     if (paddleHit) {
+                        System.out.println("Paddle collision detected - playing sound");
                         soundManager.playSound("paddle_hit");
                     }
                 }

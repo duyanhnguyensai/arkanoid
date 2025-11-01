@@ -20,6 +20,9 @@ public class Ball extends MovableObject {
     public static final int GAME_WIDTH = 1000;
     public static final int GAME_HEIGHT = 800;
 
+    // THÊM: Biến theo dõi va chạm paddle
+    private boolean wasCollidingWithPaddle = false;
+    private GameObject lastPaddle = null;
 
     public Ball(int x, int y, int width, int height) {
         super(x,y,width,height);
@@ -169,37 +172,64 @@ public class Ball extends MovableObject {
         return -1;
     }
 
-    // THAY ĐỔI: Trả về boolean để biết có va chạm paddle không
+    // SỬA HOÀN TOÀN: Sử dụng AABB collision detection thay vì isPossibleToCollision
     public boolean handlePadCollision(GameObject obj) {
         boolean hitPaddle = false;
-        if (this.isPossibleToCollision(obj)) {
+        boolean isNewCollision = false;
+
+        // SỬ DỤNG AABB COLLISION DETECTION - chỉ phát hiện khi thực sự chạm nhau
+        boolean isActuallyColliding = this.getX() < obj.getX() + obj.getWidth() &&
+                this.getX() + this.getWidth() > obj.getX() &&
+                this.getY() < obj.getY() + obj.getHeight() &&
+                this.getY() + this.getHeight() > obj.getY();
+
+        if (isActuallyColliding) {
             hitPaddle = true;
-            // dieu kien cac gach sap va cham
+
+            // KIỂM TRA: Đây có phải là va chạm mới không?
+            if (!wasCollidingWithPaddle || lastPaddle != obj) {
+                isNewCollision = true;
+                wasCollidingWithPaddle = true;
+                lastPaddle = obj;
+                System.out.println("🔄 NEW paddle collision detected!");
+            }
+
+            // Xử lý va chạm dựa trên vị trí tương đối
             int upcollision = this.isUpCollision(obj);
             int leftcollision = this.isLeftCollision(obj);
+
             if (upcollision != -1) {
                 if (upcollision == 1) {
+                    // Va chạm từ trên xuống (bóng chạm đỉnh paddle)
                     this.setY(obj.getY() - this.getWidth());
                     double cAngle = this.getCentralX() - obj.getCentralX();
-                    System.out.println(cAngle);
+                    System.out.println("Paddle hit - top, angle: " + cAngle);
                     this.motionAngle = (cAngle+90)*PI/(2*180) + (45+180)*PI/(180);
-                    System.out.println(this.motionAngle*180/PI + "j97");
+                    System.out.println("New motion angle: " + this.motionAngle*180/PI + " degrees");
                 }
             } else if (leftcollision != -1) {
                 if (leftcollision == 1) {
-                    this.setX(this.getX() - this.getWidth());
+                    // Va chạm từ bên trái
+                    this.setX(obj.getX() - this.getWidth());
                     if (this.getMotionAngle() >=0*PI/180 && this.getMotionAngle() <= 90*PI/180) {
                         this.setMotionAngle(PI-this.getMotionAngle());
                     }
                 } else if (leftcollision == 0) {
-                    this.setX(this.getX() + this.getWidth());
+                    // Va chạm từ bên phải
+                    this.setX(obj.getX() + obj.getWidth());
                     if (this.getMotionAngle() >=90*PI/180 && this.getMotionAngle() <= 180*PI/180) {
                         this.setMotionAngle(PI-(this.getMotionAngle()));
                     }
                 }
             }
+        } else {
+            // Reset trạng thái khi không còn va chạm
+            wasCollidingWithPaddle = false;
+            lastPaddle = null;
         }
-        return hitPaddle;
+
+        // CHỈ trả về true nếu đây là va chạm mới
+        return isNewCollision;
     }
 
     public int handleBrickCollision(GameObject obj) {
