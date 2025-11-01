@@ -8,11 +8,7 @@ public abstract class PowerUp extends MovableObject {
     protected int duration; // Thời gian hiệu lực (tính bằng frames)
 
     public PowerUp(int x, int y, int width, int height, Color color) {
-        this.setX(x);
-        this.setY(y);
-        this.setWidth(width);
-        this.setHeight(height);
-        this.setColor(color);
+        super(x, y, width, height, color);
         this.active = true;
         this.speed = 2; // Tốc độ rơi của power-up
         this.set_Drawed_PowerUp_image();

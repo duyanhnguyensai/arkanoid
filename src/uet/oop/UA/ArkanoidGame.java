@@ -1,23 +1,25 @@
 package uet.oop.UA;
 
-//import java.awt.Image;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import uet.oop.UA.entites.Ball;
 import uet.oop.UA.entites.Brick;
 import uet.oop.UA.entites.GameObject;
 import uet.oop.UA.graphics.Gameloop;
 
 public class ArkanoidGame extends JFrame {
-    
+
+    /**
+     * Class chạy game.
+     * */
     public ArkanoidGame() {
+        //đặt các thuộc tính cho khung hình
         setTitle("Arkanoid Game");
         setSize(1015, 830);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(false);
         
         // Tạo game panel
         List<GameObject> gameObjects = new ArrayList<>();
@@ -32,7 +34,8 @@ public class ArkanoidGame extends JFrame {
         gamePanel.addGameObject(ball);
         add(gamePanel);
 
-        Gameloop loop = new Gameloop(manageGame, gamePanel); // Pass game vào loop
+        // Pass game vào loop
+        Gameloop loop = new Gameloop(manageGame, gamePanel);
         Thread thread = new Thread(loop);
         thread.start();
         
@@ -43,9 +46,12 @@ public class ArkanoidGame extends JFrame {
         // Hiển thị cửa sổ game
         setVisible(true);
     }
-    
+
+    /**
+     * main.
+     * */
     public static void main(String[] args) {
-        new  ArkanoidGame();
+        new ArkanoidGame();
     }
 }
 
