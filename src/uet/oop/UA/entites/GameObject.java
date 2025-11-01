@@ -1,9 +1,11 @@
 package uet.oop.UA.entites;
 
 import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
+import java.io.File;
+import java.io.IOException;
 import static java.lang.Math.sqrt;
 
 /**
@@ -26,7 +28,7 @@ public abstract class GameObject {
     private int centralY;
     protected Image image;
     private Color color;
-    //constructor
+
     public GameObject() {
         this.x = 0;
         this.y = 0;
@@ -37,16 +39,30 @@ public abstract class GameObject {
         this.image = null;
         this.color = Color.WHITE;
     }
-    public GameObject(int x, int y, int width, int height, int colorcode) {
+
+    public GameObject(int x, int y, int width, int height, Color color) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.centralX = x + width / 2;
         this.centralY = y + height / 2;
-        setColorByCode(colorcode);
+        this.setColor(color);
         this.image = null;
     }
+
+
+    public GameObject(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.centralX = x + width / 2;
+        this.centralY = y + height / 2;
+        this.setColor(Color.WHITE);
+        this.image = null;
+    }
+
     public int getX() {
         return this.x;
     }
@@ -64,14 +80,17 @@ public abstract class GameObject {
         updateCentral();
         this.y = y;
     }
+
     public void setWidth(int width) {
         updateCentral();
         this.width = width;
     }
+
     public void setHeight(int height) {
         updateCentral();
         this.height = height;
     }
+
     public int getWidth() {
         return this.width;
     }
@@ -83,31 +102,11 @@ public abstract class GameObject {
     public Color getColor() {
         return this.color;
     }
-    
-    public void setColorByCode(int colorcode) {
-        switch (colorcode) {
-            case 1 -> this.color = Color.BLACK;
-            case 2 -> this.color = Color.BLUE;
-            case 3 -> this.color = Color.CYAN;
-            case 4 -> this.color = Color.DARK_GRAY;
-            case 5 -> this.color = Color.GRAY;
-            case 6 -> this.color = Color.GREEN;
-            case 7 -> this.color = Color.LIGHT_GRAY;
-            case 8 -> this.color = Color.MAGENTA;
-            case 9 -> this.color = Color.ORANGE;
-            case 10 -> this.color = Color.PINK;
-            case 11 -> this.color = Color.RED;
-            case 12 -> this.color = Color.WHITE;
-            case 13 -> this.color = Color.YELLOW;
-            default -> {
-                System.out.println("Unknown color: " + ". Defaulting to WHITE.");
-                this.color = Color.WHITE;
-            }
-        }
-    }
+
     public void setColor (Color color) {
         this.color = color;
     }
+
     public void setNewColor(int x,int y, int z){
         this.color = new Color(x,y,z);
     }
@@ -126,18 +125,32 @@ public abstract class GameObject {
     public Image getImage() {
         return this.image;
     }
-    public Image set_File_image (String filename){
-        ImageIcon imglink = new ImageIcon(filename);
-        Image fileImage = imglink.getImage();
-        if (imglink.getIconWidth()  < 0) {
-            System.out.println("Image is null");
-            return null;
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    /**
+     * đặt image cho object GameObject từ đường link ảnh
+     * @param filename
+     * */
+    public Image set_File_image (String filename)  {
+        Image fileImage;
+        try {
+            fileImage = ImageIO.read(new File(filename));
+            System.out.println("Image loaded successfully ");
+        } catch (IOException e) {
+            fileImage = setDrawedBallImage();
+            System.out.println("Image loaded failure ");
         }
-        System.out.println("Image loaded successfully ");
+
         fileImage.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
         this.image = fileImage;
         return this.image;
     }
+
+    /**
+     * method dùng để tạo image đơn màu hình chữ nhật cho GameObject.
+     * */
     public Image set_Drawed_Paddle_image() {
         BufferedImage paddleImage = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
         this.image = paddleImage;
@@ -145,11 +158,15 @@ public abstract class GameObject {
         g.setColor(this.getColor());
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setColor(Color.BLACK); // màu viền
-        g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1); // vẽ viền bricks
+        g.drawRect(0, 0, this.getWidth(), this.getHeight()); // vẽ viền bricks
         g.dispose();
         return image;
     }
-    public Image set_Drawed_Ball_image() {
+
+    /**
+     * method vẽ bóng không dùng file ảnh.
+     * */
+    public Image setDrawedBallImage() {
         BufferedImage ballimage = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
         this.image = ballimage;
         Graphics2D g = ballimage.createGraphics();
@@ -161,6 +178,9 @@ public abstract class GameObject {
         return this.image;
     }
 
+    /**
+     * method tính khoảng cách giữa 2 object.
+     * */
     public double distant2CentralObj(GameObject obj) {
         updateCentral();
         obj.updateCentral();
@@ -168,8 +188,5 @@ public abstract class GameObject {
         double ObjThisY = this.centralY - obj.centralY;
         return sqrt(ObjThisX * ObjThisX + ObjThisY * ObjThisY);
     }
-    
-    public void setImage(Image image) {
-        this.image = image;
-    }
+
 }

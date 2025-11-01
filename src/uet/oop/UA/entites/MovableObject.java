@@ -1,7 +1,7 @@
 package uet.oop.UA.entites;
 
 import static java.lang.Math.sqrt;
-
+import java.awt.*;
 public class MovableObject extends GameObject {
     protected double dx;
     protected double dy;
@@ -23,6 +23,18 @@ public class MovableObject extends GameObject {
 
     public void  setPreviousY(double previousY) {
         this.previousY = previousY;
+    }
+
+    public MovableObject(int x, int y, int width, int height) {
+        super(x,y,width,height);
+    }
+
+    public MovableObject(int x, int y, int width, int height, Color color) {
+        super(x,y,width,height,color);
+    }
+
+    public MovableObject() {
+        super();
     }
 
     public double getSpeed() {
@@ -48,4 +60,5 @@ public class MovableObject extends GameObject {
     public void setDy(double dy) {
         this.dy = dy;
     }
+
 }

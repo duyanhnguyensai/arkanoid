@@ -1,34 +1,32 @@
 package uet.oop.UA;
 
-//import java.awt.Image;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import uet.oop.UA.entites.Ball;
 import uet.oop.UA.entites.Brick;
 import uet.oop.UA.entites.GameObject;
 import uet.oop.UA.graphics.Gameloop;
-import static uet.oop.UA.GamePanel.GAME_WIDTH;
-import static uet.oop.UA.GamePanel.GAME_HEIGHT;
 
 public class ArkanoidGame extends JFrame {
-    private static final int WIDTDCOMPLENMENT = 15;
-    private static final int HEIGHTCOMPLENMENT = 30;
 
+    /**
+     * Class chạy game.
+     * */
     public ArkanoidGame() {
+        //đặt các thuộc tính cho khung hình
         setTitle("Arkanoid Game");
-        setSize(GAME_WIDTH + WIDTDCOMPLENMENT, GAME_HEIGHT + HEIGHTCOMPLENMENT);
+        setSize(1015, 830);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(false);
         
         // Tạo game panel
         List<GameObject> gameObjects = new ArrayList<>();
         GamePanel gamePanel = new GamePanel(gameObjects);
         GameManager manageGame = new GameManager(gameObjects, gamePanel);
-        Ball ball = new Ball(gameObjects.getFirst().getX()+gameObjects.getFirst().getWidth()/2-15,
-                gameObjects.getFirst().getY()-30, 30 , 30);
+        Ball ball = new Ball(gameObjects.get(0).getX()+gameObjects.get(0).getWidth()/2-15,
+                gameObjects.get(0).getY()-30, 30 , 30);
 
         //gamePanel phải được nhận gameObjects rỗng trước
         //Lí do: muốn thêm object phải dùng method của gamePanel (addObject)
@@ -36,7 +34,8 @@ public class ArkanoidGame extends JFrame {
         gamePanel.addGameObject(ball);
         add(gamePanel);
 
-        Gameloop loop = new Gameloop(manageGame, gamePanel); // Pass game vào loop
+        // Pass game vào loop
+        Gameloop loop = new Gameloop(manageGame, gamePanel);
         Thread thread = new Thread(loop);
         thread.start();
         
@@ -47,9 +46,12 @@ public class ArkanoidGame extends JFrame {
         // Hiển thị cửa sổ game
         setVisible(true);
     }
-    
+
+    /**
+     * main.
+     * */
     public static void main(String[] args) {
-        new  ArkanoidGame();
+        new ArkanoidGame();
     }
 }
 

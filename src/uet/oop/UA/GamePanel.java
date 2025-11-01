@@ -8,10 +8,11 @@ import uet.oop.UA.entites.Ball;
 // load ảnh
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
  * - bao gồm các thuộc tính như vị trí paddle, ảnh paddle, di chuyển paddle
  * - thiết kế màn chơi (hiển thị brick, paddle, score, lives, level, game over)
  */
-public class GamePanel extends JPanel implements KeyListener, MouseListener {
+public class GamePanel extends JPanel implements KeyListener, MouseListener, MouseMotionListener {
     //Danh sách các vật thể trong một panel
     private List<GameObject> objectList;
 
@@ -31,12 +32,15 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         this.objectList.remove(gameObject);
     }
     public static boolean showMenu = true;
+    public static boolean inPlayButton = false;
+    public static boolean inHighScoreButton =  false;
+    public static boolean inHighScore = false;
     private boolean isGameOver = false;
     private Image menuImage;
     private Image backgroundImage;
     private Image gameoverImage;
 
-    private Image Menu() { 
+    private Image Menu() {
         ImageIcon menuImage = new ImageIcon("res/menuImage/menu.png"); // đường dẫn tới ảnh menu
         return menuImage.getImage();
     }
@@ -52,13 +56,48 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
     }
 
     // vẽ menu
+
     private void drawMenu(Graphics g) {
         g.drawImage(menuImage, 0, 0, getWidth(), getHeight(), this);
 
         // vẽ Start
-        g.setColor(Color.YELLOW);
+        if (inPlayButton) {
+            g.setColor(Color.YELLOW);
+        }
+        else {
+            g.setColor(Color.CYAN);
+        }
+        g.fillRect(getWidth()/2 - 80 - 150, getHeight()/2 - 40, 170, 45);
+        g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 50));
-        g.drawString("START", getWidth()/2 - 80, getHeight()/2);
+        g.drawString("START", getWidth()/2 - 80 - 150, getHeight()/2);
+
+        //vẽ highscore
+        if (inHighScoreButton) {
+            g.setColor(Color.ORANGE);
+        }
+        else {
+            g.setColor(Color.CYAN);
+        }
+        g.fillRect(getWidth()/2 - 80 + 150, getHeight()/2 - 40, 200, 45);
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("H.score", getWidth()/2 - 80 +150, getHeight()/2);
+    }
+
+
+    public void drawHighScores(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,getWidth(),getHeight());
+        g.setFont(new Font("Arial", Font.BOLD, 80));
+        g.drawString("High Scores", getWidth()/2 - 80, getHeight()/2);
+        int[] highScores = takeScore();
+        for (int i=1; i<=5 ;i++) {
+            g.setColor(Color.RED);
+            g.drawString(Integer.toString(i),getWidth()/2 - 180, getHeight()/2 - i*100);
+            g.setColor(Color.GREEN);
+            g.drawString(Integer.toString(highScores[i-1]), getWidth()/2 - 20, getHeight()/2 - i*100);
+        }
     }
 
     //hàm vẽ
@@ -67,7 +106,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         super.paintComponent(g);
         if (showMenu) {
             drawMenu(g);
-        } 
+        }
         else if (isGameOver) {
             g.drawImage(gameoverImage, 0, 0, getWidth(), getHeight(), this);
         }
@@ -90,6 +129,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
     }
     private void drawGameInfo(Graphics g) {
+
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 16));
         g.drawString("Score: " + score, 20, 30);
@@ -105,12 +145,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 
     //Vẽ Game Over
     private void drawGameOver(Graphics g) {
-        g.setColor(new Color(0, 0, 0, 200)); 
+        g.setColor(new Color(0, 0, 0, 200));
         g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-        g.setColor(Color.WHITE); 
+        g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 40));
-        g.drawString("GAME OVER", GAME_WIDTH / 2 - 150, GAME_HEIGHT / 2 - 50); 
+        g.drawString("GAME OVER", GAME_WIDTH / 2 - 150, GAME_HEIGHT / 2 - 50);
 
     }
 
@@ -129,7 +169,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
     public static int lives = 3;
     public static int level = 1;
 
-   
+
     //Khởi tạo Game
     public GamePanel(List<GameObject> objects) {
         this.objectList = objects;
@@ -140,19 +180,23 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         this.setLayout(new BorderLayout());
         //initializeBricks(); //vẽ Bricks
         //loadPaddleImage(); //load ảnh paddle
-        
+
         // Thêm paddle vào danh sách vật thể
         Paddle paddle = new Paddle(
-            GAME_WIDTH / 2 - PADDLE_WIDTH / 2, 
-            GAME_HEIGHT - PADDLE_HEIGHT ,
-            PADDLE_WIDTH,
-            PADDLE_HEIGHT
+                GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
+                GAME_HEIGHT - PADDLE_HEIGHT ,
+                PADDLE_WIDTH,
+                PADDLE_HEIGHT
         );
         this.objectList.add(paddle);
-        
-        addKeyListener(this); 
+
+
+        //thêm các method xử lí chuột và bàn phím
+        addKeyListener(this);
         addMouseListener(this);
+        addMouseMotionListener(this);
     }
+
 
     //Vẽ thông tin game (score, lives, level)
     //Nhận phím
@@ -187,10 +231,24 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 
         // Restart game
         if (e.getKeyCode() == KeyEvent.VK_R && isGameOver) {
+            // THÊM SOUND EFFECT CHO RESTART GAME
+            SoundManager.getInstance().stopAllSounds();
+            SoundManager.getInstance().playSound("game_start");
+            saveScore(score);
+            System.out.println(Arrays.toString(takeScore()));
             restartGame();
         }
+
+        // THÊM ĐIỀU KHIỂN ÂM LƯỢNG
+        if (e.getKeyCode() == KeyEvent.VK_PLUS || e.getKeyCode() == KeyEvent.VK_EQUALS) {
+            SoundManager.getInstance().setVolume(SoundManager.getInstance().getVolume() + 0.1f);
+        } else if (e.getKeyCode() == KeyEvent.VK_MINUS) {
+            SoundManager.getInstance().setVolume(SoundManager.getInstance().getVolume() - 0.1f);
+        } else if (e.getKeyCode() == KeyEvent.VK_M) {
+            SoundManager.getInstance().stopAllSounds();
+        }
     }
-    
+
     @Override
     public void keyReleased(KeyEvent e) {}
 
@@ -202,8 +260,11 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         if (showMenu) {
             int x = e.getX();
             int y = e.getY();
-            if (x > getWidth()/2 - 100 && x < getWidth()/2 + 100 &&
-                y > getHeight()/2 - 30 && y < getHeight()/2 + 30) {
+            if (x > getWidth()/2 - 80 -150 && x < getWidth()/2 - 80 + 20
+                    && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
+                // THÊM SOUND EFFECT CHO BẮT ĐẦU GAME
+                SoundManager.getInstance().playSound("game_start");
+                SoundManager.getInstance().playSound("background", true);
                 showMenu = false;
                 repaint();
             }
@@ -220,7 +281,86 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void mouseEntered(MouseEvent e) {}
 
     @Override
+    public void mouseMoved(MouseEvent e) {
+        if (showMenu) {
+            int x = e.getX();
+            int y = e.getY();
+            if(x > getWidth()/2 - 80 -150 && x < getWidth()/2 - 80 + 20
+                    && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
+                inPlayButton = true;
+            }
+            else {
+                inPlayButton = false;
+            }
+            if(x > getWidth()/2 - 80 +150 && x < getWidth()/2 - 80 + 170 +150
+                    && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
+                inHighScoreButton = true;
+            }
+            else {
+                inHighScoreButton = false;
+            }
+        }
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {}
+
+    @Override
     public void mouseExited(MouseEvent e) {}
+    public static void saveScore (int score) {
+        //Obj kiểu FileWriter dùng để mở file. True dùng để ghi thêm vào file ,false thì ghi lại
+        //Obj writeHere kiểu BufferedWriter dùng để ghi vào file
+
+        try (BufferedWriter writeHere = new BufferedWriter(new FileWriter("src/uet/oop/UA/Resources/Score.txt", true))) {
+            writeHere.write(Integer.toString(score));
+            //newline thay cho '\n' để xuống dòng trong window
+            writeHere.newLine();
+            System.out.println("new score added");
+        }
+        catch (IOException e) {
+            //lệnh in lỗi
+            e.printStackTrace();
+        }
+    }
+    public static int[] takeScore () {
+        int[] highscore = new int[5];
+        for (int i = 0; i < 5; i++) {
+            highscore[i] = 0;
+        }
+        List<Integer> scores = new ArrayList<>();
+
+        //scoreRead đọc file
+        try (BufferedReader scoreRead = new BufferedReader(new FileReader("src/uet/oop/UA/Resources/Score.txt"))) {
+            String line;
+            //đọc file đến khi file = null --> hết file
+            while ((line = scoreRead.readLine()) != null) {
+                //nếu gặp dòng trống, bỏ qua
+                if(line.isEmpty()) {
+                    continue;
+                }
+                scores.add(Integer.parseInt(line));
+            }
+            Collections.sort(scores);
+            Collections.reverse(scores);
+            if(scores.isEmpty()) {
+                return null;
+            }
+            if (scores.size() <= 5) {
+                for (int i = 0; i < scores.size(); i++) {
+                    highscore[i] = scores.get(i);
+                }
+            }
+            else {
+                for (int i = 0; i < 5; i++) {
+                    highscore[i] = scores.get(i);
+                }
+            }
+            return highscore;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new int[0];
+        }
+    }
+
 
     //Khởi tạo lại Game sau khi Game Over
     private void restartGame() {
@@ -233,10 +373,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 
         // tạo lại paddle
         Paddle paddle = new Paddle(
-            GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
-            GAME_HEIGHT - PADDLE_HEIGHT,
-            PADDLE_WIDTH,
-            PADDLE_HEIGHT
+                GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
+                GAME_HEIGHT - PADDLE_HEIGHT,
+                PADDLE_WIDTH,
+                PADDLE_HEIGHT
         );
         objectList.add(paddle);
 

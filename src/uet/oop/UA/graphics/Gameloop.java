@@ -110,6 +110,8 @@ public class Gameloop implements Runnable {
                 real_UPS = 0;
             }
 
+
+
             //giờ thì tạm dừng một chút để tránh việc vòng lặp chạy quá nhanh, gây tốn tài nguyên máy
             try {
                 Thread.sleep(5);
@@ -118,6 +120,7 @@ public class Gameloop implements Runnable {
             }
         }
     }
+
     public void stop() {
         this.gameRunning = false;
     }

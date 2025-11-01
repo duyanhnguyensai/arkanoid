@@ -2,9 +2,6 @@ package uet.oop.UA;
 import java.util.*;
 import uet.oop.UA.entites.*;
 
-import static uet.oop.UA.GamePanel.GAME_HEIGHT;
-
-
 public class GameManager {
     private List<GameObject> objectList;
     private GamePanel gamePanel;
@@ -13,6 +10,9 @@ public class GameManager {
     // THÊM MỚI: Danh sách các power-up đang active
     private List<PowerUp> activePowerUps = new ArrayList<>();
     private Map<PowerUp, Integer> powerUpTimers = new HashMap<>();
+
+    // THÊM: Sound Manager
+    private SoundManager soundManager;
 
     public void SetGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
@@ -30,7 +30,9 @@ public class GameManager {
     public GameManager(List<GameObject> objects, GamePanel panel) {
         this.objectList = objects;
         this.gamePanel = panel;
+        this.soundManager = SoundManager.getInstance(); // THÊM DÒNG NÀY
     }
+
     public void update() {
         if (gameStarted) {
             List<GameObject> removingObjects = new ArrayList<>();
@@ -48,22 +50,33 @@ public class GameManager {
                     Ball ball = (Ball) object;
 
                     // Kiểm tra nếu bóng đã rơi xuống dưới
-                    if (ball.getY() >= GAME_HEIGHT - ball.getHeight()) {
+                    if (ball.getY() >= Ball.GAME_HEIGHT - ball.getHeight()) {
                         ballsToRemove.add(ball);
                         continue; // Bỏ qua xử lý cho bóng đã rơi
                     }
 
                     // Chỉ xử lý bóng còn active
                     ball.move(ball.getMotionAngle());
-                    ball.handleWallCollision();
+
+                    // THÊM SOUND EFFECT CHO VA CHẠM TƯỜNG
+                    boolean wallHit = ball.handleWallCollision();
+                    if (wallHit) {
+                        System.out.println("Wall collision detected - playing sound");
+                        soundManager.playSound("wall_hit");
+                    }
+
                     activeBalls++;
 
                     for (GameObject obj_ : objectsToProcess) {
                         if (obj_ instanceof Brick) {
-                            if (ball.iscollision(obj_)) {
+                            if (ball.isCollision(obj_)) {
                                 if (ball.handleBrickCollision(obj_) == 1) {
+                                    // THÊM SOUND EFFECT CHO VA CHẠM GẠCH
+                                    soundManager.playSound("wall_hit");
+                                    System.out.println("Brick collision - playing sound");
+
                                     ((Brick) obj_).setHitPoints(((Brick) obj_).getHitPoints() - 1);
-                                    ((Brick) obj_).low_health_brick();
+                                    ((Brick) obj_).lowHealthBrick();
                                     if (((Brick) obj_).getHitPoints() == 0) {
                                         PowerUp powerUp = ((Brick) obj_).createRandomPowerUp();
                                         if (powerUp != null) {
@@ -78,7 +91,13 @@ public class GameManager {
                             }
                         }
                     }
-                    ball.handlePadCollision(objectList.get(0));
+
+                    // THÊM SOUND EFFECT CHO VA CHẠM PADDLE
+                    boolean paddleHit = ball.handlePadCollision(objectList.get(0));
+                    if (paddleHit) {
+                        System.out.println("Paddle collision detected - playing sound");
+                        soundManager.playSound("paddle_hit");
+                    }
                 }
 
                 // Xử lý power-up
@@ -93,6 +112,9 @@ public class GameManager {
                     }
 
                     if (powerUp.isCollidingWithPaddle(objectList.get(0))) {
+                        // THÊM SOUND EFFECT CHO POWER-UP
+                        soundManager.playSound("powerup");
+
                         powerUp.activateEffect(this);
 
                         if (powerUp.getDuration() > 0) {
@@ -109,6 +131,9 @@ public class GameManager {
 
             // XỬ LÝ MẤT MẠNG: chỉ khi KHÔNG CÒN BÓNG NÀO ACTIVE
             if (activeBalls == 0 && !ballsToRemove.isEmpty()) {
+                // THÊM SOUND EFFECT CHO MẤT MẠNG
+                soundManager.playSound("life_lost");
+
                 GamePanel.lives = GamePanel.lives - 1;
                 GamePanel.score = GamePanel.score - 100;
                 System.out.println("All balls lost! Lives: " + GamePanel.lives);
@@ -125,6 +150,11 @@ public class GameManager {
 
                 // Reset game state
                 gameStarted = false;
+            }
+
+            // THÊM: Kiểm tra game over và phát sound
+            if (GamePanel.lives <= 0) {
+                soundManager.playSound("game_over");
             }
 
             // Xóa các bóng đã rơi
@@ -160,8 +190,18 @@ public class GameManager {
             }
         }
     }
+
     public void draw() {
         gamePanel.repaint();
     }
-    //các phương thức xử lí va chạm, điểm số, cấp độ, v.v.
+
+    // THÊM: Method để bắt đầu nhạc nền
+    public void startBackgroundMusic() {
+        soundManager.playSound("background", true);
+    }
+
+    // THÊM: Method để dừng nhạc nền
+    public void stopBackgroundMusic() {
+        soundManager.stopSound("background");
+    }
 }

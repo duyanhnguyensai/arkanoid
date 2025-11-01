@@ -6,8 +6,8 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class Brick extends GameObject {
-    private static final int BRICK_WIDTH = 80;
-    private static final int BRICK_HEIGHT = 40;
+    private static final int BRICK_WIDTH = 76;
+    private static final int BRICK_HEIGHT = 38;
     private int hitPoints;
     private Random random = new Random();
     public int getHitPoints() {
@@ -16,34 +16,32 @@ public class Brick extends GameObject {
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
-    public Brick(int x, int y, int colorcode) {
-        super(x , y, BRICK_WIDTH, BRICK_HEIGHT, colorcode);
+    public Brick(int x, int y, Color color) {
+        super(x , y, BRICK_WIDTH, BRICK_HEIGHT, color);
         this.set_Drawed_Paddle_image();
         this.hitPoints = 2;
     }
-    //for testing brick
-    public Brick() {
-        super();
-        this.hitPoints = 2;
-        this.set_Drawed_Paddle_image();
-    }
+
+    /**
+     * method tạo lưới gạch 5*10 viên
+     * */
     public static void createBrickGrid(List<GameObject> Brick_List) {
         Brick[][] bricks = new Brick[5][10];
         int startX = 100;
         int startY = 100;
-        int colorcode;
+        Color brickColor;
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 10; col++) {
                 switch (row % 4) {
-                    case 0 -> colorcode = 11; // red
-                    case 1 -> colorcode = 2;  // blue
-                    case 2 -> colorcode = 6;  // green
-                    case 3 -> colorcode = 13; // yellow
-                    default -> colorcode = 12; // white
+                    case 0 -> brickColor = Color.RED; // red
+                    case 1 -> brickColor = Color.BLUE;  // blue
+                    case 2 -> brickColor = Color.GREEN;  // green
+                    case 3 -> brickColor = Color.YELLOW; // yellow
+                    default -> brickColor = Color.WHITE; // white
                 }
                 //conditions for row and col can be used to create not-rectangular patterns of bricks
                 //for example, skip bricks at (1,1), (2,2), (3,3)
-                bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 1), startY + row * (BRICK_HEIGHT + 1), colorcode);
+                bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 4), startY + row * (BRICK_HEIGHT + 2), brickColor);
             }
         }
         // Add bricks to the GamePanel's objectList
@@ -53,7 +51,11 @@ public class Brick extends GameObject {
             }
         }
     }
-    public void low_health_brick() {
+
+    /**
+     * method đổi màu lưới gạch khi hp =1
+     * */
+    public void lowHealthBrick() {
         if(this.getHitPoints() == 1) {
             Color c = this.getColor();
             if (c.equals(Color.RED)) {
@@ -72,7 +74,9 @@ public class Brick extends GameObject {
         }
     }
 
-    // THÊM MỚI: Tạo power-up ngẫu nhiên khi brick bị phá hủy
+    /**
+     * Method tạo power-up ngẫu nhiên khi brick bị phá hủy.
+     * */
     public PowerUp createRandomPowerUp() {
         Random rand = new Random();
         if (rand.nextDouble() < 0.3) { // 30% cơ hội tạo power-up
