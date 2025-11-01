@@ -201,8 +201,15 @@ public class GameManager {
                 }
             }
 
-            // Sau khi phá hết gạch, tăng level
+            // Sau khi phá hết gạch
             if(!anyBricksLeft) {
+                // Kiểm tra nếu đang ở level 2 và phá hết gạch --> Victory!
+                if(GamePanel.level == 2) {
+                    GamePanel.isVictory = true;
+                    gameStarted = false;
+                    return;
+                }
+                else {
                 GamePanel.level++;
                 objectList.clear();
                 activePowerUps.clear();
@@ -216,7 +223,7 @@ public class GameManager {
                 GamePanel.PADDLE_WIDTH,
                 GamePanel.PADDLE_HEIGHT
             );
-            objectList.add(paddle);
+                objectList.add(paddle);
 
                 // Tạo lại bricks
                 Brick.createBrickGrid(objectList);
@@ -227,6 +234,7 @@ public class GameManager {
                 objectList.add(ball);
 
             }
+        }
 
         } else {
             // Di chuyển tất cả bóng theo paddle khi chưa bắt đầu

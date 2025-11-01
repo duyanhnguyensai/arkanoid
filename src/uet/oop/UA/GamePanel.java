@@ -37,10 +37,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     private boolean inHighScoreExitButton = false;
     private boolean inHighScore = false;
     public boolean isGameOver = false;
+    public static boolean isVictory = false;
     //private boolean gameStartFlag = true;
     private Image menuImage;
     private Image backgroundImage;
     private Image gameoverImage;
+    private Image victoryImage;
 
     private Image Menu() {
         ImageIcon menuImage = new ImageIcon("res/menuImage/menu.png"); // đường dẫn tới ảnh menu
@@ -50,6 +52,11 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     private Image GameOver() {
         ImageIcon gameoverImage = new ImageIcon("res/menuImage/gameover.png"); // đường dẫn tới ảnh game over
         return gameoverImage.getImage();
+    }
+
+    private Image Victory() {
+        ImageIcon victoryImage = new ImageIcon("res/menuImage/victory.png"); // đường dẫn tới ảnh victory
+        return victoryImage.getImage();
     }
 
     private Image backgroundImage() {
@@ -126,6 +133,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         else if (inHighScore) {
             drawHighScores(g);
         }
+        else if (isVictory) {
+            g.drawImage(victoryImage, 0, 0, getWidth(), getHeight(), this);
+        }
         else if (isGameOver) {
             g.drawImage(gameoverImage, 0, 0, getWidth(), getHeight(), this);
         }
@@ -195,6 +205,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         this.backgroundImage = backgroundImage();
         this.menuImage = Menu();
         this.gameoverImage = GameOver();
+        this.victoryImage = Victory();
         setBackground(Color.BLACK);
         this.setLayout(new BorderLayout());
         //initializeBricks(); //vẽ Bricks
@@ -411,6 +422,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         lives = 3;
         level = 1;
         isGameOver = false;
+        isVictory = false;
         GameManager.gameStarted = false;
         objectList.clear(); // xóa hết objects khi restart game
 
