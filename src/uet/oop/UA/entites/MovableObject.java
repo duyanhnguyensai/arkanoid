@@ -10,9 +10,15 @@ public class MovableObject extends GameObject {
     public MovableObject(int x, int y, int width, int height) {
         super(x,y,width,height);
     }
+
     public MovableObject(int x, int y, int width, int height, Color color) {
         super(x,y,width,height,color);
     }
+
+    public MovableObject() {
+        super();
+    }
+
     public double getSpeed() {
         return this.speed;
     }

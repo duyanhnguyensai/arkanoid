@@ -8,10 +8,7 @@ import uet.oop.UA.entites.Ball;
 // load ảnh
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.List;
 
 /**
@@ -19,7 +16,7 @@ import java.util.List;
  * - bao gồm các thuộc tính như vị trí paddle, ảnh paddle, di chuyển paddle
  * - thiết kế màn chơi (hiển thị brick, paddle, score, lives, level, game over)
  */
-public class GamePanel extends JPanel implements KeyListener, MouseListener {
+public class GamePanel extends JPanel implements KeyListener, MouseListener, MouseMotionListener {
     //Danh sách các vật thể trong một panel
     private List<GameObject> objectList;
 
@@ -31,6 +28,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         this.objectList.remove(gameObject);
     }
     public static boolean showMenu = true;
+    public static boolean inMenuButton = false;
     private boolean isGameOver = false;
     private Image menuImage;
     private Image backgroundImage;
@@ -56,7 +54,14 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         g.drawImage(menuImage, 0, 0, getWidth(), getHeight(), this);
 
         // vẽ Start
-        g.setColor(Color.YELLOW);
+        if (inMenuButton) {
+            g.setColor(Color.YELLOW);
+        }
+        else {
+            g.setColor(Color.CYAN);
+        }
+        g.fillRect(getWidth()/2 - 80, getHeight()/2 - 40, 170, 45);
+        g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 50));
         g.drawString("START", getWidth()/2 - 80, getHeight()/2);
     }
@@ -90,6 +95,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
     }
     private void drawGameInfo(Graphics g) {
+
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 16));
         g.drawString("Score: " + score, 20, 30);
@@ -149,9 +155,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
             PADDLE_HEIGHT
         );
         this.objectList.add(paddle);
-        
+
+
+        //thêm các method xử lí chuột và bàn phím
         addKeyListener(this); 
         addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
     //Vẽ thông tin game (score, lives, level)
@@ -218,6 +227,23 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if (showMenu) {
+            int x = e.getX();
+            int y = e.getY();
+            if(x > getWidth()/2 - 80 && x < getWidth()/2 - 80 + 170
+                    && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
+                inMenuButton = true;
+            }
+            else {
+                inMenuButton = false;
+            }
+        }
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {}
 
     @Override
     public void mouseExited(MouseEvent e) {}

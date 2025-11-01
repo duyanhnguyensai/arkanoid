@@ -58,10 +58,10 @@ public class GameManager {
 
                     for (GameObject obj_ : objectsToProcess) {
                         if (obj_ instanceof Brick) {
-                            if (ball.iscollision(obj_)) {
+                            if (ball.isCollision(obj_)) {
                                 if (ball.handleBrickCollision(obj_) == 1) {
                                     ((Brick) obj_).setHitPoints(((Brick) obj_).getHitPoints() - 1);
-                                    ((Brick) obj_).low_health_brick();
+                                    ((Brick) obj_).lowHealthBrick();
                                     if (((Brick) obj_).getHitPoints() == 0) {
                                         PowerUp powerUp = ((Brick) obj_).createRandomPowerUp();
                                         if (powerUp != null) {
@@ -161,5 +161,4 @@ public class GameManager {
     public void draw() {
         gamePanel.repaint();
     }
-    //các phương thức xử lí va chạm, điểm số, cấp độ, v.v.
 }

@@ -21,9 +21,6 @@ public class Ball extends MovableObject {
     public static final int GAME_HEIGHT = 800;
 
 
-    /**
-     * Constructor.
-     * */
     public Ball(int x, int y, int width, int height) {
         super(x,y,width,height);
         // Đường dẫn tới ảnh
@@ -240,7 +237,7 @@ public class Ball extends MovableObject {
         return 0;
     }
 
-    public boolean iscollision(GameObject obj) {
+    public boolean isCollision(GameObject obj) {
         if (this.isPossibleToCollision(obj)) {
             return this.isLeftCollision(obj) != -1 || this.isUpCollision(obj) != -1 || this.isCornerCollision(obj) != -1;
         }

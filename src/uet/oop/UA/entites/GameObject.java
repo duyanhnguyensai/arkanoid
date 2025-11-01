@@ -5,7 +5,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import static java.lang.Math.sqrt;
 
@@ -29,7 +28,7 @@ public abstract class GameObject {
     private int centralY;
     protected Image image;
     private Color color;
-    //constructor
+
     public GameObject() {
         this.x = 0;
         this.y = 0;
@@ -40,6 +39,7 @@ public abstract class GameObject {
         this.image = null;
         this.color = Color.WHITE;
     }
+
     public GameObject(int x, int y, int width, int height, Color color) {
         this.x = x;
         this.y = y;
@@ -50,6 +50,7 @@ public abstract class GameObject {
         this.setColor(color);
         this.image = null;
     }
+
 
     public GameObject(int x, int y, int width, int height) {
         this.x = x;
@@ -79,14 +80,17 @@ public abstract class GameObject {
         updateCentral();
         this.y = y;
     }
+
     public void setWidth(int width) {
         updateCentral();
         this.width = width;
     }
+
     public void setHeight(int height) {
         updateCentral();
         this.height = height;
     }
+
     public int getWidth() {
         return this.width;
     }
@@ -98,11 +102,11 @@ public abstract class GameObject {
     public Color getColor() {
         return this.color;
     }
-    
 
     public void setColor (Color color) {
         this.color = color;
     }
+
     public void setNewColor(int x,int y, int z){
         this.color = new Color(x,y,z);
     }
@@ -121,13 +125,21 @@ public abstract class GameObject {
     public Image getImage() {
         return this.image;
     }
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    /**
+     * đặt image cho object GameObject từ đường link ảnh
+     * @param filename
+     * */
     public Image set_File_image (String filename)  {
         Image fileImage;
         try {
             fileImage = ImageIO.read(new File(filename));
             System.out.println("Image loaded successfully ");
         } catch (IOException e) {
-            fileImage = set_Drawed_Ball_image();
+            fileImage = setDrawedBallImage();
             System.out.println("Image loaded failure ");
         }
 
@@ -146,11 +158,15 @@ public abstract class GameObject {
         g.setColor(this.getColor());
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setColor(Color.BLACK); // màu viền
-        g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1); // vẽ viền bricks
+        g.drawRect(0, 0, this.getWidth(), this.getHeight()); // vẽ viền bricks
         g.dispose();
         return image;
     }
-    public Image set_Drawed_Ball_image() {
+
+    /**
+     * method vẽ bóng không dùng file ảnh.
+     * */
+    public Image setDrawedBallImage() {
         BufferedImage ballimage = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
         this.image = ballimage;
         Graphics2D g = ballimage.createGraphics();
@@ -162,6 +178,9 @@ public abstract class GameObject {
         return this.image;
     }
 
+    /**
+     * method tính khoảng cách giữa 2 object.
+     * */
     public double distant2CentralObj(GameObject obj) {
         updateCentral();
         obj.updateCentral();
@@ -169,8 +188,5 @@ public abstract class GameObject {
         double ObjThisY = this.centralY - obj.centralY;
         return sqrt(ObjThisX * ObjThisX + ObjThisY * ObjThisY);
     }
-    
-    public void setImage(Image image) {
-        this.image = image;
-    }
+
 }
