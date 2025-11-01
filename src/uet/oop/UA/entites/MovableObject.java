@@ -1,5 +1,7 @@
 package uet.oop.UA.entites;
 
+import java.awt.*;
+
 import static java.lang.Math.sqrt;
 
 public class MovableObject extends GameObject {
@@ -29,5 +31,12 @@ public class MovableObject extends GameObject {
 
     public void setDy(double dy) {
         this.dy = dy;
+    }
+
+    public MovableObject(int x, int y, int width, int height) {
+        super(x,y,width,height);
+    }
+    public MovableObject(int x, int y, int width, int height, Color color) {
+        super(x,y,width,height,color);
     }
 }

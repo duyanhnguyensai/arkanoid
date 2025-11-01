@@ -2,6 +2,8 @@ package uet.oop.UA.entites;
 
 import java.awt.*;
 import uet.oop.UA.GameManager;
+
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -46,6 +48,7 @@ public class TripleBallPowerUp extends PowerUp {
                 ball2.setSpeed(originalSpeed); // DÙNG ĐÚNG TỐC ĐỘ CỦA BÓNG GỐC
                 ball2.set_File_image("res/ballImage/ball30.png");
 
+
                 // Bóng thứ 3 - góc -30 độ
                 Ball ball3 = new Ball(
                         originalBall.getX(),
@@ -55,7 +58,8 @@ public class TripleBallPowerUp extends PowerUp {
                 );
                 ball3.setMotionAngle(originalBall.getMotionAngle() - Math.toRadians(30));
                 ball3.setSpeed(originalSpeed); // DÙNG ĐÚNG TỐC ĐỘ CỦA BÓNG GỐC
-                ball3.set_File_image("res/ballImage/ball30.png");
+                ball2.set_File_image("res/ballImage/ball30.png");
+
 
                 newBalls.add(ball2);
                 newBalls.add(ball3);

@@ -4,10 +4,14 @@ import uet.oop.UA.GameManager;
 import uet.oop.UA.GamePanel;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static java.lang.Math.*;
 
-
+/**
+ * class bóng.
+ * */
 public class Ball extends MovableObject {
     protected double directionX;
     protected double directionY;
@@ -17,15 +21,14 @@ public class Ball extends MovableObject {
     public static final int GAME_WIDTH = 1000;
     public static final int GAME_HEIGHT = 800;
 
+    /**
+     * Constructor có 4 parameter,
+     * 2 vị trí x,y;
+     *
+     * */
     public Ball(int x, int y, int width, int height) {
-        this.setX(x);
-        this.setY(y);
-        this.setWidth(width);
-        this.setHeight(height);
-        this.setColor(Color.WHITE);
-        //this.set_Drawed_this_image();
+        super(x,y,width,height);
         this.set_File_image("res/ballImage/ball30.png");
-         // Đường dẫn tới ảnh
     }
 
     public double getMotionAngle() {

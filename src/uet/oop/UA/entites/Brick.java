@@ -16,34 +16,28 @@ public class Brick extends GameObject {
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
-    public Brick(int x, int y, int colorcode) {
-        super(x , y, BRICK_WIDTH, BRICK_HEIGHT, colorcode);
+    public Brick(int x, int y, Color color) {
+        super(x , y, BRICK_WIDTH, BRICK_HEIGHT, color);
         this.set_Drawed_Paddle_image();
         this.hitPoints = 2;
-    }
-    //for testing brick
-    public Brick() {
-        super();
-        this.hitPoints = 2;
-        this.set_Drawed_Paddle_image();
     }
     public static void createBrickGrid(List<GameObject> Brick_List) {
         Brick[][] bricks = new Brick[5][10];
         int startX = 100;
         int startY = 100;
-        int colorcode;
+        Color brickColor;
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 10; col++) {
                 switch (row % 4) {
-                    case 0 -> colorcode = 11; // red
-                    case 1 -> colorcode = 2;  // blue
-                    case 2 -> colorcode = 6;  // green
-                    case 3 -> colorcode = 13; // yellow
-                    default -> colorcode = 12; // white
+                    case 0 -> brickColor = Color.RED; // red
+                    case 1 -> brickColor = Color.BLUE;  // blue
+                    case 2 -> brickColor = Color.GREEN;  // green
+                    case 3 -> brickColor = Color.YELLOW; // yellow
+                    default -> brickColor = Color.WHITE; // white
                 }
                 //conditions for row and col can be used to create not-rectangular patterns of bricks
                 //for example, skip bricks at (1,1), (2,2), (3,3)
-                bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 1), startY + row * (BRICK_HEIGHT + 1), colorcode);
+                bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 1), startY + row * (BRICK_HEIGHT + 1), brickColor);
             }
         }
         // Add bricks to the GamePanel's objectList
