@@ -27,7 +27,7 @@ public class Ball extends MovableObject {
     public Ball(int x, int y, int width, int height) {
         super(x,y,width,height);
         // Đường dẫn tới ảnh
-        this.set_File_image("res/ballImage/ball30.png");
+        this.set_File_image("res/ballImage/balln30.png");
     }
 
     public double getMotionAngle() {
