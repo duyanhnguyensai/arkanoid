@@ -87,16 +87,20 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
 
     public void drawHighScores(Graphics g) {
+        //tô nền
         g.setColor(Color.BLACK);
         g.fillRect(0,0,getWidth(),getHeight());
+        //viết highscore
         g.setFont(new Font("Arial", Font.BOLD, 80));
-        g.drawString("High Scores", getWidth()/2 - 80, getHeight()/2);
+        g.setColor(Color.YELLOW);
+        g.drawString("High Scores", getWidth()/2 - 250, getHeight()/2 -200);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
         int[] highScores = takeScore();
         for (int i=1; i<=5 ;i++) {
             g.setColor(Color.RED);
-            g.drawString(Integer.toString(i),getWidth()/2 - 180, getHeight()/2 - i*100);
+            g.drawString(Integer.toString(i),getWidth()/2 - 175, getHeight()/2 - 200 + i*70);
             g.setColor(Color.GREEN);
-            g.drawString(Integer.toString(highScores[i-1]), getWidth()/2 - 20, getHeight()/2 - i*100);
+            g.drawString(Integer.toString(highScores[i-1]), getWidth()/2 +105 , getHeight()/2 - 200 + i*70);
         }
     }
 
@@ -104,8 +108,11 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (showMenu) {
+        if (showMenu && !inHighScore) {
             drawMenu(g);
+        }
+        else if (inHighScore) {
+            drawHighScores(g);
         }
         else if (isGameOver) {
             g.drawImage(gameoverImage, 0, 0, getWidth(), getHeight(), this);
@@ -228,7 +235,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
                     repaint();
             }
         }
-
+        if (e.getKeyCode() == KeyEvent.VK_M) {
+            inHighScore = false;
+        }
         // Restart game
         if (e.getKeyCode() == KeyEvent.VK_R && isGameOver) {
             // THÊM SOUND EFFECT CHO RESTART GAME
@@ -266,6 +275,11 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
                 SoundManager.getInstance().playSound("game_start");
                 SoundManager.getInstance().playSound("background", true);
                 showMenu = false;
+                repaint();
+            }
+            if (x > getWidth()/2 - 80 +150 && x < getWidth()/2 - 80 + 170 +150
+                    && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
+                inHighScore = true;
                 repaint();
             }
         }
@@ -310,7 +324,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         //Obj kiểu FileWriter dùng để mở file. True dùng để ghi thêm vào file ,false thì ghi lại
         //Obj writeHere kiểu BufferedWriter dùng để ghi vào file
 
-        try (BufferedWriter writeHere = new BufferedWriter(new FileWriter("src/uet/oop/UA/Resources/Score.txt", true))) {
+        try (BufferedWriter writeHere = new BufferedWriter(new FileWriter("res/Score.txt", true))) {
             writeHere.write(Integer.toString(score));
             //newline thay cho '\n' để xuống dòng trong window
             writeHere.newLine();
@@ -329,7 +343,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         List<Integer> scores = new ArrayList<>();
 
         //scoreRead đọc file
-        try (BufferedReader scoreRead = new BufferedReader(new FileReader("src/uet/oop/UA/Resources/Score.txt"))) {
+        try (BufferedReader scoreRead = new BufferedReader(new FileReader("res/Score.txt"))) {
             String line;
             //đọc file đến khi file = null --> hết file
             while ((line = scoreRead.readLine()) != null) {
