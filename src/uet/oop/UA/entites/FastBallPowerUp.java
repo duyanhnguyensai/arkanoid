@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class FastBallPowerUp extends PowerUp {
-    private static final double SPEED_MULTIPLIER = 1.8; // TĂNG HỆ SỐ LÊN
+    private static final double SPEED_MULTIPLIER = 1.25; // TĂNG HỆ SỐ LÊN
     private Map<Ball, Double> originalSpeeds = new HashMap<>(); // LƯU TỐC ĐỘ GỐC
 
     public FastBallPowerUp(int x, int y) {

@@ -117,8 +117,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 
     //drawgameInfo và drawgameOver được tôi tích hợp vào paintComponent mới của tôi
     //bên trên là phần tôi bổ sung . Bn dưới là phần cũ của ông, tôi đã xóa 1 phần ve obj
-    private final int GAME_WIDTH = 1000;
-    private final int GAME_HEIGHT = 800;
+    public static final int GAME_WIDTH = 1000;
+    public static final int GAME_HEIGHT = 800;
     private final int PADDLE_WIDTH = 180;
     private final int PADDLE_HEIGHT = 30;
 
@@ -167,21 +167,21 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
             // Di chuyển sang trái - THÊM KIỂM TRA CHẶT CHẼ
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 int newX = paddle.getX() - 20;
-                if (newX < 0) {
-                    newX = 0; // KHÔNG CHO VƯỢT QUÁ BIÊN
-                }
-                paddle.setX(newX);
-                repaint();
+                    if (newX < 0) {
+                        newX = 0; // KHÔNG CHO VƯỢT QUÁ BIÊN
+                    }
+                    paddle.setX(newX);
+                    repaint();
             }
             // Di chuyển sang phải
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 int newX = paddle.getX() + 20;
-                int maxX = GAME_WIDTH - paddle.getWidth();
-                if (newX > maxX) {
-                    newX = maxX; // KHÔNG CHO VƯỢT QUÁ BIÊN
-                }
-                paddle.setX(newX);
-                repaint();
+                    int maxX = GAME_WIDTH - paddle.getWidth();
+                    if (newX > maxX) {
+                        newX = maxX; // KHÔNG CHO VƯỢT QUÁ BIÊN
+                    }
+                    paddle.setX(newX);
+                    repaint();
             }
         }
 
