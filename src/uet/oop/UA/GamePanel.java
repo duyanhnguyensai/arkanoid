@@ -9,6 +9,9 @@ import uet.oop.UA.entites.Ball;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -163,6 +166,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         addMouseMotionListener(this);
     }
 
+
     //Vẽ thông tin game (score, lives, level)
     //Nhận phím
     @Override
@@ -262,6 +266,61 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
     @Override
     public void mouseExited(MouseEvent e) {}
+    public static void saveScore (int score) {
+        //Obj kiểu FileWriter dùng để mở file. True dùng để ghi thêm vào file ,false thì ghi lại
+        //Obj writeHere kiểu BufferedWriter dùng để ghi vào file
+
+        try (BufferedWriter writeHere = new BufferedWriter(new FileWriter("src/uet/oop/UA/Resources/Score.txt", true))) {
+            writeHere.write(Integer.toString(score));
+            //newline thay cho '\n' để xuống dòng trong window
+            writeHere.newLine();
+            System.out.println("new score added");
+        }
+        catch (IOException e) {
+            //lệnh in lỗi
+            e.printStackTrace();
+        }
+    }
+    public static int[] takeScore () {
+        int[] highscore = new int[5];
+        for (int i = 0; i < 5; i++) {
+            highscore[i] = 0;
+        }
+        List<Integer> scores = new ArrayList<>();
+
+        //scoreRead đọc file
+        try (BufferedReader scoreRead = new BufferedReader(new FileReader("src/uet/oop/UA/Resources/Score.txt"))) {
+            String line;
+            //đọc file đến khi file = null --> hết file
+            while ((line = scoreRead.readLine()) != null) {
+                //nếu gặp dòng trống, bỏ qua
+                if(line.isEmpty()) {
+                    continue;
+                }
+                scores.add(Integer.parseInt(line));
+            }
+            Collections.sort(scores);
+            Collections.reverse(scores);
+            if(scores.isEmpty()) {
+                return null;
+            }
+            if (scores.size() <= 5) {
+                for (int i = 0; i < scores.size(); i++) {
+                    highscore[i] = scores.get(i);
+                }
+            }
+            else {
+                for (int i = 0; i < 5; i++) {
+                    highscore[i] = scores.get(i);
+                }
+            }
+            return highscore;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new int[0];
+        }
+    }
+
 
     //Khởi tạo lại Game sau khi Game Over
     private void restartGame() {
