@@ -34,6 +34,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     public static boolean showMenu = true;
     public static boolean inPlayButton = false;
     public static boolean inHighScoreButton =  false;
+    public static boolean inHighScoreExitButton = false;
     public static boolean inHighScore = false;
     private boolean isGameOver = false;
     private Image menuImage;
@@ -77,7 +78,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             g.setColor(Color.ORANGE);
         }
         else {
-            g.setColor(Color.CYAN);
+            g.setColor(Color.GREEN);
         }
         g.fillRect(getWidth()/2 - 80 + 150, getHeight()/2 - 40, 200, 45);
         g.setColor(Color.RED);
@@ -102,6 +103,16 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             g.setColor(Color.GREEN);
             g.drawString(Integer.toString(highScores[i-1]), getWidth()/2 +105 , getHeight()/2 - 200 + i*70);
         }
+        //lệch 20 pix về bên trái để cho cân
+        if(inHighScoreExitButton) {
+            g.setColor(Color.CYAN);
+        } else {
+            g.setColor(Color.YELLOW);
+        }
+        g.fillRect(getWidth()/2 - 190, getHeight()/2 + 200, 340, 45);
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("Back to menu", getWidth()/2 - 190, getHeight()/2 + 200 +40);
     }
 
     //hàm vẽ
@@ -235,9 +246,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
                     repaint();
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_M) {
-            inHighScore = false;
-        }
+
+
         // Restart game
         if (e.getKeyCode() == KeyEvent.VK_R && isGameOver) {
             // THÊM SOUND EFFECT CHO RESTART GAME
@@ -272,8 +282,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             if (x > getWidth()/2 - 80 -150 && x < getWidth()/2 - 80 + 20
                     && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
                 // THÊM SOUND EFFECT CHO BẮT ĐẦU GAME
-                SoundManager.getInstance().playSound("game_start");
-                SoundManager.getInstance().playSound("background", true);
+                uet.oop.UA.SoundManager.getInstance().playSound("game_start");
+                uet.oop.UA.SoundManager.getInstance().playSound("background", true);
                 showMenu = false;
                 repaint();
             }
@@ -281,6 +291,14 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
                     && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
                 inHighScore = true;
                 repaint();
+            }
+        }
+        if(inHighScore) {
+            int x = e.getX();
+            int y = e.getY();
+            if(x > getWidth()/2 - 190 && x< getWidth()/2 -190+ 340 && y > getHeight()/2 +200 &&
+                    y < getHeight()/2 + 200+45) {
+                inHighScore = false;
             }
         }
     }
@@ -314,6 +332,17 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
                 inHighScoreButton = false;
             }
         }
+        if(inHighScore) {
+            int x = e.getX();
+            int y = e.getY();
+            if(x > getWidth()/2 - 190 && x< getWidth()/2 -190+ 340 && y > getHeight()/2 +200 &&
+                    y < getHeight()/2 + 200+45) {
+                inHighScoreExitButton = true;
+            }
+            else {
+                inHighScoreExitButton = false;
+            }
+        }
     }
     @Override
     public void mouseDragged(MouseEvent e) {}
@@ -341,7 +370,6 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             highscore[i] = 0;
         }
         List<Integer> scores = new ArrayList<>();
-
         //scoreRead đọc file
         try (BufferedReader scoreRead = new BufferedReader(new FileReader("res/Score.txt"))) {
             String line;
@@ -371,7 +399,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             return highscore;
         } catch (IOException e) {
             e.printStackTrace();
-            return new int[0];
+            return highscore;
         }
     }
 

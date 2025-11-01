@@ -88,11 +88,12 @@ public class Gameloop implements Runnable {
                 game.update();
                 real_UPS ++; //(mỗi một update là lại cộng một ups)
                 update_per_loop --; //giảm số update cần thực hiện đi một, vì đã thực hiện xong một update
+                game.draw();
+                real_FPS ++;
             }
             /*
              * Sử dụng method render tại đây
              */
-             game.draw();
 
             real_FPS ++; //(mỗi một loop là lại cộng một fps)
 
