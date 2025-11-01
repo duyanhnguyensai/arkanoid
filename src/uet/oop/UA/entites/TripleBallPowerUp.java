@@ -44,7 +44,14 @@ public class TripleBallPowerUp extends PowerUp {
                 double originalSpeed = originalBall.getSpeed();
                 ball2.setMotionAngle(originalBall.getMotionAngle() + Math.toRadians(30));
                 ball2.setSpeed(originalSpeed); // DÙNG ĐÚNG TỐC ĐỘ CỦA BÓNG GỐC
-                ball2.set_File_image("res/ballImage/ball30.png");
+
+                // SỬA: Đảm bảo ảnh được load đúng cách
+                ball2.set_File_image("res/ballImage/balln30.png");
+                // THÊM: Kiểm tra và tạo ảnh mặc định nếu load ảnh thất bại
+                if (ball2.getImage() == null) {
+                    ball2.setColor(Color.ORANGE);
+                    ball2.setDrawedBallImage();
+                }
 
                 // Bóng thứ 3 - góc -30 độ
                 Ball ball3 = new Ball(
@@ -55,10 +62,20 @@ public class TripleBallPowerUp extends PowerUp {
                 );
                 ball3.setMotionAngle(originalBall.getMotionAngle() - Math.toRadians(30));
                 ball3.setSpeed(originalSpeed); // DÙNG ĐÚNG TỐC ĐỘ CỦA BÓNG GỐC
-                ball3.set_File_image("res/ballImage/ball30.png");
+
+                // SỬA: Đảm bảo ảnh được load đúng cách
+                ball3.set_File_image("res/ballImage/balln30.png");
+                // THÊM: Kiểm tra và tạo ảnh mặc định nếu load ảnh thất bại
+                if (ball3.getImage() == null) {
+                    ball3.setColor(Color.ORANGE);
+                    ball3.setDrawedBallImage();
+                }
 
                 newBalls.add(ball2);
                 newBalls.add(ball3);
+
+                System.out.println("Created new balls - Ball2 image: " + (ball2.getImage() != null ? "Loaded" : "Using default"));
+                System.out.println("Created new balls - Ball3 image: " + (ball3.getImage() != null ? "Loaded" : "Using default"));
             }
         }
 
