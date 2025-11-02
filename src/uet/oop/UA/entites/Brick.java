@@ -21,10 +21,10 @@ public class Brick extends GameObject {
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
-    public Brick(int x, int y, Color color) {
+    public Brick(int x, int y, Color color, int hitPoints) {
         super(x , y, BRICK_WIDTH, BRICK_HEIGHT, color);
         this.set_Drawed_Paddle_image();
-        this.hitPoints = 2;
+        this.hitPoints = hitPoints;
     }
 
     /**
@@ -37,7 +37,7 @@ public class Brick extends GameObject {
         Color brickColor;
         for (int row = 0; row < 20; row++) {
             for (int col = 0; col < 20; col++) {
-                if(brickIntGrid[row][col] == 1) {
+                if(brickIntGrid[row][col] == 1 || brickIntGrid[row][col] == 2) {
                     switch (row % 4) {
                         case 0 -> brickColor = Color.RED; // red
                         case 1 -> brickColor = Color.BLUE;  // blue
@@ -47,7 +47,8 @@ public class Brick extends GameObject {
                     }
                     //conditions for row and col can be used to create not-rectangular patterns of bricks
                     //for example, skip bricks at (1,1), (2,2), (3,3)
-                    bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 4), startY + row * (BRICK_HEIGHT + 2), brickColor);
+                    bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 4), startY + row * (BRICK_HEIGHT + 2), brickColor, brickIntGrid[row][col]);
+                    bricks[row][col].lowHealthBrick();
                 }
             }
         }
@@ -62,7 +63,7 @@ public class Brick extends GameObject {
     /**
      * method đổi màu lưới gạch khi hp =1
      * */
-    public void lowHealthBrick() {
+    public Color lowHealthBrick() {
         if(this.getHitPoints() == 1) {
             Color c = this.getColor();
             if (c.equals(Color.RED)) {
@@ -79,6 +80,7 @@ public class Brick extends GameObject {
                 this.set_Drawed_Paddle_image();
             }
         }
+        return this.getColor();
     }
 
     public static int[][] createBrickGridFromFiles(String gridFileName)  {
@@ -90,25 +92,24 @@ public class Brick extends GameObject {
         }
         List<List<Character>> brickCharGrid = new ArrayList<>();
         try (BufferedReader readbrick = new BufferedReader(new FileReader(gridFileName))) {
-            List<Character> brickCharLine = new ArrayList<>();
-            String line;
             char brickChar;
-            //debug kiểm tra xem file có rỗng k
-            if(readbrick.readLine() == null) {
-                System.out.println("File empty");
-            } else {
-                System.out.println("File not empty");
-            }
+            String line;
             //đọc file đến khi file rỗng, đưa vào list
             while ((line = readbrick.readLine()) != null) {
-                if (line.isEmpty()) continue;
+                if (line.isEmpty()) {
+                    continue;
+                }
+                //mảng lưu dãy char trong 1 dòng
+                List<Character> brickCharLine = new ArrayList<>();
+                //đưa từng char trong dòng vào mảng
                 for (int i = 0; i < line.length(); i++) {
-                    brickChar = line.charAt(i);
+                    brickChar =  line.charAt(i);
                     brickCharLine.add(brickChar);
                 }
+                //đưa mảng vào mảng lớn (grid)
                 brickCharGrid.add(brickCharLine);
             }
-            //đưa kí tư trong list<char> vào int[20][20]
+            //đưa kí tư trong list<list<char>> vào int[20][20]
             for (int i = 0; i < 20; i++) {
                 for (int j = 0; j < 20; j++) {
                     try {
@@ -119,6 +120,8 @@ public class Brick extends GameObject {
                 }
             }
             System.out.println("input succeed");
+            System.out.println("filename" + gridFileName);
+            //debug: print to check grid
             for (int i = 0; i < 20; i++) {
                 for (int j = 0; j < 20; j++) {
                     System.out.print(brickGrid[i][j] + " ");

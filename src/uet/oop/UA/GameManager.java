@@ -234,7 +234,7 @@ public class GameManager {
                 objectList.add(paddle);
 
                 // Tạo lại bricks
-                int [][] level2Grid =   Brick.createBrickGridFromFiles("res/Brickgrid.txt");
+                int [][] level2Grid =   Brick.createBrickGridFromFiles("res/Brickgrid2.txt");
                 Brick.createBrickGrid(objectList,level2Grid);
 
                 // Tạo lại ball
