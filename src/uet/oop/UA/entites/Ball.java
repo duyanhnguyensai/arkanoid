@@ -87,6 +87,9 @@ public class Ball extends MovableObject {
                 System.out.println(this.motionAngle*180/PI + "j79");
             }
             this.setX(0);
+            if (motionAngle >= 0 * PI / 180 && motionAngle <= 10 * PI / 180) {
+                motionAngle += 5 * PI / 180;
+            }
         } else if (this.getX() >= GAME_WIDTH - this.getWidth()) {
             hitWall = true;
             if (this.motionAngle >=0*PI/180 && this.motionAngle <= 90*PI/180) {
@@ -97,6 +100,9 @@ public class Ball extends MovableObject {
                 System.out.println(this.motionAngle*180/PI + "j79");
             }
             this.setX(GAME_WIDTH - this.getWidth());
+            if (motionAngle >= 170*PI/180 && motionAngle <= 190*PI/180) {
+                motionAngle -= 5 * PI/180;
+            }
         }
         // tường trên
         if (this.getY() <= 0) {
