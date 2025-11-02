@@ -61,4 +61,17 @@ public class MovableObject extends GameObject {
         this.dy = dy;
     }
 
+    public void setCentralX(int centralX) {
+        this.setX(this.getX() + centralX - this.getCentralX());
+    }
+
+    public void setCentralY(int centralY) {
+        this.setY(this.getY() + centralY - this.getCentralY());
+    }
+
+    public void setCentral(int centralX, int centralY) {
+        this.setCentralX(centralX);
+        this.setCentralY(centralY);
+    }
+
 }
