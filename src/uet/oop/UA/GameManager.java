@@ -162,6 +162,8 @@ public class GameManager {
             // THÊM: Kiểm tra game over và phát sound
             if (GamePanel.lives <= 0) {
                 soundManager.playSound("game_over");
+                // THÊM: Dừng nhạc nền khi game over
+                soundManager.stopSound("background");
                 if(flag) {
                     GamePanel.saveScore(GamePanel.score);
                     flag = false;
@@ -207,6 +209,8 @@ public class GameManager {
                 if(GamePanel.level == 2) {
                     GamePanel.isVictory = true;
                     gameStarted = false;
+                    soundManager.stopSound("background");
+                    soundManager.playSound("victory");
                     return;
                 }
                 else {
@@ -232,7 +236,6 @@ public class GameManager {
                 Ball ball = new Ball(objectList.get(0).getX()+objectList.get(0).getWidth()/2-15,
                 objectList.get(0).getY()-30, 30 , 30);
                 objectList.add(ball);
-
             }
         }
 

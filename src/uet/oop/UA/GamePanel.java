@@ -426,6 +426,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         GameManager.gameStarted = false;
         objectList.clear(); // xóa hết objects khi restart game
 
+        SoundManager.getInstance().playSound("background", true);
 
         // tạo lại paddle
         Paddle paddle = new Paddle(

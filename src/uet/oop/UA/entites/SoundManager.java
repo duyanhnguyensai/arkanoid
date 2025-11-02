@@ -33,6 +33,7 @@ public class SoundManager {
         loadSound("game_over", "res/sounds/game_over.wav");
         loadSound("life_lost", "res/sounds/life_lost.wav");
         loadSound("background", "res/sounds/background.wav");
+        loadSound("victory", "res/sounds/victory.wav");
     }
 
     private void loadSound(String name, String path) {
