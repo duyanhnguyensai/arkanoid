@@ -14,6 +14,7 @@ import static uet.oop.UA.GamePanel.GAME_HEIGHT;
  * class bóng.
  * */
 public class Ball extends MovableObject {
+    public static final double aCircle = 2 * PI;
     protected double directionX;
     protected double directionY;
     protected double motionAngle = (270+45-90)*PI/180;
