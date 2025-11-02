@@ -162,8 +162,8 @@ public class Ball extends MovableObject {
         return -1;
     }
 
-    public int isUpCollision(GameObject obj) {
-        if (this.getCentralX() >= obj.getX() && this.getCentralX() <= obj.getX() + obj.getWidth()) {
+    public int isUpCollisionp(GameObject obj) {
+        if (this.getCentralX() > obj.getX() - this.getWidth() / 2 && this.getCentralX() < obj.getX() + obj.getWidth() + this.getWidth() / 2) {
             if (abs(obj.getY() - this.getCentralY()) <= abs(obj.getY() + obj.getHeight() - this.getCentralY())) {
                 if (abs(obj.getY() - this.getCentralY()) <= this.getWidth()/2) {
                     return 1;
