@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 
 public class Paddle extends GameObject {
+    public static final double originWidth = 180;
     public Paddle(int x, int y, int width, int height) {
         this.setX(x);
         this.setY(y);
