@@ -55,7 +55,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     }
 
     private Image Victory() {
-        ImageIcon victoryImage = new ImageIcon("res/menuImage/victory.png"); // đường dẫn tới ảnh victory
+        ImageIcon victoryImage = new ImageIcon("res/menuImage/victory1.jpg"); // đường dẫn tới ảnh victory
         return victoryImage.getImage();
     }
 
