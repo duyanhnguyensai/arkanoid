@@ -22,8 +22,10 @@ public class Ball extends MovableObject {
     public static final int GAME_WIDTH = 1000;
     public static final int GAME_HEIGHT = 800;
     protected double radius;
-    protected double precentralX;
-    protected double precentralY;
+    protected double preCentralX = this.getCentralX();
+    protected double preCentralY = this.getCentralY();
+    protected double collisionCentralX;
+    protected double collisionCentralY;
     protected LinearEquation motionPath;
 
     // THÊM: Biến theo dõi va chạm paddle
