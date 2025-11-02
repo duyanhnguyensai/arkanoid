@@ -53,6 +53,17 @@ public class Ball extends MovableObject {
         this.setY(obj.getY()-this.getHeight());
     }
 
+    public void toStandardizeMotionAngle() {
+
+        while (this.motionAngle < 0) {
+            this.motionAngle += aCircle;
+        }
+
+        while (this.motionAngle > aCircle) {
+            this.motionAngle -= aCircle;
+        }
+    }
+
     public void move(double angle) {
         this.motionAngle = angle;
         this.cosaAngle = cos(this.motionAngle);
