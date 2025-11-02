@@ -22,6 +22,9 @@ public class Ball extends MovableObject {
     public static final int GAME_WIDTH = 1000;
     public static final int GAME_HEIGHT = 800;
     protected double radius;
+    protected double precentralX;
+    protected double precentralY;
+    protected LinearEquation motionPath;
 
     // THÊM: Biến theo dõi va chạm paddle
     private boolean wasCollidingWithPaddle = false;
