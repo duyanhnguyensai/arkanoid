@@ -7,6 +7,8 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import static java.lang.Math.*;
+import static uet.oop.UA.GamePanel.GAME_WIDTH;
+import static uet.oop.UA.GamePanel.GAME_HEIGHT;
 
 /**
  * class bóng.
