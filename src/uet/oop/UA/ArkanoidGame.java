@@ -9,7 +9,6 @@ import uet.oop.UA.entites.GameObject;
 import uet.oop.UA.graphics.Gameloop;
 
 
-
 public class ArkanoidGame extends JFrame {
 
     /**

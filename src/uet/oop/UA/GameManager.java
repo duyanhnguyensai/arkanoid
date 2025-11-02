@@ -2,6 +2,8 @@ package uet.oop.UA;
 import java.util.*;
 import uet.oop.UA.entites.*;
 
+import static uet.oop.UA.GamePanel.GAME_HEIGHT;
+
 public class GameManager {
     private List<GameObject> objectList;
     private GamePanel gamePanel;
@@ -57,7 +59,7 @@ public class GameManager {
                     Ball ball = (Ball) object;
 
                     // Kiểm tra nếu bóng đã rơi xuống dưới
-                    if (ball.getY() >= Ball.GAME_HEIGHT - ball.getHeight()) {
+                    if (ball.getY() >= GAME_HEIGHT - ball.getHeight()) {
                         ballsToRemove.add(ball);
                         continue; // Bỏ qua xử lý cho bóng đã rơi
                     }
@@ -227,7 +229,7 @@ public class GameManager {
                 // Tạo lại paddle
                 Paddle paddle = new Paddle(
                 GamePanel.GAME_WIDTH / 2 - GamePanel.PADDLE_WIDTH / 2,
-                GamePanel.GAME_HEIGHT - GamePanel.PADDLE_HEIGHT,
+                GAME_HEIGHT - GamePanel.PADDLE_HEIGHT,
                 GamePanel.PADDLE_WIDTH,
                 GamePanel.PADDLE_HEIGHT
             );
