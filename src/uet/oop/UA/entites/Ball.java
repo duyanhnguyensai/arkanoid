@@ -210,8 +210,8 @@ public class Ball extends MovableObject {
             }
 
             // Xử lý va chạm dựa trên vị trí tương đối
-            int upcollision = this.isUpCollision(obj);
-            int leftcollision = this.isLeftCollision(obj);
+            int upcollision = this.isUpCollisionp(obj);
+            int leftcollision = this.isLeftCollisionp(obj);
 
             if (upcollision != -1) {
                 if (upcollision == 1) {
