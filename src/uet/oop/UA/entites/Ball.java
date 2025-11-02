@@ -27,6 +27,7 @@ public class Ball extends MovableObject {
 
     public Ball(int x, int y, int width, int height) {
         super(x,y,width,height);
+        this.radius = (double) width / 2;
         // Đường dẫn tới ảnh
         this.set_File_image("res/ballImage/balln30.png");
     }
