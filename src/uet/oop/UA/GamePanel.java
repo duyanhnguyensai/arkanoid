@@ -437,8 +437,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         );
         objectList.add(paddle);
 
-        int[][] newGrid = Brick.createBrickGridFromFiles("res/Brickgrid.txt");
-        Brick.createBrickGrid(objectList,newGrid); // tạo lại bricks
+        Brick.createBrickGrid(objectList,Brick.createBrickGridFromFiles("res/Brickgrid.txt")); // tạo lại bricks
 
         // tạo lại ball
         Ball ball = new Ball(objectList.get(0).getX()+objectList.get(0).getWidth()/2-15,

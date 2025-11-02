@@ -8,7 +8,7 @@ import uet.oop.UA.entites.Brick;
 import uet.oop.UA.entites.GameObject;
 import uet.oop.UA.graphics.Gameloop;
 
-import static uet.oop.UA.entites.Brick.createBrickGridFromFiles;
+
 
 public class ArkanoidGame extends JFrame {
 
