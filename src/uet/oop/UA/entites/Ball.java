@@ -2,6 +2,8 @@ package uet.oop.UA.entites;
 
 import uet.oop.UA.GameManager;
 import uet.oop.UA.GamePanel;
+import uet.oop.UA.logic.CollisionEquation;
+import uet.oop.UA.logic.LinearEquation;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
