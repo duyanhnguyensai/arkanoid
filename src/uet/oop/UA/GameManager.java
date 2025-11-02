@@ -211,6 +211,10 @@ public class GameManager {
                     gameStarted = false;
                     soundManager.stopSound("background");
                     soundManager.playSound("victory");
+                    if(flag) {
+                        GamePanel.saveScore(GamePanel.score);
+                        flag = false;
+                    }
                     return;
                 }
                 else {
@@ -230,7 +234,8 @@ public class GameManager {
                 objectList.add(paddle);
 
                 // Tạo lại bricks
-                Brick.createBrickGrid(objectList);
+                int [][] level2Grid =   Brick.createBrickGridFromFiles("res/Brickgrid.txt");
+                Brick.createBrickGrid(objectList,level2Grid);
 
                 // Tạo lại ball
                 Ball ball = new Ball(objectList.get(0).getX()+objectList.get(0).getWidth()/2-15,

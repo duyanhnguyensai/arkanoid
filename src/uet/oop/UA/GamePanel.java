@@ -233,7 +233,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     @Override
     public void keyPressed(KeyEvent e) {
         Paddle paddle = (Paddle)objectList.get(0);
-        if(!showMenu) {
+        if(!showMenu && !inHighScore) {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 GameManager.gameStarted = true;
             }
@@ -437,7 +437,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         );
         objectList.add(paddle);
 
-        Brick.createBrickGrid(objectList); // tạo lại bricks
+        int[][] newGrid = Brick.createBrickGridFromFiles("res/Brickgrid.txt");
+        Brick.createBrickGrid(objectList,newGrid); // tạo lại bricks
 
         // tạo lại ball
         Ball ball = new Ball(objectList.get(0).getX()+objectList.get(0).getWidth()/2-15,

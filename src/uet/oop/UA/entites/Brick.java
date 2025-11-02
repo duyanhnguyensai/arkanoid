@@ -1,6 +1,11 @@
 package uet.oop.UA.entites;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Random;
@@ -25,28 +30,30 @@ public class Brick extends GameObject {
     /**
      * method tạo lưới gạch 5*10 viên
      * */
-    public static void createBrickGrid(List<GameObject> Brick_List) {
-        Brick[][] bricks = new Brick[1][1];
+    public static void createBrickGrid(List<GameObject> Brick_List, int[][] brickIntGrid) {
+        Brick[][] bricks = new Brick[20][20];
         int startX = 100;
         int startY = 100;
         Color brickColor;
-        for (int row = 0; row < 1; row++) {
-            for (int col = 0; col < 1; col++) {
-                switch (row % 4) {
-                    case 0 -> brickColor = Color.RED; // red
-                    case 1 -> brickColor = Color.BLUE;  // blue
-                    case 2 -> brickColor = Color.GREEN;  // green
-                    case 3 -> brickColor = Color.YELLOW; // yellow
-                    default -> brickColor = Color.WHITE; // white
+        for (int row = 0; row < 20; row++) {
+            for (int col = 0; col < 20; col++) {
+                if(brickIntGrid[row][col] == 1) {
+                    switch (row % 4) {
+                        case 0 -> brickColor = Color.RED; // red
+                        case 1 -> brickColor = Color.BLUE;  // blue
+                        case 2 -> brickColor = Color.GREEN;  // green
+                        case 3 -> brickColor = Color.YELLOW; // yellow
+                        default -> brickColor = Color.WHITE; // white
+                    }
+                    //conditions for row and col can be used to create not-rectangular patterns of bricks
+                    //for example, skip bricks at (1,1), (2,2), (3,3)
+                    bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 4), startY + row * (BRICK_HEIGHT + 2), brickColor);
                 }
-                //conditions for row and col can be used to create not-rectangular patterns of bricks
-                //for example, skip bricks at (1,1), (2,2), (3,3)
-                bricks[row][col] = new Brick(startX + col * (BRICK_WIDTH + 4), startY + row * (BRICK_HEIGHT + 2), brickColor);
             }
         }
         // Add bricks to the GamePanel's objectList
-        for (int row = 0; row < 1; row++) {
-            for (int col = 0; col < 1; col++) {
+        for (int row = 0; row < 20; row++) {
+            for (int col = 0; col < 20; col++) {
                 Brick_List.add(bricks[row][col]);
             }
         }
@@ -73,6 +80,60 @@ public class Brick extends GameObject {
             }
         }
     }
+
+    public static int[][] createBrickGridFromFiles(String gridFileName)  {
+        int[][] brickGrid = new int[20][20];
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                brickGrid[i][j] = 0;
+            }
+        }
+        List<List<Character>> brickCharGrid = new ArrayList<>();
+        try (BufferedReader readbrick = new BufferedReader(new FileReader(gridFileName))) {
+            List<Character> brickCharLine = new ArrayList<>();
+            String line;
+            char brickChar;
+            //debug kiểm tra xem file có rỗng k
+            if(readbrick.readLine() == null) {
+                System.out.println("File empty");
+            } else {
+                System.out.println("File not empty");
+            }
+            //đọc file đến khi file rỗng, đưa vào list
+            while ((line = readbrick.readLine()) != null) {
+                if (line.isEmpty()) continue;
+                for (int i = 0; i < line.length(); i++) {
+                    brickChar = line.charAt(i);
+                    brickCharLine.add(brickChar);
+                }
+                brickCharGrid.add(brickCharLine);
+            }
+            //đưa kí tư trong list<char> vào int[20][20]
+            for (int i = 0; i < 20; i++) {
+                for (int j = 0; j < 20; j++) {
+                    try {
+                        brickGrid[i][j] = brickCharGrid.get(i).get(j) - '0';
+                    } catch (IndexOutOfBoundsException e) {
+                        brickGrid[i][j] = 0;
+                    }
+                }
+            }
+            System.out.println("input succeed");
+            for (int i = 0; i < 20; i++) {
+                for (int j = 0; j < 20; j++) {
+                    System.out.print(brickGrid[i][j] + " ");
+                }
+                System.out.println();
+            }
+            return brickGrid;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("input exception");
+            return brickGrid;
+        }
+    }
+
 
     /**
      * Method tạo power-up ngẫu nhiên khi brick bị phá hủy.

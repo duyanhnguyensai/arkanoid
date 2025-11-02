@@ -8,6 +8,8 @@ import uet.oop.UA.entites.Brick;
 import uet.oop.UA.entites.GameObject;
 import uet.oop.UA.graphics.Gameloop;
 
+import static uet.oop.UA.entites.Brick.createBrickGridFromFiles;
+
 public class ArkanoidGame extends JFrame {
 
     /**
@@ -30,7 +32,7 @@ public class ArkanoidGame extends JFrame {
 
         //gamePanel phải được nhận gameObjects rỗng trước
         //Lí do: muốn thêm object phải dùng method của gamePanel (addObject)
-        Brick.createBrickGrid(gameObjects);
+        Brick.createBrickGrid(gameObjects, Brick.createBrickGridFromFiles("res/Brickgrid.txt") );
         gamePanel.addGameObject(ball);
         add(gamePanel);
 
