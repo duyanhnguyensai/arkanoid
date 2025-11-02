@@ -29,7 +29,7 @@ public class Ball extends MovableObject {
     protected double preCentralY = this.getCentralY();
     protected double collisionCentralX;
     protected double collisionCentralY;
-    protected LinearEquation motionPath;
+    protected LinearEquation motionPath = new LinearEquation();
 
     // THÊM: Biến theo dõi va chạm paddle
     private boolean wasCollidingWithPaddle = false;
