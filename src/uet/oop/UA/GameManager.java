@@ -17,13 +17,9 @@ public class GameManager {
      Khi đó gameStarted = false và flag = false --> saveScore không chạy.
      */
     public static boolean flag = true;
-    // THÊM MỚI: Danh sách các power-up đang active
     private List<PowerUp> activePowerUps = new ArrayList<>();
     private Map<PowerUp, Integer> powerUpTimers = new HashMap<>();
-
-    // THÊM: Sound Manager
     private SoundManager soundManager;
-
     public void SetGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
     }
@@ -32,7 +28,6 @@ public class GameManager {
         return this.gameStarted;
     }
 
-    // THÊM MỚI: Getter cho objectList
     public List<GameObject> getObjectList() {
         return this.objectList;
     }
@@ -43,6 +38,9 @@ public class GameManager {
         this.soundManager = SoundManager.getInstance(); // THÊM DÒNG NÀY
     }
 
+    /**
+     * Updates the game state including ball movement, collisions, power-ups, and game logic
+     */
     public void update() {
         if (gameStarted) {
             List<GameObject> removingObjects = new ArrayList<>();
@@ -263,12 +261,16 @@ public class GameManager {
         gamePanel.repaint();
     }
 
-    // THÊM: Method để bắt đầu nhạc nền
+    /**
+     * Starts playing background music in loop
+     */
     public void startBackgroundMusic() {
         soundManager.playSound("background", true);
     }
 
-    // THÊM: Method để dừng nhạc nền
+    /**
+     * Stops background music
+     */
     public void stopBackgroundMusic() {
         soundManager.stopSound("background");
     }
