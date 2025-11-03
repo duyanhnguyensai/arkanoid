@@ -4,6 +4,7 @@ import uet.oop.UA.entites.*;
 
 import static uet.oop.UA.GamePanel.GAME_HEIGHT;
 
+
 public class GameManager {
     private List<GameObject> objectList;
     private GamePanel gamePanel;
@@ -171,6 +172,7 @@ public class GameManager {
                     GamePanel.saveScore(GamePanel.score);
                     flag = false;
                 }
+                GameManager.gameStarted = false;
             }
 
             // Xóa các bóng đã rơi

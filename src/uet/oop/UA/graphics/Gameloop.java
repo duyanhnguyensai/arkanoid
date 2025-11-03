@@ -102,7 +102,7 @@ public class Gameloop implements Runnable {
             if(System.currentTimeMillis() - secondCountingTimer >=1000) { //thời gian thực được kiểm tra liên tục
 
                 secondCountingTimer += 1000;  //cứ mỗi giây thì cộng thêm 1000ms vào biến đếm thời gian. Mệnh đề if giảm về 0 và lại tiêp tục đếm đến 1000ms tiếp theo
-                if(!GamePanel.showMenu) {
+                if(GameManager.gameStarted) {
                     GamePanel.score = GamePanel.score - 1;
                 }
                 System.out.println("FPS: " + real_FPS + " | UPS: " + real_UPS);

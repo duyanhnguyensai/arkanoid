@@ -38,13 +38,29 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     private boolean inBetweenLevel = false;
 
     private boolean inHighScore = false;
-    public boolean isGameOver = false;
+    private boolean isGameOver = false;
     public static boolean isVictory = false;
+
     //private boolean gameStartFlag = true;
     private Image menuImage;
     private Image backgroundImage;
     private Image gameoverImage;
     private Image victoryImage;
+
+    //drawgameInfo và drawgameOver được tôi tích hợp vào paintComponent mới của tôi
+    //bên trên là phần tôi bổ sung . Bn dưới là phần cũ của ông, tôi đã xóa 1 phần ve obj
+    public static final int GAME_WIDTH = 1000;
+    public static final int GAME_HEIGHT = 800;
+    public static final int PADDLE_WIDTH = 180;
+    public static final int PADDLE_HEIGHT = 30;
+
+    // Game state
+    //vì gamestate không cần gắn vào class nào, không có method riêng, và cần thay đổi trong nhiểu trường hợp
+    //nên biến nó thành static và public
+    public static int score = 500;
+    public static int lives = 3;
+    public static int level = 1;
+
 
     private Image Menu() {
         ImageIcon menuImage = new ImageIcon("res/menuImage/menu.png"); // đường dẫn tới ảnh menu
@@ -104,7 +120,14 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 50));
         g.drawString("Back to menu", getWidth()/2 - 190, getHeight()/2);
+    }
 
+    public void displayScore (Graphics g) {
+        g.setColor(Color.pink);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.fillRect(getWidth()/2 - 190, getHeight()/2 + 100, 340, 45);
+        g.setColor(Color.RED);
+        g.drawString("Score: " + score, getWidth()/2 - 190, getHeight()/2 +140);
     }
 
     public void drawHighScores(Graphics g) {
@@ -136,12 +159,18 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         else if (isVictory || isGameOver || inHighScore) {
             if(isVictory) {
                 g.drawImage(victoryImage, 0, 0, getWidth(), getHeight(), this);
+                displayScore(g);
             } else if (isGameOver) {
                 g.drawImage(gameoverImage, 0, 0, getWidth(), getHeight(), this);
+                displayScore(g);
             } else if (inHighScore) {
                 drawHighScores(g);
             }
-
+            /*
+            * Vẽ nút quay về menu
+            * Tọa độ y ô fill: getHeight/2 +200
+            * Tọa độ y chữ: cao hơn 40
+            * */
             if(inExitButton) {
                 g.setColor(Color.CYAN);
             }
@@ -191,19 +220,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
 
 
-    //drawgameInfo và drawgameOver được tôi tích hợp vào paintComponent mới của tôi
-    //bên trên là phần tôi bổ sung . Bn dưới là phần cũ của ông, tôi đã xóa 1 phần ve obj
-    public static final int GAME_WIDTH = 1000;
-    public static final int GAME_HEIGHT = 800;
-    public static final int PADDLE_WIDTH = 180;
-    public static final int PADDLE_HEIGHT = 30;
 
-    // Game state
-    //vì gamestate không cần gắn vào class nào, không có method riêng, và cần thay đổi trong nhiểu trường hợp
-    //nên biến nó thành static và public
-    public static int score = 500;
-    public static int lives = 3;
-    public static int level = 1;
 
 
     //Khởi tạo Game
@@ -433,6 +450,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     }
 
 
+
     //Khởi tạo lại Game sau khi Game Over
     private void restartGame() {
         score = 500;
@@ -441,6 +459,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         isGameOver = false;
         isVictory = false;
         GameManager.gameStarted = false;
+
         objectList.clear(); // xóa hết objects khi restart game
 
         SoundManager.getInstance().playSound("background", true);
