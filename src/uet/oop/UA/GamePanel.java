@@ -195,7 +195,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             drawGameInfo(g);  //vẽ thông tin game
 
             //kiểm tra game over
-            if(lives <= 0) {
+            if(lives <= 0 || score <=0) {
                 isGameOver = true;
                 repaint();
             }
