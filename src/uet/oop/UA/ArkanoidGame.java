@@ -31,7 +31,7 @@ public class ArkanoidGame extends JFrame {
 
         //gamePanel phải được nhận gameObjects rỗng trước
         //Lí do: muốn thêm object phải dùng method của gamePanel (addObject)
-        Brick.createBrickGrid(gameObjects, Brick.createBrickGridFromFiles("res/Brickgrid2.txt") );
+        Brick.createBrickGrid(gameObjects, Brick.createBrickGridFromFiles("res/Brickgrid.txt") );
         gamePanel.addGameObject(ball);
         add(gamePanel);
         // Pass game vào loop

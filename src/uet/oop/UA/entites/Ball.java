@@ -127,7 +127,7 @@ public class Ball extends MovableObject {
     // THAY ĐỔI: Trả về boolean để biết có va chạm tường không
     public boolean handleWallCollision() {
         boolean hitWall = false;
-        toStandardizeMotionAngle();
+
         // tường 2 bên
         if (this.getX() <= 0) {
             hitWall = true;
@@ -150,7 +150,7 @@ public class Ball extends MovableObject {
         } else if (this.getX() >= GAME_WIDTH - this.getWidth()) {
             hitWall = true;
             if (this.motionAngle >= toRadians(0) && this.motionAngle <= toRadians(90)) {
-                this.motionAngle =  (PI-this.motionAngle);
+                this.motionAngle = (PI-this.motionAngle);
             } else if (this.motionAngle >= toRadians(270) && this.motionAngle <= toRadians(360)) {
                 this.motionAngle = (PI+(2*PI-this.motionAngle));
             } else {
@@ -186,7 +186,6 @@ public class Ball extends MovableObject {
     /**
      * phương thức để kiểm tra bóng có active không.
       */
-
     public boolean isActive() {
         return this.getY() < GAME_HEIGHT - this.getHeight();
     }
@@ -466,14 +465,13 @@ public class Ball extends MovableObject {
             double cX1 = (cY1 - motionPath.getB()) / motionPath.getA();
             double cY2 = obj.getY() + obj.getHeight() + radius;
             double cX2 = (cY2 - motionPath.getB()) / motionPath.getA();
-            int posibleCase = findPosibleCollisionPoint(pX, pY
-                    , cX1, cY1, cX2, cY2);
-
-            if (posibleCase == 1) {
+            int motionCase = motionPath.nearStart(pX, pY, cX1, cY1, cX2, cY2
+                    , true, this.getCentralX(), this.getCentralY());
+            if (motionCase == 1) {
                 cX = cX1;
                 cY = cY1;
                 upcollision = 1;
-            } else if (posibleCase == 0) {
+            } else if (motionCase == 2) {
                 cX = cX2;
                 cY = cY2;
                 upcollision = 0;
@@ -545,13 +543,13 @@ public class Ball extends MovableObject {
 
             //kiểm tra giao với đường tròn bán kính radius tâm là góc
             if (radius * radius - (cX - X0) * (cX - X0) >= 0) {
-                if (abs(cX - X0 + (double) this.getWidth() / 2) <= 0.0001) {
+                if (abs(cX - X0 + radius) <= 0.0001) {
                     //nếu sượt qua 0 va chạm
                     return -1;
                 }
                 //nếu có giao.
                 cY1 = sqrt(radius * radius - (cX - X0) * (cX - X0)) + Y0;
-                cY2 = -sqrt(radius * radius - (cX - X0) * (cX - X0)) + Y0;
+                cY2 = - sqrt(radius * radius - (cX - X0) * (cX - X0)) + Y0;
                 if (!inCorner(obj, cX, cY1, corner)
                         && !inCorner(obj, cX, cY2, corner)) {
                     // cả 2 điểm ko thuộc góc
@@ -582,7 +580,7 @@ public class Ball extends MovableObject {
                     return -1;
                 }
                 cX1 = sqrt(radius * radius - (cY - Y0) * (cY - Y0)) + X0;
-                cX2 = -sqrt(radius * radius - (cY - Y0) * (cY - Y0)) + X0;
+                cX2 = - sqrt(radius * radius - (cY - Y0) * (cY - Y0)) + X0;
                 if (!inCorner(obj, cX1, cY, corner)
                         && !inCorner(obj, cX2, cY, corner)) {
                     return -1;
@@ -689,9 +687,9 @@ public class Ball extends MovableObject {
                     } else if (this.getMotionAngle() >= toRadians(90)
                             && this.getMotionAngle() <= toRadians(180)) {
                         this.setMotionAngle(2*PI-(this.getMotionAngle()));
-                    } else { //ngoai le
+                    } /*else { //ngoai le
                         this.setMotionAngle(2*PI-(this.getMotionAngle()));
-                    }
+                    }*/
                 } else if (upCollisionb == 0) {
                     this.setCentral((int) this.collisionCentralX
                             , (int) this.collisionCentralY);
@@ -702,11 +700,12 @@ public class Ball extends MovableObject {
                     } else if (this.getMotionAngle() >= toRadians(270)
                             && this.getMotionAngle() <= toRadians(360)) {
                         this.setMotionAngle(2*PI-(this.getMotionAngle()));
-                    } else {
+                    }/* else {
                         this.setMotionAngle(2*PI-(this.getMotionAngle()));
-                    }
+                    }*/
                 }
 
+                System.out.println(this.getMotionAngle()*180/PI +"tren");
                 return 1;
             } else if (leftCollisionb != -1) {
                 if (leftCollisionb == 1) {
@@ -730,13 +729,16 @@ public class Ball extends MovableObject {
                     }
                 }
 
+                System.out.println(this.getMotionAngle()*180/PI +"tr ");
                 return 1;
             } else if (cornerCollisonb > 0) {
-
+                System.out.println(this.getMotionAngle()*180/PI);
+                System.out.println(this.getCentralX()+" "+this.getCentralY());
                 this.setCentral((int) this.collisionCentralX,
                         (int) this.collisionCentralY);
                 this.motionAngle = this.getMotionAngle() + PI;
                 toStandardizeMotionAngle();
+                System.out.println(this.motionAngle*180/PI);
 
                 return 1;
             }

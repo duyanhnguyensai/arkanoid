@@ -2,7 +2,7 @@ package uet.oop.UA.entites;
 
 import static java.lang.Math.sqrt;
 import java.awt.*;
-public class MovableObject extends GameObject {
+public abstract class MovableObject extends GameObject {
     protected double dx;
     protected double dy;
     protected double speed = 5 * sqrt(2); // TĂNG TỐC ĐỘ LÊN
