@@ -125,9 +125,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     public void displayScore (Graphics g) {
         g.setColor(Color.pink);
         g.setFont(new Font("Arial", Font.BOLD, 50));
-        g.fillRect(getWidth()/2 - 190, getHeight()/2 + 100, 340, 45);
+        g.fillRect(getWidth()/2 - 190, getHeight()/2 + 300, 340, 45);
         g.setColor(Color.RED);
-        g.drawString("Score: " + score, getWidth()/2 - 190, getHeight()/2 +140);
+        g.drawString("Score: " + score, getWidth()/2 - 190, getHeight()/2 +340);
     }
 
     public void drawHighScores(Graphics g) {
