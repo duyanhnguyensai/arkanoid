@@ -321,6 +321,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
                 SoundManager.getInstance().playSound("game_start");
                 SoundManager.getInstance().playSound("background", true);
                 showMenu = false;
+                isGameOver = false;
+                isVictory = false;
+                restartGame();
                 repaint();
             }
             if (x > getWidth() / 2 - 80 + 150 && x < getWidth() / 2 - 80 + 170 +150
