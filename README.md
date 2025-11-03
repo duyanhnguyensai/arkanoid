@@ -7,6 +7,8 @@ https://drive.google.com/file/d/1i-AVhL3eQYqsbGsaO1QxplpA0cRB5ax2/view?usp=shari
 <img width="457" height="753" alt="image" src="https://github.com/user-attachments/assets/3bac8861-42d7-49fb-bf28-45c5c18c23d4" />
 <img width="460" height="903" alt="image" src="https://github.com/user-attachments/assets/bc7a92a4-3d63-48e2-8636-1dece28bcd6a" />
 <img width="901" height="588" alt="image" src="https://github.com/user-attachments/assets/101cbd2b-6ba7-4341-84b3-6c99003e3d28" />
+<img width="458" height="500" alt="image" src="https://github.com/user-attachments/assets/1ecb9322-4b62-4ec9-b591-40b45d6719bd" />
+
 <img width="773" height="492" alt="image" src="https://github.com/user-attachments/assets/86c38b85-8dab-4730-a855-a003bb5ff961" />
 
 
