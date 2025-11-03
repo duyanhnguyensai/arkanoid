@@ -6,16 +6,29 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages audio playback for the game using a singleton pattern.
+ * Handles loading, playing, stopping, and volume control for all game sounds.
+ */
 public class SoundManager {
     private static SoundManager instance;
     private Map<String, Clip> soundClips;
-    private float volume = 0.7f; // Volume mặc định (0.0 - 1.0)
+    private float volume = 0.7f;
 
+    /**
+     * Private constructor for singleton pattern.
+     * Initializes the sound clips map and loads all game sounds.
+     */
     private SoundManager() {
         soundClips = new HashMap<>();
         loadAllSounds();
     }
 
+    /**
+     * Returns the singleton instance of SoundManager.
+     *
+     * @return the singleton SoundManager instance
+     */
     public static SoundManager getInstance() {
         if (instance == null) {
             instance = new SoundManager();
@@ -23,8 +36,11 @@ public class SoundManager {
         return instance;
     }
 
+    /**
+     * Loads all game sounds into the sound clips map.
+     * Includes sounds for game events, collisions, and background music.
+     */
     private void loadAllSounds() {
-        // SỬA: Dùng đường dẫn đúng và nhất quán
         loadSound("brick_break", "res/sounds/brick_break.wav");
         loadSound("paddle_hit", "res/sounds/paddle_hit.wav");
         loadSound("wall_hit", "res/sounds/wall_hit.wav");
@@ -36,20 +52,20 @@ public class SoundManager {
         loadSound("victory", "res/sounds/victory.wav");
     }
 
+    /**
+     * Loads a single sound file and stores it in the sound clips map.
+     * Handles volume control setup and error reporting for missing files.
+     *
+     * @param name the identifier for the sound
+     * @param path the file path to the sound resource
+     */
     private void loadSound(String name, String path) {
         try {
-            // SỬA: Dùng File trực tiếp để debug
             File soundFile = new File(path);
-            System.out.println("Looking for sound: " + path);
-            System.out.println("Absolute path: " + soundFile.getAbsolutePath());
-            System.out.println("File exists: " + soundFile.exists());
 
             if (!soundFile.exists()) {
                 System.err.println("Sound file not found: " + path);
-                // Thử tìm trong các đường dẫn khác
                 soundFile = new File("../" + path);
-                System.out.println("Trying alternative: " + soundFile.getAbsolutePath());
-                System.out.println("Alternative exists: " + soundFile.exists());
                 if (!soundFile.exists()) {
                     return;
                 }
@@ -59,25 +75,34 @@ public class SoundManager {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
 
-            // Set volume control
             if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                 gainControl.setValue(20f * (float) Math.log10(volume));
             }
 
             soundClips.put(name, clip);
-            System.out.println("Successfully loaded sound: " + name);
 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             System.err.println("Error loading sound: " + name + " - " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
+    /**
+     * Plays a sound once with the current volume settings.
+     *
+     * @param name the identifier of the sound to play
+     */
     public void playSound(String name) {
         playSound(name, false);
     }
 
+    /**
+     * Plays a sound with optional looping.
+     * Stops the sound if it's already playing before restarting.
+     *
+     * @param name the identifier of the sound to play
+     * @param loop true to loop continuously, false to play once
+     */
     public void playSound(String name, boolean loop) {
         Clip clip = soundClips.get(name);
         if (clip != null) {
@@ -91,7 +116,6 @@ public class SoundManager {
                 } else {
                     clip.start();
                 }
-                System.out.println("Playing sound: " + name);
             } catch (Exception e) {
                 System.err.println("Error playing sound: " + name + " - " + e.getMessage());
             }
@@ -100,6 +124,11 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Stops a currently playing sound.
+     *
+     * @param name the identifier of the sound to stop
+     */
     public void stopSound(String name) {
         Clip clip = soundClips.get(name);
         if (clip != null && clip.isRunning()) {
@@ -107,10 +136,15 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Sets the volume for all sounds.
+     * Volume is clamped between 0.0 (silent) and 1.0 (maximum).
+     *
+     * @param volume the volume level between 0.0 and 1.0
+     */
     public void setVolume(float volume) {
         this.volume = Math.max(0.0f, Math.min(1.0f, volume));
 
-        // Update volume for all clips
         for (Clip clip : soundClips.values()) {
             if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -120,10 +154,18 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Returns the current volume level.
+     *
+     * @return the current volume between 0.0 and 1.0
+     */
     public float getVolume() {
         return volume;
     }
 
+    /**
+     * Stops all currently playing sounds.
+     */
     public void stopAllSounds() {
         for (Clip clip : soundClips.values()) {
             if (clip.isRunning()) {
