@@ -34,9 +34,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
     public static boolean showMenu = true;
     private boolean inPlayButton = false;
     private boolean inHighScoreButton =  false;
-    private boolean inHighScoreExitButton = false;
-    private boolean inGameOverExitButton = false;
-    private boolean inGameVictoryExitButton = false;
+    private boolean inExitButton = false;
+    private boolean inBetweenLevel = false;
+
     private boolean inHighScore = false;
     public boolean isGameOver = false;
     public static boolean isVictory = false;
@@ -96,6 +96,16 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         g.drawString("H.score", getWidth()/2 - 80 +150, getHeight()/2);
     }
 
+    public void drawFinishLevel1 (Graphics g) {
+        g.drawImage(Victory(), 0, 0, getWidth(), getHeight(), this);
+        //vẽ nút quay về menu
+        g.setColor(Color.PINK);
+        g.fillRect(getWidth()/2 - 190, getHeight()/2 + 200, 340, 45);
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("Back to menu", getWidth()/2 - 190, getHeight()/2);
+
+    }
 
     public void drawHighScores(Graphics g) {
         //tô nền
@@ -113,32 +123,26 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             g.setColor(Color.GREEN);
             g.drawString(Integer.toString(highScores[i-1]), getWidth()/2 +105 , getHeight()/2 - 200 + i*70);
         }
-        //lệch 20 pix về bên trái để cho cân
-        if(inHighScoreExitButton) {
-            g.setColor(Color.CYAN);
-        } else {
-            g.setColor(Color.YELLOW);
-        }
-        g.fillRect(getWidth()/2 - 190, getHeight()/2 + 200, 340, 45);
-        g.setColor(Color.RED);
-        g.setFont(new Font("Arial", Font.BOLD, 50));
-        g.drawString("Back to menu", getWidth()/2 - 190, getHeight()/2 + 200 +40);
     }
 
     //hàm vẽ
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (showMenu && !inHighScore) {
+        if (showMenu) {
             drawMenu(g);
         }
-        else if (inHighScore) {
-            drawHighScores(g);
-        }
-        else if (isVictory) {
-            g.drawImage(victoryImage, 0, 0, getWidth(), getHeight(), this);
 
-            if(inGameVictoryExitButton) {
+        else if (isVictory || isGameOver || inHighScore) {
+            if(isVictory) {
+                g.drawImage(victoryImage, 0, 0, getWidth(), getHeight(), this);
+            } else if (isGameOver) {
+                g.drawImage(gameoverImage, 0, 0, getWidth(), getHeight(), this);
+            } else if (inHighScore) {
+                drawHighScores(g);
+            }
+
+            if(inExitButton) {
                 g.setColor(Color.CYAN);
             }
             else {
@@ -149,20 +153,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
             g.setFont(new Font("Arial", Font.BOLD, 50));
             g.drawString("Back to menu", getWidth()/2 - 190, getHeight()/2 + 200 +40);
         }
-        else if (isGameOver) {
-            g.drawImage(gameoverImage, 0, 0, getWidth(), getHeight(), this);
 
-            if(inGameOverExitButton) {
-                g.setColor(Color.CYAN);
-            }
-            else {
-                g.setColor(Color.YELLOW);
-            }
-            g.fillRect(getWidth()/2 - 190, getHeight()/2 + 200, 340, 45);
-            g.setColor(Color.RED);
-            g.setFont(new Font("Arial", Font.BOLD, 50));
-            g.drawString("Back to menu", getWidth()/2 - 190, getHeight()/2 + 200 +40);
-        }
         else {
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             g.setColor(Color.green);
@@ -307,44 +298,34 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
         if (showMenu) {
             int x = e.getX();
             int y = e.getY();
-            if (x > getWidth()/2 - 80 -150 && x < getWidth()/2 - 80 + 20
-                    && y > getHeight()/2 - 40 && y < getHeight()/2 - 40 + 45) {
+            if (x > getWidth() / 2 - 80 -150 && x < getWidth() / 2 - 80 + 20
+                    && y > getHeight() / 2 - 40 && y < getHeight()/2 - 40 + 45) {
                 // THÊM SOUND EFFECT CHO BẮT ĐẦU GAME
                 SoundManager.getInstance().playSound("game_start");
                 SoundManager.getInstance().playSound("background", true);
                 showMenu = false;
                 repaint();
             }
-            if (x > getWidth() /2 - 80 +150 && x < getWidth() / 2 - 80 + 170 +150
+            if (x > getWidth() / 2 - 80 + 150 && x < getWidth() / 2 - 80 + 170 +150
                     && y > getHeight() / 2 - 40 && y < getHeight() / 2 - 40 + 45) {
                 inHighScore = true;
+                showMenu = false;
                 repaint();
             }
         }
-        if(inHighScore) {
+
+        if(isGameOver || isVictory || inHighScore) {
             int x = e.getX();
             int y = e.getY();
-            if (x > getWidth() / 2 - 190 && x< getWidth()/2 -190+ 340 && y > getHeight()/2 +200 &&
-                    y < getHeight() / 2 + 200+45) {
-                inHighScore = false;
-                showMenu = true;
-            }
-        }
-        if(isGameOver) {
-            int x = e.getX();
-            int y = e.getY();
-            if (x > getWidth() / 2 - 190 && x< getWidth() / 2 -190+ 340 && y > getHeight() / 2 +200 &&
-                    y < getHeight() / 2 + 200+45) {
-                isGameOver = false;
-                showMenu = true;
-            }
-        }
-        if(isVictory) {
-            int x = e.getX();
-            int y = e.getY();
-            if (x > getWidth() / 2 - 190 && x< getWidth() / 2 -190+ 340 && y > getHeight() / 2 +200 &&
-                    y < getHeight() / 2 + 200+45) {
-                isVictory = false;
+            if (x > getWidth() / 2 - 190 && x< getWidth() / 2 - 190 + 340 && y > getHeight() / 2 + 200 &&
+                    y < getHeight() / 2 + 200 + 45) {
+                if(isVictory) {
+                    isVictory = false;
+                } else if (isGameOver) {
+                    isGameOver = false;
+                } else {
+                    inHighScore = false;
+                }
                 showMenu = true;
             }
         }
@@ -379,37 +360,16 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
                 inHighScoreButton = false;
             }
         }
-        if(inHighScore) {
+
+        if(isVictory || isGameOver || inHighScore) {
             int x = e.getX();
             int y = e.getY();
             if(x > getWidth()/2 - 190 && x< getWidth()/2 -190+ 340 && y > getHeight()/2 +200 &&
                     y < getHeight()/2 + 200+45) {
-                inHighScoreExitButton = true;
+                inExitButton = true;
             }
             else {
-                inHighScoreExitButton = false;
-            }
-        }
-        if(isVictory) {
-            int x = e.getX();
-            int y = e.getY();
-            if(x > getWidth()/2 - 190 && x< getWidth()/2 -190+ 340 && y > getHeight()/2 +200 &&
-                    y < getHeight()/2 + 200+45) {
-                inGameVictoryExitButton = true;
-            }
-            else {
-                inGameVictoryExitButton = false;
-            }
-        }
-        if(isGameOver) {
-            int x = e.getX();
-            int y = e.getY();
-            if(x > getWidth()/2 - 190 && x< getWidth()/2 -190+ 340 && y > getHeight()/2 +200 &&
-                    y < getHeight()/2 + 200+45) {
-                inGameOverExitButton = true;
-            }
-            else {
-                inGameOverExitButton = false;
+                inExitButton = false;
             }
         }
     }

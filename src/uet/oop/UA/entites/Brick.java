@@ -61,7 +61,7 @@ public class Brick extends GameObject {
     }
 
     /**
-     * method đổi màu lưới gạch khi hp =1
+     * method đổi màu lưới gạch khi hp =1.
      * */
     public Color lowHealthBrick() {
         if(this.getHitPoints() == 1) {
@@ -119,9 +119,9 @@ public class Brick extends GameObject {
                     }
                 }
             }
+            //debug: print to check grid
             System.out.println("input succeed");
             System.out.println("filename" + gridFileName);
-            //debug: print to check grid
             for (int i = 0; i < 20; i++) {
                 for (int j = 0; j < 20; j++) {
                     System.out.print(brickGrid[i][j] + " ");

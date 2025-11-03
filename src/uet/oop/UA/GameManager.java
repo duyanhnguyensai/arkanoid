@@ -162,7 +162,8 @@ public class GameManager {
             }
 
             // THÊM: Kiểm tra game over và phát sound
-            if (GamePanel.lives <= 0) {
+            if (GamePanel.lives <= 0 || GamePanel.score <= 0) {
+                GamePanel.score = 0;
                 soundManager.playSound("game_over");
                 // THÊM: Dừng nhạc nền khi game over
                 soundManager.stopSound("background");
