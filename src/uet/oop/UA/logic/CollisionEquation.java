@@ -10,6 +10,13 @@ public class CollisionEquation {
     double X2;
     double delta;
 
+    /**
+     * costructor tạo phương trình va chạm.
+     * @param linearEquation quỹ đạo cd.
+     * @param X0 điểm gốc X.
+     * @param Y0 điểm gốc Y.
+     * @param R bán kinh.
+     */
     public CollisionEquation(LinearEquation linearEquation, double X0, double Y0, double R) {
         A = 1 + linearEquation.getA() * linearEquation.getA();
         B = 2 * (-X0 + linearEquation.getA() * linearEquation.getB()
@@ -30,6 +37,9 @@ public class CollisionEquation {
         return C;
     }
 
+    /**
+     * giải pt va chạm.
+     */
     public void solve() {
         this.delta = 0;
         if (B == 0 && C == 0) {
